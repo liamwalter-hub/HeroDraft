@@ -551,6 +551,69 @@
     .summary-roster { grid-template-columns: 1fr; }
   }
 
+
+  /* ─── STREAK SCREEN ─── */
+  #screen-streak {
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 50% 40%, #1a1020 0%, var(--bg) 70%);
+    padding: 2rem;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .streak-broken-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+
+  .streak-number {
+    font-family: var(--font);
+    font-size: clamp(5rem, 20vw, 10rem);
+    font-weight: 400;
+    color: var(--gold2);
+    line-height: 1;
+    text-shadow: 0 0 60px rgba(240,201,106,0.4);
+  }
+
+  .streak-wins-label {
+    font-family: var(--font);
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    color: var(--gold);
+    font-weight: 400;
+    margin-top: -0.5rem;
+  }
+
+  .streak-tagline {
+    font-size: 0.85rem;
+    color: var(--muted);
+    max-width: 360px;
+    line-height: 1.6;
+    margin-top: 0.5rem;
+  }
+
+  .streak-best {
+    font-size: 0.72rem;
+    color: var(--dim);
+    margin-top: 0.25rem;
+  }
+
+  /* Streak badge on result screen */
+  .streak-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(212,168,67,0.12);
+    border: 1px solid rgba(212,168,67,0.35);
+    border-radius: 20px;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
   /* ─── BATTLE ANIMATIONS ─── */
   @keyframes bh-hit {
     0%   { transform: translateX(0);    background: var(--surface); }
@@ -1049,6 +1112,230 @@
     .draft-header { padding: 0.6rem 0.7rem; }
   }
 
+
+  /* ─── RESTRICTED DRAFT SCREEN ─── */
+  #screen-restricted {
+    background: var(--bg);
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .rd-header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .rd-header h2 {
+    font-family: var(--font);
+    font-size: 1rem;
+    color: var(--gold2);
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+
+  .rd-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    overflow-y: auto;
+  }
+
+  /* The offer cards */
+  .rd-offer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .rd-offer-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 0.85rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .rd-offer-card:hover {
+    border-color: var(--gold);
+    background: var(--surface2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(212,168,67,0.15);
+  }
+  .rd-offer-card.army-card {
+    border-color: rgba(74,222,128,0.25);
+  }
+  .rd-offer-card.army-card:hover {
+    border-color: var(--good);
+    box-shadow: 0 4px 20px rgba(74,222,128,0.15);
+  }
+  .rd-offer-card.locked {
+    opacity: 0.38;
+    pointer-events: none;
+    cursor: default;
+    transform: none;
+  }
+  .rd-offer-card.filled {
+    border-color: var(--border2);
+    background: var(--bg3);
+    pointer-events: none;
+    cursor: default;
+    transform: none;
+  }
+
+  .rd-slot-label {
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.15rem;
+    font-weight: 600;
+  }
+
+  .rd-hero-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .rd-hero-universe {
+    font-size: 0.62rem;
+    color: var(--muted);
+  }
+
+  .rd-hero-badges {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 0.1rem;
+  }
+
+  .rd-stat-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 0.3rem;
+  }
+
+  .rd-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .rd-stat-label {
+    font-size: 0.55rem;
+    color: var(--dim);
+    width: 22px;
+    flex-shrink: 0;
+  }
+
+  .rd-stat-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .rd-stat-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .rd-stat-val {
+    font-size: 0.58rem;
+    color: var(--muted);
+    width: 20px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .rd-pick-tag {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.55rem;
+    background: var(--good);
+    color: #0d0e14;
+    border-radius: 10px;
+    padding: 0.1rem 0.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  /* Teams sidebar row */
+  .rd-teams {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .rd-team-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+  }
+
+  .rd-team-title {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .rd-team-slot {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .rd-team-slot:last-child { border-bottom: none; }
+
+  .rd-team-slot .slot-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .rd-team-slot.empty .slot-dot { background: var(--dim); }
+  .rd-team-slot.filled .slot-dot { background: var(--gold); }
+  .rd-team-slot.enemy.filled .slot-dot { background: var(--evil); }
+
+  .rd-team-slot .slot-role { font-size: 0.58rem; color: var(--dim); width: 50px; flex-shrink: 0; }
+  .rd-team-slot .slot-name { color: var(--text); font-weight: 500; }
+  .rd-team-slot.empty .slot-name { color: var(--dim); }
+
+  .rd-battle-wrap {
+    padding: 0 1rem 1rem;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 700px) {
+    .rd-offer-grid { grid-template-columns: 1fr 1fr; }
+    .rd-teams { grid-template-columns: 1fr; }
+    .rd-body { padding: 0.75rem; gap: 0.75rem; }
+    .rd-hero-name { font-size: 0.82rem; }
+  }
+  @media (max-width: 400px) {
+    .rd-offer-grid { grid-template-columns: 1fr; }
+  }
+
   /* ─── GAUNTLET SCREENS ─── */
   #screen-gauntlet-pick {
     align-items: center;
@@ -1272,7 +1559,7 @@
   <p class="game-subtitle">Legends of the Multiverse</p>
 
   <div class="difficulty-section">
-    <label>Difficulty</label>
+    <label>Difficulty — applies to all modes</label>
     <div class="diff-btns">
       <button class="diff-btn" data-diff="easy">Easy</button>
       <button class="diff-btn active" data-diff="medium">Medium</button>
@@ -1281,6 +1568,10 @@
   </div>
 
   <button class="btn-primary" onclick="startDraft()">Begin Draft</button>
+
+  <button class="btn-primary" onclick="startRestrictedDraft()" style="background:transparent; border:1px solid #a78bfa; color:#a78bfa; margin-top:0.6rem;">
+    🎲 Restricted Draft
+  </button>
 
   <button class="btn-primary" onclick="showGauntlet()" style="background:transparent; border:1px solid #f97316; color:#f97316; margin-top:0.6rem;">
     ⚔ Gauntlet Mode
@@ -1303,7 +1594,7 @@
   <div class="briefing-card">
     <h2>How to Play</h2>
 
-    <p>HeroDraft has two modes. In <strong>Draft Mode</strong> you and the CPU take turns picking heroes in a snake draft — one pick, then the other side gets two, and so on. In <strong>Gauntlet Mode</strong> you build your team freely and fight five preset opponents back to back.</p>
+    <p>HeroDraft has three modes. <strong>Draft Mode</strong>: you and the CPU take turns picking from the full roster in a snake draft. <strong>Restricted Draft</strong>: each pick you’re shown one random hero per remaining role — take it or leave it for the next draw. <strong>Gauntlet Mode</strong>: build your team freely and fight five escalating opponents back to back.</p>
 
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Roles</p>
 
@@ -1378,6 +1669,7 @@
           <button class="filter-btn" data-filter="role-support" style="color:var(--support);border-color:var(--support);">Support</button>
           <button class="filter-btn" data-filter="align-good" style="color:var(--good);border-color:var(--good);">Good</button>
           <button class="filter-btn" data-filter="align-evil" style="color:var(--evil);border-color:var(--evil);">Evil</button>
+          <button class="filter-btn" data-filter="role-army" style="color:var(--good);border-color:var(--good);">Army</button>
         </div>
       </div>
     </div>
@@ -1405,6 +1697,7 @@
         <button class="filter-btn" data-filter="role-support" style="color:var(--support);border-color:var(--support);">Support</button>
         <button class="filter-btn" data-filter="align-good" style="color:var(--good);border-color:var(--good);">Good</button>
         <button class="filter-btn" data-filter="align-evil" style="color:var(--evil);border-color:var(--evil);">Evil</button>
+        <button class="filter-btn" data-filter="role-army" style="color:var(--good);border-color:var(--good);">Army</button>
       </div>
       <div class="hero-pool" id="hero-pool"></div>
     </div>
@@ -1558,13 +1851,75 @@
   </button>
 </div>
 
+
+<!-- ═══════════════════════════════════════════════
+  STREAK SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-streak" class="screen">
+  <div class="streak-broken-label">Streak broken</div>
+  <div class="streak-number" id="streak-number">5</div>
+  <div class="streak-wins-label">consecutive wins</div>
+  <div class="streak-tagline" id="streak-tagline"></div>
+  <div class="streak-best" id="streak-best"></div>
+  <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center;">
+    <button class="btn-primary" onclick="playAgain()">Try Again</button>
+    <button class="btn-primary" onclick="showScreen('screen-result')" style="background:transparent;border:1px solid var(--border2);color:var(--muted);">See Result</button>
+  </div>
+</div>
+
 <div id="screen-result" class="screen">
+  <div id="result-streak-badge" style="display:none"></div>
   <div class="result-title" id="result-title">Victory</div>
   <div class="result-subtitle" id="result-subtitle"></div>
   <div class="result-teams" id="result-teams"></div>
-  <button class="btn-primary" onclick="resetGame()">Draft Again</button>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;margin-top:0.5rem;">
+    <button class="btn-primary" id="result-play-again-btn" onclick="playAgain()">Draft Again</button>
+    <button class="btn-primary" onclick="resetGame()" style="background:transparent;border:1px solid var(--border2);color:var(--muted);">Main Menu</button>
+  </div>
 </div>
 
+
+
+<!-- ═══════════════════════════════════════════════
+  RESTRICTED DRAFT SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-restricted" class="screen">
+
+  <div class="rd-header">
+    <div>
+      <h2>Restricted Draft</h2>
+      <div id="rd-turn-label" style="font-size:0.7rem;color:var(--muted);">Deciding who picks first…</div>
+    </div>
+    <div id="pick-tracker-rd" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;"></div>
+    <div id="rd-status" style="font-size:0.72rem;color:var(--gold);text-align:right;"></div>
+  </div>
+
+  <div class="rd-body">
+    <!-- Current offer -->
+    <div>
+      <div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:0.6rem;" id="rd-offer-label">Choose one</div>
+      <div class="rd-offer-grid" id="rd-offer-grid"></div>
+    </div>
+
+    <!-- Both teams -->
+    <div class="rd-teams">
+      <div class="rd-team-panel">
+        <div class="rd-team-title" style="color:var(--gold);">⚔ Your Forces</div>
+        <div id="rd-player-slots"></div>
+      </div>
+      <div class="rd-team-panel">
+        <div class="rd-team-title" style="color:var(--evil);">☠ Enemy Forces</div>
+        <div id="rd-cpu-slots"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Battle button — sticks to bottom -->
+  <div class="rd-battle-wrap">
+    <button class="btn-battle" id="rd-battle-btn" disabled onclick="beginBattle()" style="width:100%;min-height:48px;">⚔ March to Battle</button>
+  </div>
+
+</div>
 
 <!-- ═══════════════════════════════════════════════
   GAUNTLET PICK SCREEN
@@ -1741,10 +2096,16 @@ const ARMIES = [
 ];
 
 // ══════════════════════════════════════════════════════
+// STREAK COUNTER — persists across draft/restricted games
+// ══════════════════════════════════════════════════════
+const streak = { current: 0, best: 0 };
+
+// ══════════════════════════════════════════════════════
 // GAME STATE
 // ══════════════════════════════════════════════════════
 let state = {
   difficulty: 'medium',
+  lastMode: 'draft',  // 'draft' | 'restricted' | 'gauntlet'
   playerTeam: [],
   playerArmy: null,
   cpuTeam: [],
@@ -1754,7 +2115,7 @@ let state = {
   round: 0,
   detailHero: null,
   // Snake draft
-  snakeOrder: [],      // array of 'player'|'cpu' for each of 10 picks
+  snakeOrder: [],      // array of 'player'|'cpu' for each of 12 picks
   snakePick: 0,        // current pick index (0-9)
   draftLocked: false,  // true while CPU is "thinking"
 };
@@ -1794,6 +2155,383 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
 
 // How to Play accessible from title screen via showScreen('screen-briefing')
 
+
+// ══════════════════════════════════════════════════════
+// RESTRICTED DRAFT MODE
+// ══════════════════════════════════════════════════════
+
+const rdState = {
+  armyStage: false,   // true when in the army selection phase
+  armyChoices: [],    // 3 random army options presented to player
+};
+
+function startRestrictedDraft() {
+  // Initialise shared draft state (same as normal draft)
+  state.playerTeam  = [];
+  state.playerArmy  = null;
+  state.cpuTeam     = [];
+  state.cpuArmy     = null;
+  state.snakePick   = 0;
+  state.draftLocked = false;
+
+  const firstPicker = Math.random() < 0.5 ? 'player' : 'cpu';
+  // 12 picks: 5 heroes + 1 army per side, interspersed in snake order
+  const snake12 = (f, s) => [f,s,s,f,f,s,s,f,f,s,s,f];
+  state.snakeOrder = firstPicker === 'player'
+    ? snake12('player','cpu')
+    : snake12('cpu','player');
+
+  // Generate first set of offers
+  rdGenerateOffers('player');
+  rdGenerateOffers('cpu');
+
+  state.lastMode = 'restricted';
+  renderRestrictedDraft();
+  showScreen('screen-restricted');
+
+  if (state.snakeOrder[0] === 'cpu') {
+    setTimeout(rdDoCpuPick, 800);
+  }
+}
+
+function takenIds() {
+  return new Set([...state.playerTeam.map(h=>h.id), ...state.cpuTeam.map(h=>h.id)]);
+}
+
+// Generate a fresh random offer for each role a team still needs + a random army
+function rdGenerateOffers(side) {
+  const team   = side === 'player' ? state.playerTeam : state.cpuTeam;
+  const filled = new Set(team.map(h => h.role));
+  const taken  = takenIds();
+  const needed = REQUIRED_ROLES.filter(r => !filled.has(r));
+  const key    = side === 'player' ? 'player' : 'cpu';
+
+  if (!rdState[key]) rdState[key] = { offers: {}, armyOffer: null };
+
+  // Always draw a completely fresh hand — no offer carries over between turns
+  rdState[key].offers = {};
+
+  needed.forEach(role => {
+    const pool = ROSTER.filter(h => h.role === role && !taken.has(h.id));
+    if (pool.length) {
+      rdState[key].offers[role] = pool[Math.floor(Math.random() * pool.length)];
+    }
+  });
+
+  // Army is handled separately in the army stage after all heroes are picked
+}
+
+// Clear the offer for a slot after it's been picked or declined
+function rdClearOffer(side, role) {
+  if (rdState[side]) delete rdState[side].offers[role];
+}
+function rdClearArmyOffer(side) {
+  if (rdState[side]) rdState[side].armyOffer = null;
+}
+
+// Player picks a card from the current offer
+function rdPlayerPick(type, id) {
+  if (state.draftLocked) return;
+  if (state.snakePick >= 10) return;
+  if (state.snakeOrder[state.snakePick] !== 'player') return;
+
+  if (type === 'army') {
+    const army = rdState.player?.armyOffer;
+    if (!army || state.playerArmy) return;
+    state.playerArmy = army;
+    rdClearArmyOffer('player');
+  } else {
+    const hero = rdState.player?.offers[type];
+    if (!hero || state.playerTeam.some(h => h.role === type)) return;
+    state.playerTeam.push(hero);
+    rdClearOffer('player', type);
+    // Increment snake pick counter for hero picks
+    state.snakePick++;
+    renderRestrictedDraft();
+    if (isMobile()) switchDraftTab('team');
+    rdAdvanceSnake();
+    return;
+  }
+
+  // Army pick doesn't consume a snake pick — just refresh the display
+  renderRestrictedDraft();
+}
+
+
+function rdEnterArmyStage() {
+  rdState.armyStage = true;
+
+  // Truly random — pick 3 armies from the full pool, no bias toward affinity
+  const leader = state.playerTeam.find(h => h.role === 'leader');
+  const affNames = leader ? new Set(ARMIES.filter(a => a.affinityLeaders.includes(leader.name)).map(a => a.name)) : new Set();
+
+  rdState.armyChoices = [...ARMIES].sort(() => Math.random() - 0.5).slice(0, 3);
+
+  // CPU auto-picks an affinity army or random if none
+  const cpuLeader = state.cpuTeam.find(h => h.role === 'leader');
+  const cpuAff = ARMIES.filter(a => cpuLeader && a.affinityLeaders.includes(cpuLeader.name));
+  state.cpuArmy = (cpuAff.length ? cpuAff : ARMIES)[Math.floor(Math.random() * (cpuAff.length || ARMIES.length))];
+
+  renderRestrictedDraft();
+}
+
+function rdPickArmy(armyId) {
+  const army = rdState.armyChoices.find(a => a.id === armyId);
+  if (!army) return;
+  state.playerArmy = army;
+  rdState.armyStage = false;
+  rdState.armyChoices = [];
+  renderRestrictedDraft();
+}
+function rdAdvanceSnake() {
+  // Check if draft complete (all 5 roles filled for both sides)
+  const playerDone = REQUIRED_ROLES.every(r => state.playerTeam.some(h => h.role === r));
+  const cpuDone    = REQUIRED_ROLES.every(r => state.cpuTeam.some(h => h.role === r));
+
+  if (state.snakePick >= 10) {
+    // Enter army pick stage — player chooses from 3 random armies
+    rdEnterArmyStage();
+    return;
+  }
+
+  if (state.snakeOrder[state.snakePick] === 'cpu') {
+    state.draftLocked = true;
+    const delay = { easy:700, medium:1000, hard:1500 }[state.difficulty] || 1000;
+    if (isMobile()) switchDraftTab('cpu');
+    renderRestrictedDraft();
+    setTimeout(rdDoCpuPick, delay);
+  } else {
+    // Generate fresh offers for the player's next needed role
+    rdGenerateOffers('player');
+    if (isMobile()) switchDraftTab('pool');
+    renderRestrictedDraft();
+  }
+}
+
+function rdDoCpuPick() {
+  const offers = rdState.cpu?.offers || {};
+  const neededRoles = REQUIRED_ROLES.filter(r => !state.cpuTeam.some(h => h.role === r));
+  if (!neededRoles.length) { state.draftLocked = false; rdAdvanceSnake(); return; }
+
+  // Generate fresh offer for CPU if needed
+  rdGenerateOffers('cpu');
+
+  // Score each offered hero and pick the best
+  let bestHero = null;
+  let bestScore = -Infinity;
+  let bestRole  = null;
+
+  neededRoles.forEach(role => {
+    const hero = rdState.cpu.offers[role];
+    if (!hero) return;
+    let score;
+    if (state.difficulty === 'easy') {
+      score = Math.random() * 100;
+    } else if (state.difficulty === 'medium') {
+      score = scoreMediumPick(hero);
+    } else {
+      score = scoreHardPick(hero);
+    }
+    if (score > bestScore) { bestScore = score; bestHero = hero; bestRole = role; }
+  });
+
+  if (!bestHero) { state.draftLocked = false; state.snakePick++; rdAdvanceSnake(); return; }
+
+  state.cpuTeam.push(bestHero);
+  rdClearOffer('cpu', bestRole);
+  state.snakePick++;
+  state.draftLocked = false;
+
+  // Generate new offers for CPU's next pick
+  rdGenerateOffers('cpu');
+
+  renderRestrictedDraft();
+  if (isMobile()) {
+    setTimeout(() => rdAdvanceSnake(), 1800);
+  } else {
+    rdAdvanceSnake();
+  }
+}
+
+// ── Render ──
+function renderRestrictedDraft() {
+  const isArmyStage  = rdState.armyStage;
+  const isPlayerTurn = !isArmyStage && !state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'player';
+  const isCpuTurn    = !isArmyStage && state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'cpu';
+  const draftDone    = !isArmyStage && state.snakePick >= 10 && !!state.playerArmy;
+
+  // Always refresh offers before rendering — invalidates anything that's been taken
+  if (isPlayerTurn) rdGenerateOffers('player');
+
+  // Header
+  const turnLabel = document.getElementById('rd-turn-label');
+  if (isArmyStage) {
+    turnLabel.textContent = 'Choose your army';
+    turnLabel.style.color = 'var(--good)';
+  } else if (draftDone) {
+    turnLabel.textContent = 'Draft complete — ready to march';
+    turnLabel.style.color = 'var(--gold)';
+  } else if (isCpuTurn) {
+    turnLabel.textContent = 'Enemy is choosing…';
+    turnLabel.style.color = 'var(--evil)';
+  } else if (isPlayerTurn) {
+    turnLabel.textContent = `Pick ${state.snakePick + 1} of 10 — Your turn`;
+    turnLabel.style.color = 'var(--gold)';
+  } else {
+    turnLabel.textContent = `Pick ${state.snakePick + 1} of 10`;
+    turnLabel.style.color = 'var(--muted)';
+  }
+
+  // Pick tracker
+  const tracker = document.getElementById('pick-tracker-rd');
+  if (tracker) {
+    tracker.innerHTML = state.snakeOrder.map((side, i) => {
+      const done = i < state.snakePick;
+      const cur  = i === state.snakePick && !draftDone;
+      const color = side === 'player' ? 'var(--gold)' : 'var(--evil)';
+      return `<div style="width:10px;height:10px;border-radius:50%;
+        background:${done ? color : 'transparent'};
+        border:1.5px solid ${cur ? color : 'var(--dim)'};
+        box-shadow:${cur ? '0 0 6px '+color : 'none'};
+        transition:all 0.2s"></div>`;
+    }).join('');
+  }
+
+  // Offer grid
+  renderRdOfferGrid(isPlayerTurn, draftDone, isArmyStage);
+
+  // Team panels
+  renderRdTeamPanel('rd-player-slots', state.playerTeam, state.playerArmy, false);
+  renderRdTeamPanel('rd-cpu-slots',    state.cpuTeam,    state.cpuArmy,    true);
+
+  // Battle button
+  const btn = document.getElementById('rd-battle-btn');
+  if (btn) btn.disabled = !draftDone || !state.playerArmy;
+}
+
+const ROLE_COLORS_RD = { leader:'var(--leader)', hero:'var(--hero)', defender:'var(--defender)', warrior:'var(--warrior)', support:'var(--support)' };
+const STAT_COLORS = { strength:'#fb923c', leadership:'#a78bfa', durability:'#34d399', intelligence:'#60a5fa', agility:'#f472b6' };
+
+function renderRdOfferGrid(isPlayerTurn, draftDone, isArmyStage) {
+  const grid = document.getElementById('rd-offer-grid');
+  const label = document.getElementById('rd-offer-label');
+  if (!grid) return;
+
+  if (isArmyStage) {
+    label.textContent = 'Choose your army:';
+    const leader = state.playerTeam.find(h => h.role === 'leader');
+    const affNames = leader ? new Set(ARMIES.filter(a => a.affinityLeaders.includes(leader.name)).map(a => a.name)) : new Set();
+    grid.innerHTML = rdState.armyChoices.map(a => {
+      const hasAff = affNames.has(a.name);
+      return `<div class="rd-offer-card army-card" onclick="rdPickArmy('${a.id}')" style="${hasAff ? 'border-color:var(--gold);' : ''}">
+        ${hasAff ? '<div class="rd-pick-tag" style="background:var(--gold);color:#000">Affinity</div>' : ''}
+        <div class="rd-slot-label" style="color:var(--good)">Army</div>
+        <div class="rd-hero-name">${a.name}</div>
+        <div class="rd-hero-universe">${a.universe}</div>
+        <div style="font-size:0.65rem;color:var(--muted);margin-top:0.3rem;line-height:1.4">${a.lore}</div>
+        <div style="margin-top:0.5rem;display:flex;gap:8px">
+          <span style="font-size:0.62rem;color:var(--muted)">STR <strong style="color:var(--text)">${a.strength}</strong></span>
+          <span style="font-size:0.62rem;color:var(--muted)">DUR <strong style="color:var(--text)">${a.durability}</strong></span>
+        </div>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  if (draftDone) {
+    label.textContent = 'Draft complete';
+    grid.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;padding:0.5rem">All roles filled. March to battle when ready.</div>';
+    return;
+  }
+
+  if (!isPlayerTurn) {
+    label.textContent = 'Enemy is drafting…';
+    grid.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;padding:0.5rem">Waiting for the enemy to make their pick.</div>';
+    return;
+  }
+
+  label.textContent = 'Choose one card to draft:';
+  const offers = rdState.player?.offers || {};
+  const playerFilledRoles = new Set(state.playerTeam.map(h => h.role));
+  const cards = [];
+
+  // One card per needed role
+  REQUIRED_ROLES.forEach(role => {
+    if (playerFilledRoles.has(role)) return; // already filled, skip
+    const hero = offers[role];
+    if (hero) cards.push({ type: 'hero', role, hero });
+  });
+
+  // Army card — only show if army not yet picked
+  if (!state.playerArmy) {
+    const armyOffer = rdState.player?.armyOffer;
+    if (armyOffer) cards.push({ type: 'army', army: armyOffer });
+  }
+
+  grid.innerHTML = cards.map(card => {
+    if (card.type === 'army') {
+      const a = card.army;
+      return `<div class="rd-offer-card army-card" onclick="rdPlayerPick('army', null)" title="Click to draft army">
+        <div class="rd-slot-label" style="color:var(--good)">Army</div>
+        <div class="rd-hero-name">${a.name}</div>
+        <div class="rd-hero-universe">${a.universe}</div>
+        <div style="font-size:0.65rem;color:var(--muted);margin-top:0.3rem">${a.lore}</div>
+        <div style="margin-top:0.5rem;display:flex;gap:6px">
+          <span style="font-size:0.62rem;color:var(--muted)">STR <strong style="color:var(--text)">${a.strength}</strong></span>
+          <span style="font-size:0.62rem;color:var(--muted)">DUR <strong style="color:var(--text)">${a.durability}</strong></span>
+        </div>
+      </div>`;
+    }
+    const h = card.hero;
+    const roleColor = ROLE_COLORS_RD[h.role] || 'var(--text)';
+    const alignColor = h.alignment === 'good' ? 'var(--good)' : h.alignment === 'evil' ? 'var(--evil)' : 'var(--neutral)';
+    const stats = [
+      ['STR', h.strength, STAT_COLORS.strength],
+      ['LDR', h.leadership, STAT_COLORS.leadership],
+      ['DUR', h.durability, STAT_COLORS.durability],
+      ['INT', h.intelligence, STAT_COLORS.intelligence],
+      ['AGI', h.agility, STAT_COLORS.agility],
+    ];
+    const hasRivals = state.playerTeam.some(t => h.rivals.includes(t.name)) || state.cpuTeam.some(t => h.rivals.includes(t.name));
+    const hasAllies = state.playerTeam.some(t => h.allies.includes(t.name));
+    const hasSynergy = state.playerTeam.some(t => t.universe === h.universe);
+    return `<div class="rd-offer-card" onclick="rdPlayerPick('${h.role}', ${h.id})" title="Click to draft">
+      ${hasSynergy ? '<div class="rd-pick-tag" style="background:var(--good)">Synergy</div>' : ''}
+      ${hasAllies  ? '<div class="rd-pick-tag" style="background:var(--leader);top:1.6rem">Ally</div>' : ''}
+      ${hasRivals  ? '<div class="rd-pick-tag" style="background:var(--evil);top:1.6rem">Rival</div>' : ''}
+      <div class="rd-slot-label" style="color:${roleColor}">${h.role}</div>
+      <div class="rd-hero-name">${h.name}</div>
+      <div class="rd-hero-universe">${h.universe} · <span style="color:${alignColor}">${h.alignment}</span></div>
+      <div class="rd-stat-bars">
+        ${stats.map(([label, val, color]) => `
+          <div class="rd-stat-row">
+            <span class="rd-stat-label">${label}</span>
+            <div class="rd-stat-bar"><div class="rd-stat-fill" style="width:${val}%;background:${color}"></div></div>
+            <span class="rd-stat-val">${val}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderRdTeamPanel(elId, team, army, isCpu) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const color = isCpu ? 'var(--evil)' : 'var(--gold)';
+  el.innerHTML = REQUIRED_ROLES.map(role => {
+    const hero = team.find(h => h.role === role);
+    return `<div class="rd-team-slot ${hero ? 'filled' : 'empty'} ${isCpu ? 'enemy' : ''}">
+      <div class="slot-dot"></div>
+      <span class="slot-role">${role}</span>
+      <span class="slot-name">${hero ? hero.name : '—'}</span>
+    </div>`;
+  }).join('') + (army ? `<div class="rd-team-slot filled ${isCpu ? 'enemy' : ''}" style="margin-top:4px">
+      <div class="slot-dot" style="background:var(--good)"></div>
+      <span class="slot-role">army</span>
+      <span class="slot-name">${army.name}</span>
+    </div>` : '');
+}
+
 // ══════════════════════════════════════════════════════
 // MOBILE DRAFT TABS
 // ══════════════════════════════════════════════════════
@@ -1828,7 +2566,7 @@ function renderTeamSlotsMobile() {
         <div><div class="slot-name">${filled.name}</div><div class="slot-lore" style="font-size:0.62rem;color:var(--muted)">${filled.universe}</div></div>
       `;
     } else {
-      const isNext = !state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'player';
+      const isNext = !state.draftLocked && state.snakePick < 12 && state.snakeOrder[state.snakePick] === 'player';
       slot.innerHTML = `
         <span class="slot-role-badge" style="background:${ROLE_COLORS[role]}22;color:${ROLE_COLORS[role]}">${role}</span>
         <span style="color:${isNext?'var(--muted)':'var(--dim)'}">— empty —</span>
@@ -1888,7 +2626,7 @@ function renderCpuMiniSlots() {
     slots.innerHTML = '';
     REQUIRED_ROLES.forEach(role => {
       const filled = state.cpuTeam.find(h => h.role === role);
-      const cpuTurn = state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'cpu';
+      const cpuTurn = state.snakePick < 12 && state.snakeOrder[state.snakePick] === 'cpu';
       const slot = document.createElement('div');
       slot.className = 'team-slot' + (filled ? ' filled' : '');
       slot.style.borderColor = filled ? 'rgba(248,113,113,0.3)' : '';
@@ -1936,7 +2674,7 @@ function renderArmySlotMobile() {
     slotEl.style.color = 'var(--gold)';
     slotEl.style.borderStyle = 'solid';
     slotEl.innerHTML = `<strong style="font-size:0.8rem">${state.playerArmy.name}</strong>
-      <button onclick="state.playerArmy=null;renderDraft();" style="float:right;background:none;border:none;color:var(--dim);cursor:pointer;font-size:0.8rem;padding:0">✕</button>
+
       <br><span style="color:var(--muted);font-size:0.65rem">${state.playerArmy.universe}</span>`;
   } else {
     slotEl.style.color = 'var(--dim)';
@@ -1998,12 +2736,12 @@ function startDraft() {
 
   // Randomly decide who picks first, build 10-pick snake order
   const firstPicker = Math.random() < 0.5 ? 'player' : 'cpu';
-  // Snake: 1-2-2-1-1-2-2-1-1-2 pattern based on who goes first
-  const snake10 = (first, second) =>
-    [first, second, second, first, first, second, second, first, first, second];
+  // 12-pick snake: each side gets 6 picks (5 heroes + 1 army)
+  // Pattern: 1-2-2-1-1-2-2-1-1-2-2-1
+  const snake12std = (f, s) => [f,s,s,f,f,s,s,f,f,s,s,f];
   state.snakeOrder = firstPicker === 'player'
-    ? snake10('player','cpu')
-    : snake10('cpu','player');
+    ? snake12std('player','cpu')
+    : snake12std('cpu','player');
 
   switchDraftTab('pool');
   renderDraft();
@@ -2058,16 +2796,16 @@ function updateDraftTurnLabel() {
   const el = document.getElementById('draft-turn-label');
   if (!el) return;
   const pick = state.snakePick;
-  if (pick >= 10) {
+  if (pick >= 12) {
     el.textContent = 'Draft complete — ready to march';
     el.style.color = 'var(--gold)';
     return;
   }
   const whose = state.snakeOrder[pick];
   if (whose === 'player') {
-    el.innerHTML = `Pick ${pick + 1} of 10 — <span style="color:var(--gold)">Your turn to draft</span>`;
+    el.innerHTML = `Pick ${pick + 1} of 12 — <span style="color:var(--gold)">Your turn to draft</span>`;
   } else {
-    el.innerHTML = `Pick ${pick + 1} of 10 — <span style="color:#f87171">${state.draftLocked ? 'Enemy is choosing…' : 'Enemy is choosing…'}</span>`;
+    el.innerHTML = `Pick ${pick + 1} of 12 — <span style="color:#f87171">Enemy is choosing…</span>`;
   }
 }
 
@@ -2082,7 +2820,7 @@ function renderPool() {
   ]);
 
   // Is it the player’s turn?
-  const isPlayerTurn = !state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'player';
+  const isPlayerTurn = !state.draftLocked && state.snakePick < 12 && state.snakeOrder[state.snakePick] === 'player';
 
   // What roles does the player still need?
   const playerFilledRoles = new Set(state.playerTeam.map(h => h.role));
@@ -2133,6 +2871,43 @@ function renderPool() {
     if (!unavailable) card.addEventListener('click', () => showDetail(hero));
     pool.appendChild(card);
   });
+
+  // ── Army cards in the pool ──
+  if (state.filter === 'all' || state.filter === 'role-army') {
+    const leader = state.playerTeam.find(h => h.role === 'leader');
+    ARMIES.forEach(a => {
+      const cpuHas = state.cpuArmy && state.cpuArmy.id === a.id;
+      const playerHas = state.playerArmy && state.playerArmy.id === a.id;
+      const alreadyDrafted = playerHas || cpuHas;
+      const isAffinity = leader && a.affinityLeaders.includes(leader.name);
+      const canPick = isPlayerTurn && !state.playerArmy && !cpuHas;
+      const card = document.createElement('div');
+      card.className = 'hero-card' + (alreadyDrafted || !canPick ? ' drafted' : '');
+      card.innerHTML = `
+        <div class="hc-name">${a.name}${isAffinity ? '<span style="font-size:0.6rem;color:var(--gold);margin-left:4px;">affinity ⚡</span>' : ''}
+          ${playerHas ? '<span style="font-size:0.6rem;color:var(--good);margin-left:4px;">✓ drafted</span>' : ''}
+          ${cpuHas ? '<span style="font-size:0.6rem;color:var(--evil);margin-left:4px;">enemy</span>' : ''}
+        </div>
+        <div class="hc-universe">${a.universe}</div>
+        <div class="hc-badges">
+          <span class="badge badge-role" style="color:var(--good)">army</span>
+        </div>
+        <div style="font-size:0.65rem;color:var(--muted);margin-top:4px;line-height:1.4">${a.lore}</div>
+        <div class="stat-bar-wrap" style="margin-top:6px">
+          <span class="stat-label">STR</span>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:${a.strength}%;background:#fb923c"></div></div>
+          <span style="font-size:0.6rem;color:${statColor(a.strength)};width:22px;text-align:right">${a.strength}</span>
+        </div>
+        <div class="stat-bar-wrap">
+          <span class="stat-label">DUR</span>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:${a.durability}%;background:#34d399"></div></div>
+          <span style="font-size:0.6rem;color:${statColor(a.durability)};width:22px;text-align:right">${a.durability}</span>
+        </div>
+      `;
+      if (canPick) card.addEventListener('click', () => draftArmy(a));
+      pool.appendChild(card);
+    });
+  }
 }
 
 // ── Player team slots ──
@@ -2150,7 +2925,7 @@ function renderTeamSlots() {
         <div><div class="slot-name">${filled.name}</div><div class="slot-lore">${filled.lore}</div></div>
       `;
     } else {
-      const isNext = !state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'player';
+      const isNext = !state.draftLocked && state.snakePick < 12 && state.snakeOrder[state.snakePick] === 'player';
       slot.innerHTML = `
         <span class="slot-role-badge" style="background:${ROLE_COLORS[role]}22;color:${ROLE_COLORS[role]}">${role}</span>
         <span style="color:${isNext?'var(--muted)':'var(--dim)'}">— empty —</span>
@@ -2176,7 +2951,7 @@ function renderCpuTeamSlots() {
         <div><div class="slot-name">${filled.name}</div><div class="slot-lore">${filled.lore}</div></div>
       `;
     } else {
-      const cpuTurn = state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'cpu';
+      const cpuTurn = state.snakePick < 12 && state.snakeOrder[state.snakePick] === 'cpu';
       slot.innerHTML = `
         <span class="slot-role-badge" style="background:rgba(248,113,113,0.1);color:#f87171">${role}</span>
         <span style="color:${cpuTurn && state.draftLocked ? '#f87171' : 'var(--dim)'}">
@@ -2256,7 +3031,7 @@ function renderArmySlot() {
     el.style.color = 'var(--text)';
     el.style.borderStyle = 'solid';
     el.innerHTML = `<strong style="font-size:0.8rem">${a.name}</strong><br><span style="color:var(--muted);font-size:0.65rem">${a.universe} · ${a.lore}</span>
-      <button onclick="state.playerArmy=null;renderDraft();" style="float:right;background:none;border:none;color:var(--dim);cursor:pointer;font-size:0.8rem;padding:0">✕</button>`;
+`;
   } else {
     el.style.color = 'var(--dim)';
     el.style.borderStyle = 'dashed';
@@ -2265,39 +3040,26 @@ function renderArmySlot() {
 }
 
 function renderArmyPool() {
+  // Armies are now draftable cards in the main hero pool — hide the old sidebar list
   const el = document.getElementById('army-pool');
-  if (!el) return;
-  const leader = state.playerTeam.find(h => h.role === 'leader');
-  el.innerHTML = '';
-  // Show a header if draft is still ongoing
-  if (state.snakePick < 10) {
-    const note = document.createElement('div');
-    note.style.cssText = 'font-size:0.65rem;color:var(--dim);margin-bottom:4px;';
-    note.textContent = leader ? 'Pick an army to deploy:' : 'Draft your leader first for affinity armies';
-    el.appendChild(note);
-  }
-  ARMIES.forEach(a => {
-    const isSelected = state.playerArmy && state.playerArmy.id === a.id;
-    const isAffinity = leader && a.affinityLeaders.includes(leader.name);
-    const btn = document.createElement('button');
-    btn.style.cssText = `width:100%;text-align:left;background:${isSelected?'var(--surface2)':'var(--surface)'};border:1px solid ${isAffinity?'var(--gold)':'var(--border)'};border-radius:5px;padding:0.4rem 0.6rem;cursor:pointer;color:${isSelected?'var(--gold)':'var(--text)'};font-size:0.68rem;font-family:var(--ui);transition:all 0.15s;margin-bottom:2px;`;
-    btn.innerHTML = `<strong>${a.name}</strong>${isAffinity?' ⚡':''}<br><span style="color:var(--muted)">${a.universe}</span>`;
-    btn.onclick = () => { state.playerArmy = isSelected ? null : a; renderDraft(); };
-    el.appendChild(btn);
-  });
+  if (el) el.innerHTML = '';
+  const elM = document.getElementById('army-pool-mobile');
+  if (elM) elM.innerHTML = '';
 }
 
 function updateBattleButton() {
-  const allRoles = REQUIRED_ROLES.every(r => state.playerTeam.some(h => h.role === r));
-  const cpuDone  = REQUIRED_ROLES.every(r => state.cpuTeam.some(h => h.role === r));
-  const btn = document.getElementById('btn-begin-battle');
-  btn.disabled = !(allRoles && cpuDone && state.snakePick >= 10);
+  const playerDone = REQUIRED_ROLES.every(r => state.playerTeam.some(h => h.role === r)) && !!state.playerArmy;
+  const cpuDone    = REQUIRED_ROLES.every(r => state.cpuTeam.some(h => h.role === r)) && !!state.cpuArmy;
+  const btn  = document.getElementById('btn-begin-battle');
+  const btnM = document.getElementById('btn-begin-battle-mobile');
+  if (btn)  btn.disabled  = !(playerDone && cpuDone);
+  if (btnM) btnM.disabled = !(playerDone && cpuDone);
 }
 
-// ── Player makes a pick ──
+// ── Player drafts a hero ──
 function draftHero(hero) {
   if (state.draftLocked) return;
-  if (state.snakePick >= 10) return;
+  if (state.snakePick >= 12) return;
   if (state.snakeOrder[state.snakePick] !== 'player') return;
   if (state.playerTeam.some(h => h.role === hero.role)) {
     alert(`You already have a ${hero.role}. Each role can only be filled once.`);
@@ -2307,68 +3069,180 @@ function draftHero(hero) {
   state.snakePick++;
   closeDetail();
   renderDraft();
-  // On mobile: show player team so they see their pick land
+  if (isMobile()) switchDraftTab('team');
+  advanceSnake();
+}
+
+// ── Player drafts an army ──
+function draftArmy(army) {
+  if (state.draftLocked) return;
+  if (state.snakePick >= 12) return;
+  if (state.snakeOrder[state.snakePick] !== 'player') return;
+  if (state.playerArmy) return; // already have an army
+  state.playerArmy = army;
+  state.snakePick++;
+  renderDraft();
   if (isMobile()) switchDraftTab('team');
   advanceSnake();
 }
 
 // ── Advance draft: trigger CPU picks automatically ──
 function advanceSnake() {
-  if (state.snakePick >= 10) {
-    // Draft complete — CPU picks army
-    const cpuLeader = state.cpuTeam.find(h => h.role === 'leader');
-    const affArmy = ARMIES.filter(a => cpuLeader && a.affinityLeaders.includes(cpuLeader.name));
-    state.cpuArmy = (affArmy.length ? affArmy : ARMIES)[Math.floor(Math.random() * (affArmy.length || ARMIES.length))];
+  // Draft complete when both teams have all 5 roles AND an army
+  const playerDone = REQUIRED_ROLES.every(r => state.playerTeam.some(h => h.role === r)) && !!state.playerArmy;
+  const cpuDone    = REQUIRED_ROLES.every(r => state.cpuTeam.some(h => h.role === r)) && !!state.cpuArmy;
+  if (playerDone && cpuDone) {
     renderDraft();
     return;
   }
-  if (state.snakeOrder[state.snakePick] === 'cpu') {
+
+  // Safety net: if we somehow overshoot, auto-assign anything missing
+  if (state.snakePick >= 13) {
+    if (!state.playerArmy) {
+      const l = state.playerTeam.find(h => h.role === 'leader');
+      const aff = ARMIES.filter(a => l && a.affinityLeaders.includes(l.name));
+      state.playerArmy = (aff.length ? aff : ARMIES)[Math.floor(Math.random() * (aff.length || ARMIES.length))];
+    }
+    if (!state.cpuArmy) {
+      const l = state.cpuTeam.find(h => h.role === 'leader');
+      const aff = ARMIES.filter(a => l && a.affinityLeaders.includes(l.name));
+      state.cpuArmy = (aff.length ? aff : ARMIES)[Math.floor(Math.random() * (aff.length || ARMIES.length))];
+    }
+    renderDraft();
+    return;
+  }
+  const cpuDoneNow  = REQUIRED_ROLES.every(r => state.cpuTeam.some(h => h.role === r)) && !!state.cpuArmy;
+  const playerDoneNow = REQUIRED_ROLES.every(r => state.playerTeam.some(h => h.role === r)) && !!state.playerArmy;
+  const whose = state.snakeOrder[state.snakePick];
+
+  if (whose === 'cpu' || (whose === undefined && !cpuDoneNow)) {
+    // It's the CPU's turn (or we've run out of scheduled slots but CPU still needs picks)
+    if (cpuDoneNow) {
+      // CPU done — if player still needs picks, give them control
+      if (!playerDoneNow) { if (isMobile()) switchDraftTab('pool'); renderDraft(); }
+      return;
+    }
     state.draftLocked = true;
     renderDraft();
-    // Delay scales with difficulty for feel
     const delay = { easy:600, medium:900, hard:1400 }[state.difficulty] || 900;
     if (isMobile()) switchDraftTab('cpu');
     setTimeout(doCpuPick, delay);
-  } else if (state.snakeOrder[state.snakePick] === 'player') {
-    // CPU done picking — return player to pool
+  } else if (whose === 'player' || (whose === undefined && !playerDoneNow)) {
+    // It's the player's turn (or overflow but player still needs picks)
+    if (playerDoneNow) return;
     if (isMobile()) switchDraftTab('pool');
+    renderDraft();
+  } else {
+    // Both done or snake exhausted — render final state
+    renderDraft();
   }
 }
 
-// ── CPU pick logic ──
+// ── CPU pick logic — evaluates all available slots including army ──
 function doCpuPick() {
+  // Guard: if CPU is fully done, skip this pick slot and advance
+  const alreadyDone = REQUIRED_ROLES.every(r => state.cpuTeam.some(h => h.role === r)) && !!state.cpuArmy;
+  if (alreadyDone) {
+    state.draftLocked = false;
+    state.snakePick++; // consume the pick slot so we don't loop
+    renderDraft();
+    advanceSnake();
+    return;
+  }
+  if (state.snakePick >= 12) {
+    state.draftLocked = false;
+    renderDraft();
+    advanceSnake();
+    return;
+  }
   const takenIds = new Set([...state.playerTeam.map(h=>h.id), ...state.cpuTeam.map(h=>h.id)]);
   const cpuFilledRoles = new Set(state.cpuTeam.map(h => h.role));
   const neededRoles = REQUIRED_ROLES.filter(r => !cpuFilledRoles.has(r));
-  // Pick a needed role (prioritise in order)
-  const role = neededRoles[0];
-  const candidates = ROSTER.filter(h => h.role === role && !takenIds.has(h.id));
-  if (!candidates.length) { state.draftLocked = false; state.snakePick++; renderDraft(); advanceSnake(); return; }
+  const needsArmy = !state.cpuArmy;
 
-  let picked;
-  if (state.difficulty === 'easy') {
-    picked = candidates[Math.floor(Math.random() * candidates.length)];
-  } else if (state.difficulty === 'medium') {
-    // Aware of power AND synergy/counters, but picks from top 2 — smarter than easy, not perfect
-    candidates.sort((a,b) => scoreMediumPick(b) - scoreMediumPick(a));
-    const top = candidates.slice(0, Math.min(2, candidates.length));
-    picked = top[Math.floor(Math.random() * top.length)];
-  } else {
-    // Hard: full counter-pick logic
-    candidates.sort((a,b) => scoreHardPick(b) - scoreHardPick(a));
-    picked = candidates[0];
+  // Build candidate list: best hero per needed role + army option
+  // Score each and pick the overall best
+  let bestScore = -Infinity;
+  let pickedHero = null;
+  let pickedArmy = null;
+
+  neededRoles.forEach(role => {
+    const candidates = ROSTER.filter(h => h.role === role && !takenIds.has(h.id));
+    if (!candidates.length) return;
+    let hero;
+    if (state.difficulty === 'easy') {
+      hero = candidates[Math.floor(Math.random() * candidates.length)];
+    } else if (state.difficulty === 'medium') {
+      candidates.sort((a,b) => scoreMediumPick(b) - scoreMediumPick(a));
+      const top = candidates.slice(0, Math.min(2, candidates.length));
+      hero = top[Math.floor(Math.random() * top.length)];
+    } else {
+      candidates.sort((a,b) => scoreHardPick(b) - scoreHardPick(a));
+      hero = candidates[0];
+    }
+    const score = state.difficulty === 'easy' ? Math.random() * 100
+      : state.difficulty === 'medium' ? scoreMediumPick(hero)
+      : scoreHardPick(hero);
+    if (score > bestScore) { bestScore = score; pickedHero = hero; pickedArmy = null; }
+  });
+
+  // Score the army option — medium/hard will take it if it scores well
+  if (needsArmy && state.difficulty !== 'easy') {
+    const cpuLeader = state.cpuTeam.find(h => h.role === 'leader');
+    const affArmy = cpuLeader ? ARMIES.filter(a => a.affinityLeaders.includes(cpuLeader.name)) : [];
+    const armyScore = scoreArmyPick(affArmy);
+    if (armyScore > bestScore) { bestScore = armyScore; pickedHero = null; pickedArmy = affArmy.length
+      ? affArmy[Math.floor(Math.random() * affArmy.length)]
+      : ARMIES[Math.floor(Math.random() * ARMIES.length)]; }
+  } else if (needsArmy && state.difficulty === 'easy') {
+    // Easy: sometimes picks army randomly
+    if (!pickedHero || Math.random() < 0.2) {
+      pickedArmy = ARMIES[Math.floor(Math.random() * ARMIES.length)];
+      pickedHero = null;
+    }
   }
 
-  state.cpuTeam.push(picked);
+  // Fallback if nothing scored (shouldn't happen)
+  if (!pickedHero && !pickedArmy) {
+    if (neededRoles.length) {
+      const candidates = ROSTER.filter(h => h.role === neededRoles[0] && !takenIds.has(h.id));
+      if (candidates.length) pickedHero = candidates[0];
+    }
+    if (!pickedHero && needsArmy) {
+      pickedArmy = ARMIES[Math.floor(Math.random() * ARMIES.length)];
+    }
+  }
+
+  // If truly nothing to pick (CPU already complete), skip cleanly
+  if (!pickedHero && !pickedArmy) {
+    state.draftLocked = false;
+    state.snakePick++;
+    renderDraft();
+    advanceSnake();
+    return;
+  }
+
+  if (pickedHero) state.cpuTeam.push(pickedHero);
+  if (pickedArmy) state.cpuArmy = pickedArmy;
   state.snakePick++;
   state.draftLocked = false;
   renderDraft();
-  // On mobile: stay on CPU tab for 1.8s so the player can see the pick, then advance
   if (isMobile()) {
     setTimeout(() => advanceSnake(), 1800);
   } else {
     advanceSnake();
   }
+}
+
+function scoreArmyPick(affArmies) {
+  // Army is worth taking when leader affinity armies exist — medium/hard will time it
+  // Returns a score comparable to hero scores so CPU can decide when to take it
+  const baseScore = 280; // roughly equivalent to a decent hero pick
+  const affinityBonus = affArmies.length ? 80 : 0;
+  // Hard waits longer (more heroes drafted first), medium takes it mid-draft
+  const pickTiming = state.difficulty === 'hard' ? state.cpuTeam.length >= 3 ? 1 : 0.3
+    : state.cpuTeam.length >= 2 ? 1 : 0.5;
+  return (baseScore + affinityBonus) * pickTiming;
 }
 
 function totalPower(h) {
@@ -3366,6 +4240,21 @@ function showResult() {
     bs.winner = playerHp > cpuHp ? 'player' : cpuHp > playerHp ? 'cpu' : 'draw';
   }
 
+  // ── Streak tracking (draft and restricted only, not gauntlet) ──
+  if (bs.winner === 'player') {
+    streak.current++;
+    if (streak.current > streak.best) streak.best = streak.current;
+  } else if (!gauntlet.active) {
+    // Loss or draw — show streak screen if they had a run of 2+
+    if (streak.current >= 2) {
+      const broken = streak.current;
+      streak.current = 0;
+      showStreakScreen(broken, bs.winner);
+      return;
+    }
+    streak.current = 0;
+  }
+
   if (bs.winner === 'player') {
     titleEl.textContent = 'Victory'; titleEl.className = 'result-title victory';
     subEl.textContent = `Your champions triumphed in ${state.round} rounds.`;
@@ -3392,7 +4281,69 @@ function showResult() {
     teamsEl.appendChild(card);
   });
 
+  // Update play-again button label based on mode
+  const playAgainBtn = document.getElementById('result-play-again-btn');
+  if (playAgainBtn) {
+    playAgainBtn.textContent = state.lastMode === 'restricted' ? 'Restricted Again' : 'Draft Again';
+  }
+
+  // Show streak badge on result screen if on a winning run
+  const badgeWrap = document.getElementById('result-streak-badge');
+  if (badgeWrap) {
+    if (streak.current >= 2) {
+      badgeWrap.innerHTML = `<div class="streak-badge">🔥 ${streak.current} win streak</div>`;
+      badgeWrap.style.display = 'block';
+    } else {
+      badgeWrap.innerHTML = '';
+      badgeWrap.style.display = 'none';
+    }
+  }
+
   showScreen('screen-result');
+}
+
+function showStreakScreen(broken, outcome) {
+  document.getElementById('streak-number').textContent = broken;
+  const taglines = {
+    2: 'Two in a row. A fine run.',
+    3: 'Three straight wins. The multiverse noticed.',
+    4: 'Four victories. Legends have been built on less.',
+    5: 'Five wins. You were becoming something fearsome.',
+  };
+  const tag = taglines[broken] || `${broken} consecutive victories. They'll be talking about this for ages.`;
+  document.getElementById('streak-tagline').textContent = tag;
+  document.getElementById('streak-best').textContent =
+    streak.best > broken ? `Personal best: ${streak.best}` : `New personal best!`;
+  showScreen('screen-streak');
+}
+
+function playAgain() {
+  // Replay the same mode — streak preserved (already reset on loss before we get here)
+  const mode = state.lastMode;
+  state.playerTeam = [];
+  state.playerArmy = null;
+  state.cpuTeam = [];
+  state.cpuArmy = null;
+  state.battleState = null;
+  state.round = 0;
+  state.gauntletClones = new Set();
+  gauntlet.active = false;
+  if (mode === 'restricted') {
+    startRestrictedDraft();
+  } else {
+    startDraft();
+  }
+}
+
+function draftAgain() {
+  // Go to title screen — streak preserved
+  state.playerTeam = [];
+  state.cpuTeam = [];
+  state.battleState = null;
+  state.round = 0;
+  state.gauntletClones = new Set();
+  gauntlet.active = false;
+  showScreen('screen-title');
 }
 
 function resetGame() {
@@ -3404,6 +4355,9 @@ function resetGame() {
   gauntlet.active = false;
   gauntlet.stage = 0;
   gauntlet.results = [];
+  // Streak persists when drafting again — only resets on loss
+  // Going to main menu resets it (intentional fresh start)
+  streak.current = 0;
   showScreen('screen-title');
 }
 
