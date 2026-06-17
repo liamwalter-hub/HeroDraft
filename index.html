@@ -4184,6 +4184,12 @@ function updateBattleScreen(newLogs) {
   if (bs.finished) {
     document.getElementById('btn-next-round').disabled = true;
     setTimeout(showSummary, 1200);
+  } else {
+    // Re-enable after animations settle
+    const animDuration = hits.length * 60 + kills.length * 300 + 400;
+    setTimeout(() => {
+      document.getElementById('btn-next-round').disabled = false;
+    }, animDuration);
   }
 }
 
