@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HeroDraft — Legends of the Multiverse</title>
+<style>
+  :root {
+    --bg: #0d0e14;
+    --bg2: #13141d;
+    --bg3: #1a1c28;
+    --surface: #1f2133;
+    --surface2: #262840;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --gold: #d4a843;
+    --gold2: #f0c96a;
+    --text: #e8e9f0;
+    --muted: #7a7d96;
+    --dim: #4a4d64;
+
+    --good: #4ade80;
+    --neutral: #94a3b8;
+    --evil: #f87171;
+
+    --leader: #a78bfa;
+    --hero: #60a5fa;
+    --defender: #34d399;
+    --warrior: #fb923c;
+    --support: #f472b6;
+
+    --font: 'Georgia', 'Times New Roman', serif;
+    --ui: system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--ui);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ─── SCREENS ─── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+
+  /* ─── BRIEFING SCREEN ─── */
+  #screen-briefing {
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 50% 40%, #1a1535 0%, var(--bg) 70%);
+    padding: 2rem;
+  }
+
+  .briefing-card {
+    max-width: 640px;
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 2.5rem 2.5rem 2rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  .briefing-card h2 {
+    font-family: var(--font);
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--gold2);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  .briefing-card p {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+  }
+
+  .briefing-card p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .briefing-roles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.6rem;
+    margin: 1.4rem 0;
+  }
+
+  .briefing-role {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .briefing-role strong {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .briefing-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.6rem 0;
+  }
+
+  .briefing-footer {
+    text-align: center;
+    margin-top: 1.8rem;
+  }
+
+  /* ─── TITLE SCREEN ─── */
+  #screen-title {
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 50% 40%, #1a1535 0%, var(--bg) 70%);
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .title-emblem {
+    width: 80px; height: 80px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 2rem;
+    box-shadow: 0 0 40px rgba(212,168,67,0.3);
+  }
+
+  h1.game-title {
+    font-family: var(--font);
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--gold2);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+
+  .game-subtitle {
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .difficulty-section { margin-bottom: 2.5rem; }
+  .difficulty-section label { display: block; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.8rem; }
+
+  .diff-btns { display: flex; gap: 0.5rem; justify-content: center; }
+  .diff-btn {
+    padding: 0.5rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: var(--ui);
+    transition: all 0.15s;
+  }
+  .diff-btn:hover { background: var(--surface2); color: var(--text); }
+  .diff-btn.active { background: var(--gold); color: #0d0e14; border-color: var(--gold); font-weight: 600; }
+
+  .btn-primary {
+    padding: 0.9rem 3rem;
+    background: var(--gold);
+    color: #0d0e14;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: var(--font);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* ─── DRAFT SCREEN ─── */
+  #screen-draft { padding: 0; }
+
+  .draft-header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .draft-header h2 {
+    font-family: var(--font);
+    font-size: 1.1rem;
+    color: var(--gold2);
+    font-weight: 400;
+  }
+
+  .role-requirements {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .role-req {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    border: 1px solid currentColor;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: opacity 0.2s;
+  }
+  .role-req.filled { opacity: 1; font-weight: 600; }
+
+  .draft-body {
+    display: grid;
+    grid-template-columns: 1fr 220px 220px;
+    flex: 1;
+    overflow: hidden;
+    height: calc(100vh - 110px);
+  }
+
+  @keyframes pulse-border {
+    0%, 100% { border-color: var(--gold); box-shadow: 0 0 0 rgba(212,168,67,0); }
+    50% { border-color: var(--gold2); box-shadow: 0 0 8px rgba(212,168,67,0.4); }
+  }
+  .your-turn-indicator {
+    animation: pulse-border 1.4s ease-in-out infinite;
+    border: 1px solid var(--gold) !important;
+  }
+
+  .hero-pool {
+    overflow-y: auto;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.6rem;
+    align-content: start;
+  }
+
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    user-select: none;
+  }
+  .hero-card:hover { border-color: var(--border2); background: var(--surface2); transform: translateY(-2px); }
+  .hero-card.drafted { opacity: 0.3; pointer-events: none; }
+  .hero-card.selected { border-color: var(--gold); box-shadow: 0 0 12px rgba(212,168,67,0.25); }
+
+  .hc-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .hc-universe {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hc-badges {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  .badge-role { background: rgba(255,255,255,0.08); color: var(--text); }
+  .badge-align-good { background: rgba(74,222,128,0.15); color: var(--good); }
+  .badge-align-neutral { background: rgba(148,163,184,0.15); color: var(--neutral); }
+  .badge-align-evil { background: rgba(248,113,113,0.15); color: var(--evil); }
+
+  .hc-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 8px;
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+  .hc-stats span strong { color: var(--text); }
+
+  /* stat bar mini */
+  .stat-bar-wrap { display: flex; align-items: center; gap: 4px; margin-bottom: 1px; }
+  .stat-bar-wrap .stat-label { font-size: 0.6rem; color: var(--muted); width: 22px; flex-shrink: 0; }
+  .stat-bar { flex: 1; height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+  .stat-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+
+  /* ─── DRAFT SIDEBAR ─── */
+  .draft-sidebar {
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .sidebar-section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .team-slot {
+    background: var(--surface);
+    border: 1px dashed var(--border2);
+    border-radius: 6px;
+    padding: 0.6rem;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--dim);
+    transition: all 0.2s;
+  }
+  .team-slot.filled {
+    border-style: solid;
+    border-color: var(--border2);
+    color: var(--text);
+    background: var(--surface2);
+  }
+  .team-slot .slot-role-badge {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    font-weight: 600;
+  }
+  .team-slot .slot-name { font-weight: 600; }
+  .team-slot .slot-lore { font-size: 0.65rem; color: var(--muted); }
+
+  .alignment-alerts { display: flex; flex-direction: column; gap: 0.4rem; }
+  .alert-chip {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    border-left: 3px solid;
+    line-height: 1.3;
+  }
+  .alert-synergy { background: rgba(74,222,128,0.08); border-color: var(--good); color: #86efac; }
+  .alert-rivalry { background: rgba(248,113,113,0.08); border-color: var(--evil); color: #fca5a5; }
+  .alert-warning { background: rgba(251,146,60,0.08); border-color: #fb923c; color: #fdba74; }
+
+  .btn-battle {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--gold);
+    color: #0d0e14;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-family: var(--font);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: auto;
+  }
+  .btn-battle:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-battle:not(:disabled):hover { background: var(--gold2); }
+
+  /* ─── BATTLE SCREEN ─── */
+  #screen-battle { padding: 0.75rem; gap: 0.75rem; }
+
+  .battle-arena {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1rem 0.75rem;
+  }
+
+  .arena-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .arena-header h2 {
+    font-family: var(--font);
+    font-size: 1.1rem;
+    color: var(--gold2);
+    font-weight: 400;
+  }
+
+  .round-badge {
+    font-size: 0.75rem;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    color: var(--gold);
+  }
+
+  /* Side-by-side teams grid */
+  .teams-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .team-display { display: flex; flex-direction: column; gap: 0.3rem; }
+  .team-display .team-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+    padding-left: 2px;
+  }
+  .team-display.enemy .team-label { color: #f87171; }
+
+  /* Compact hero row with circle HP indicator */
+  .battle-hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: border-color 0.3s, opacity 0.3s;
+  }
+  .battle-hero.defeated {
+    opacity: 0.28;
+    background: var(--bg);
+  }
+  .battle-hero.defeated .bh-name { text-decoration: line-through; }
+  .battle-hero.attacking {
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(212,168,67,0.3);
+  }
+
+  /* SVG circle HP indicator */
+  .bh-circle { flex-shrink: 0; }
+  .bh-circle-track { fill: none; stroke: var(--bg3); stroke-width: 3; }
+  .bh-circle-fill { fill: none; stroke-width: 3; stroke-linecap: round;
+    stroke-dasharray: 57; stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.5s, stroke 0.3s;
+    transform: rotate(-90deg); transform-origin: 50% 50%; }
+
+  .bh-info { flex: 1; min-width: 0; }
+  .bh-name { font-size: 0.75rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bh-role-tag { font-size: 0.58rem; color: var(--muted); }
+
+  /* VS divider — hidden, teams now side by side */
+  .vs-divider { display: none; }
+
+  /* Battle log */
+  .battle-log {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    height: 200px;
+    overflow-y: auto;
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .log-entry { padding: 0.1rem 0; }
+  .log-entry.log-synergy { color: #86efac; }
+  .log-entry.log-rivalry { color: #fca5a5; }
+  .log-entry.log-attack { color: var(--text); }
+  .log-entry.log-focus { color: #fdba74; }
+  .log-entry.log-round { color: var(--gold); font-weight: 600; border-top: 1px solid var(--border); padding-top: 0.4rem; margin-top: 0.2rem; }
+  .log-entry.log-result { color: var(--gold2); font-family: var(--font); font-size: 0.9rem; font-weight: 600; }
+
+  .battle-controls {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    justify-content: center;
+  }
+
+  .btn-sec {
+    padding: 0.6rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: var(--ui);
+    transition: all 0.15s;
+  }
+  .btn-sec:hover { background: var(--surface2); }
+
+  /* Tooltip / detail panel */
+  .hero-detail-panel {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    max-width: 360px;
+    width: 90vw;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .hero-detail-panel.visible { display: block; }
+  .hdp-name { font-family: var(--font); font-size: 1.1rem; color: var(--gold2); margin-bottom: 4px; }
+  .hdp-meta { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.75rem; }
+  .hdp-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin-bottom: 0.75rem; }
+  .hdp-stat { font-size: 0.75rem; }
+  .hdp-stat .stat-name { color: var(--muted); font-size: 0.65rem; text-transform: uppercase; display: block; }
+  .hdp-lore { font-size: 0.75rem; color: var(--muted); font-style: italic; border-top: 1px solid var(--border); padding-top: 0.6rem; }
+  .hdp-relationships { font-size: 0.7rem; margin-bottom: 0.5rem; }
+  .hdp-relationships span { color: var(--muted); }
+  .hdp-close { position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 0 0.25rem; }
+
+  /* Result screen */
+  #screen-result {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 40%, #1a1535 0%, var(--bg) 70%);
+    padding: 2rem;
+  }
+
+  .result-title {
+    font-family: var(--font);
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  .result-title.victory { color: var(--gold2); }
+  .result-title.defeat { color: var(--evil); }
+
+  .result-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+
+  .result-teams {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    text-align: left;
+  }
+
+  .result-team-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+  }
+
+  .result-team-card h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem; }
+  .result-hero-row { font-size: 0.78rem; padding: 2px 0; display: flex; justify-content: space-between; }
+  .result-hero-row.dead { color: var(--dim); text-decoration: line-through; }
+  .result-hero-row .hero-hp { color: var(--muted); font-size: 0.65rem; }
+
+  /* Scrollbars */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  /* Filters */
+  .filter-bar {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.15s;
+    font-family: var(--ui);
+  }
+  .filter-btn:hover { color: var(--text); border-color: var(--text); }
+  .filter-btn.active { background: var(--surface2); color: var(--text); border-color: var(--text); }
+
+  /* Hide mobile-only elements on desktop */
+  .draft-tab-bar, .mobile-filter-row, .mobile-battle-btn-wrap, #tab-team { display: none; }
+  /* On desktop the pool tab panel is always visible as part of the grid */
+  #tab-pool { display: contents; } /* grid item pass-through on desktop */
+
+  /* ═══════════════════════════════════════════════
+     MOBILE — comprehensive responsive overhaul
+  ═══════════════════════════════════════════════ */
+  @media (max-width: 700px) {
+
+    /* ── Global touch ergonomics ── */
+    button { min-height: 44px; }
+    .btn-primary { padding: 0.85rem 2rem; font-size: 0.95rem; width: 100%; max-width: 320px; }
+
+    /* ── Briefing screen ── */
+    #screen-briefing { padding: 1rem; justify-content: flex-start; padding-top: 1.5rem; }
+    .briefing-card { padding: 1.5rem 1.2rem 1.2rem; }
+    .briefing-card h2 { font-size: 1.3rem; margin-bottom: 1.1rem; }
+    .briefing-card p { font-size: 0.86rem; }
+    .briefing-roles { grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 1rem 0; }
+    .briefing-role { font-size: 0.76rem; padding: 0.5rem 0.7rem; }
+    .briefing-footer { margin-top: 1.4rem; }
+
+    /* ── DRAFT SCREEN: clean tab layout ── */
+
+    /* Header: compact two-row — info row + tab row */
+    .draft-header {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0;
+      gap: 0;
+    }
+    .draft-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0.9rem;
+      gap: 0.5rem;
+    }
+    /* Hide the desktop filter bar inside the header */
+    .desktop-filter-wrap { display: none !important; }
+    .draft-header h2 { font-size: 0.9rem; }
+    #pick-tracker { gap: 3px; flex-wrap: wrap; max-width: 120px; }
+
+    /* Tab bar — shown on mobile */
+    .draft-tab-bar {
+      display: flex;
+      border-top: 1px solid var(--border);
+    }
+    .draft-tab-btn {
+      flex: 1;
+      padding: 0.65rem 0.5rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-family: var(--ui);
+      cursor: pointer;
+      min-height: 44px;
+    }
+    .draft-tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* Draft body: block, natural scroll */
+    .draft-body {
+      display: block !important;
+      height: auto !important;
+      overflow: visible;
+    }
+
+    /* Desktop sidebars hidden on mobile */
+    .draft-sidebar { display: none !important; }
+
+    /* Tab panels */
+    #tab-pool, #tab-team, #tab-cpu { display: none; }
+    #tab-pool.active, #tab-team.active, #tab-cpu.active { display: block; }
+
+    /* Pool tab: filter row then cards */
+    .mobile-filter-row {
+      display: flex !important;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 0.5rem 0.75rem;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      flex-shrink: 0;
+    }
+    .mobile-filter-row::-webkit-scrollbar { display: none; }
+    .mobile-filter-row .filter-btn { flex-shrink: 0; font-size: 0.7rem; padding: 0.3rem 0.75rem; min-height: 36px; }
+
+    .hero-pool {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      padding: 0.75rem;
+      gap: 0.5rem;
+      overflow-y: visible;
+      height: auto;
+    }
+    .hero-card { padding: 0.6rem; }
+    .hc-name { font-size: 0.8rem; }
+    .hc-universe { font-size: 0.6rem; }
+
+    /* Team tab */
+    .mobile-team-panel {
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      padding-bottom: 5rem; /* space for sticky button */
+    }
+
+    /* CPU strip */
+    .mobile-cpu-strip {
+      background: var(--bg3);
+      border: 1px solid rgba(248,113,113,0.2);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+    .mobile-cpu-strip-title {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #f87171;
+      margin-bottom: 0.5rem;
+    }
+    .cpu-mini-slots {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.3rem;
+    }
+    .cpu-mini-slot {
+      font-size: 0.72rem;
+      color: var(--muted);
+      padding: 0.35rem 0.5rem;
+      background: var(--surface);
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cpu-mini-slot.filled { color: var(--text); }
+
+    /* Sticky battle button */
+    .mobile-battle-btn-wrap {
+      position: sticky;
+      bottom: 0;
+      padding: 0.75rem;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      z-index: 10;
+      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+      display: block;
+    }
+    .mobile-battle-btn-wrap .btn-battle {
+      margin: 0;
+      width: 100%;
+      font-size: 0.95rem;
+      padding: 0.85rem;
+      min-height: 52px;
+    }
+
+    /* ── Battle screen ── */
+    #screen-battle { padding: 0.6rem; gap: 0.6rem; }
+
+    .battle-arena { padding: 0.85rem 0.7rem; }
+    .arena-header { margin-bottom: 0.75rem; }
+    .arena-header h2 { font-size: 1rem; }
+
+    /* Battle teams — already side-by-side, just tighten on small screens */
+    .teams-display { gap: 0.35rem; }
+    .battle-hero { padding: 0.35rem 0.4rem; gap: 0.35rem; }
+
+    /* Battle log: taller on mobile so you can read it */
+    .battle-log {
+      height: 180px;
+      font-size: 0.75rem;
+    }
+
+    /* Battle controls: full-width stack */
+    .battle-controls {
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .btn-sec {
+      width: 100%;
+      text-align: center;
+      padding: 0.7rem 1rem;
+      font-size: 0.88rem;
+    }
+
+    /* ── Hero detail panel: slide up from bottom, full width ── */
+    .hero-detail-panel {
+      bottom: 0;
+      left: 0;
+      right: 0;
+      transform: none;
+      max-width: 100%;
+      width: 100%;
+      border-radius: 14px 14px 0 0;
+      padding: 1.2rem 1.1rem 1.5rem;
+      /* Safe area for notched phones */
+      padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    }
+    .hdp-stats { grid-template-columns: 1fr 1fr 1fr; gap: 6px 12px; }
+    .hdp-stat { font-size: 0.72rem; }
+
+    /* ── Result screen ── */
+    .result-teams {
+      grid-template-columns: 1fr;
+      max-width: 100%;
+      gap: 0.75rem;
+    }
+    .result-title { font-size: clamp(1.8rem, 10vw, 3rem); }
+    .result-subtitle { font-size: 0.82rem; margin-bottom: 1.5rem; }
+
+    /* ── Army slot on mobile: visible even when small ── */
+    #army-slot, #cpu-army-slot {
+      font-size: 0.68rem;
+    }
+
+    /* ── Alignment alerts: slightly tighter ── */
+    .alert-chip { font-size: 0.68rem; padding: 0.35rem 0.5rem; }
+
+    /* ── March to Battle button: big tap target ── */
+    .btn-battle { padding: 0.9rem; font-size: 0.9rem; min-height: 48px; }
+  }
+
+  /* Extra small — very narrow phones (< 380px) */
+  @media (max-width: 380px) {
+    .briefing-roles { grid-template-columns: 1fr; }
+    .hero-pool { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+    .draft-header { padding: 0.6rem 0.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+  TITLE SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-title" class="screen active">
+  <div class="title-emblem">⚔</div>
+  <h1 class="game-title">HeroDraft</h1>
+  <p class="game-subtitle">Legends of the Multiverse</p>
+
+  <div class="difficulty-section">
+    <label>Difficulty</label>
+    <div class="diff-btns">
+      <button class="diff-btn" data-diff="easy">Easy</button>
+      <button class="diff-btn active" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="showBriefing()">Begin Draft</button>
+
+  <p style="margin-top:2rem; font-size:0.75rem; color:var(--dim);">
+    Draft 5 heroes · Fill your roles · Pray your allies don't turn on each other
+  </p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+  BRIEFING SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-briefing" class="screen">
+  <div class="briefing-card">
+    <h2>Commander's Briefing</h2>
+
+    <p>You are about to draft a team of five heroes from across the multiverse and lead them into battle. You and the CPU alternate picks in a <strong>snake draft</strong> — whoever picks first gets one pick, then the other side gets two, and so on, so neither side can run away with all the best heroes.</p>
+
+    <p>Each team must fill one of each role. Think carefully about who fits where:</p>
+
+    <div class="briefing-roles">
+      <div class="briefing-role">
+        <strong style="color:var(--leader);">Leader</strong>
+        Buffs your whole team at the start of each round. A strong leader makes everyone hit harder.
+      </div>
+      <div class="briefing-role">
+        <strong style="color:var(--hero);">Hero</strong>
+        Your all-rounder — solid damage, balanced across strength, intelligence, and agility.
+      </div>
+      <div class="briefing-role">
+        <strong style="color:var(--defender);">Defender</strong>
+        Low damage but shields your most wounded ally every round and intercepts hits aimed at them.
+      </div>
+      <div class="briefing-role">
+        <strong style="color:var(--warrior);">Warrior</strong>
+        Hits hardest. Deals bonus damage to heroes and is harder to intercept. Your main damage dealer.
+      </div>
+      <div class="briefing-role">
+        <strong style="color:var(--support);">Support</strong>
+        Heals your most wounded hero each round and debuffs the biggest threat on the enemy side.
+      </div>
+    </div>
+
+    <hr class="briefing-divider">
+
+    <p>Beyond raw stats, pay attention to <strong>universe synergies</strong> — heroes from the same world fight better together. Watch for <strong>ally bonds</strong> (named pairs who boost each other in combat) and be wary of <strong>rivals</strong>: a hero who hates a teammate might turn on them mid-battle. Draft around what the CPU is picking, not just who looks strongest on paper.</p>
+
+    <p>You'll also pick an <strong>army unit</strong> — waves of soldiers that deal splash damage to the whole enemy team each round. Choose one whose leader affinity matches your pick.</p>
+
+    <div class="briefing-footer">
+      <button class="btn-primary" onclick="beginDraftFromBriefing()">Continue to Draft</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+  DRAFT SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-draft" class="screen">
+
+  <!-- Draft header: turn indicator -->
+  <div class="draft-header">
+    <!-- top row: title + pick tracker + desktop filters -->
+    <div class="draft-header-top">
+      <div>
+        <h2 style="margin-bottom:2px;">Snake Draft</h2>
+        <div id="draft-turn-label" style="font-size:0.72rem; color:var(--muted);">Deciding who picks first…</div>
+      </div>
+      <div id="pick-tracker" style="display:flex; gap:4px; align-items:center; flex-wrap:wrap;"></div>
+      <div class="desktop-filter-wrap" style="display:flex; gap:0.5rem; align-items:center;">
+        <div class="filter-bar" id="filter-bar" style="padding:0; background:none; border:none; gap:0.35rem;">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="role-leader" style="color:var(--leader);border-color:var(--leader);">Leader</button>
+          <button class="filter-btn" data-filter="role-hero" style="color:var(--hero);border-color:var(--hero);">Hero</button>
+          <button class="filter-btn" data-filter="role-defender" style="color:var(--defender);border-color:var(--defender);">Defender</button>
+          <button class="filter-btn" data-filter="role-warrior" style="color:var(--warrior);border-color:var(--warrior);">Warrior</button>
+          <button class="filter-btn" data-filter="role-support" style="color:var(--support);border-color:var(--support);">Support</button>
+          <button class="filter-btn" data-filter="align-good" style="color:var(--good);border-color:var(--good);">Good</button>
+          <button class="filter-btn" data-filter="align-evil" style="color:var(--evil);border-color:var(--evil);">Evil</button>
+        </div>
+      </div>
+    </div>
+    <!-- mobile tab bar (hidden on desktop via CSS) -->
+    <div class="draft-tab-bar">
+      <button class="draft-tab-btn active" onclick="switchDraftTab('pool')">⚔ Heroes</button>
+      <button class="draft-tab-btn" onclick="switchDraftTab('team')">🛡 Your Team</button>
+      <button class="draft-tab-btn" onclick="switchDraftTab('cpu')">☠ CPU Team</button>
+    </div>
+  </div>
+
+  <!-- Main draft area -->
+  <div class="draft-body">
+
+    <!-- DESKTOP: hero pool (always visible in col 1) -->
+    <!-- MOBILE: tab panel 1 — hero pool -->
+    <div class="draft-tab-panel active" id="tab-pool">
+      <!-- Mobile-only filter row above pool -->
+      <div class="mobile-filter-row">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="role-leader" style="color:var(--leader);border-color:var(--leader);">Leader</button>
+        <button class="filter-btn" data-filter="role-hero" style="color:var(--hero);border-color:var(--hero);">Hero</button>
+        <button class="filter-btn" data-filter="role-defender" style="color:var(--defender);border-color:var(--defender);">Defender</button>
+        <button class="filter-btn" data-filter="role-warrior" style="color:var(--warrior);border-color:var(--warrior);">Warrior</button>
+        <button class="filter-btn" data-filter="role-support" style="color:var(--support);border-color:var(--support);">Support</button>
+        <button class="filter-btn" data-filter="align-good" style="color:var(--good);border-color:var(--good);">Good</button>
+        <button class="filter-btn" data-filter="align-evil" style="color:var(--evil);border-color:var(--evil);">Evil</button>
+      </div>
+      <div class="hero-pool" id="hero-pool"></div>
+    </div>
+
+    <!-- DESKTOP: player sidebar (col 2) -->
+    <div class="draft-sidebar">
+      <div class="sidebar-section-title" style="color:var(--gold);">⚔ Your Forces</div>
+      <div id="team-slots" style="display:flex; flex-direction:column; gap:0.4rem;"></div>
+      <div class="sidebar-section-title" style="margin-top:0.75rem;">Army</div>
+      <div id="army-slot" style="background:var(--surface); border:1px dashed var(--border2); border-radius:6px; padding:0.6rem; font-size:0.72rem; color:var(--dim);">— no army —</div>
+      <div id="army-pool" style="display:flex; flex-direction:column; gap:0.3rem; margin-top:0.4rem;"></div>
+      <div>
+        <div class="sidebar-section-title" style="margin-top:0.75rem;">Alignment</div>
+        <div class="alignment-alerts" id="alignment-alerts">
+          <div style="font-size:0.72rem; color:var(--dim);">Draft heroes to see synergies.</div>
+        </div>
+      </div>
+      <button class="btn-battle" id="btn-begin-battle" disabled onclick="beginBattle()">⚔ March to Battle</button>
+    </div>
+
+    <!-- DESKTOP: CPU sidebar (col 3) -->
+    <div class="draft-sidebar" style="border-left:1px solid var(--border);">
+      <div class="sidebar-section-title" style="color:var(--evil);">☠ Enemy Forces</div>
+      <div id="cpu-team-slots" style="display:flex; flex-direction:column; gap:0.4rem;"></div>
+      <div class="sidebar-section-title" style="margin-top:0.75rem;">Army</div>
+      <div id="cpu-army-slot" style="background:var(--surface); border:1px dashed var(--border2); border-radius:6px; padding:0.6rem; font-size:0.72rem; color:var(--dim);">— no army —</div>
+      <div class="sidebar-section-title" style="margin-top:0.75rem;">Intel</div>
+      <div id="cpu-intel" style="font-size:0.7rem; color:var(--muted);">Watch their picks to plan your counter.</div>
+    </div>
+
+    <!-- MOBILE ONLY: tab panel 2 — your team + cpu strip -->
+    <div class="draft-tab-panel" id="tab-team">
+      <div class="mobile-team-panel">
+
+        <!-- Your team -->
+        <div>
+          <div class="sidebar-section-title" style="color:var(--gold); margin-bottom:0.5rem;">⚔ Your Forces</div>
+          <div id="team-slots-mobile" style="display:flex; flex-direction:column; gap:0.4rem;"></div>
+        </div>
+
+        <!-- Your army -->
+        <div>
+          <div class="sidebar-section-title">Army</div>
+          <div id="army-slot-mobile" style="background:var(--surface); border:1px dashed var(--border2); border-radius:6px; padding:0.6rem; font-size:0.72rem; color:var(--dim); margin-bottom:0.4rem;">— no army —</div>
+          <div id="army-pool-mobile" style="display:flex; flex-direction:column; gap:0.3rem;"></div>
+        </div>
+
+        <!-- Alignment alerts -->
+        <div>
+          <div class="sidebar-section-title">Alignment</div>
+          <div class="alignment-alerts" id="alignment-alerts-mobile">
+            <div style="font-size:0.72rem; color:var(--dim);">Draft heroes to see synergies.</div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+  </div>
+
+    <!-- MOBILE ONLY: tab panel 3 — CPU team -->
+    <div class="draft-tab-panel" id="tab-cpu">
+      <div class="mobile-team-panel">
+
+        <div>
+          <div class="sidebar-section-title" style="color:#f87171; margin-bottom:0.5rem;">☠ Enemy Forces</div>
+          <div id="cpu-team-slots-mobile" style="display:flex; flex-direction:column; gap:0.4rem;"></div>
+        </div>
+
+        <div>
+          <div class="sidebar-section-title">Army</div>
+          <div id="cpu-army-slot-mobile" style="background:var(--surface); border:1px dashed rgba(248,113,113,0.3); border-radius:6px; padding:0.6rem; font-size:0.72rem; color:var(--dim);">— no army —</div>
+        </div>
+
+        <div>
+          <div class="sidebar-section-title">Intel</div>
+          <div id="cpu-intel-mobile2" style="font-size:0.72rem; color:var(--muted);">Watch their picks to plan your counter.</div>
+        </div>
+
+      </div>
+    </div>
+
+  <!-- Mobile sticky battle button -->
+  <div class="mobile-battle-btn-wrap">
+    <button class="btn-battle" id="btn-begin-battle-mobile" disabled onclick="beginBattle()">⚔ March to Battle</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+  BATTLE SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-battle" class="screen">
+  <div class="battle-arena">
+    <div class="arena-header">
+      <h2>The Field of Battle</h2>
+      <span class="round-badge" id="round-badge">Round 1</span>
+    </div>
+    <div class="teams-display">
+      <div class="team-display" id="battle-team-player">
+        <div class="team-label">Your Forces</div>
+      </div>
+      <div class="team-display enemy" id="battle-team-cpu">
+        <div class="team-label">Enemy Forces</div>
+      </div>
+    </div>
+    <div class="battle-log" id="battle-log"></div>
+    <div class="battle-controls">
+      <button class="btn-sec" id="btn-next-round" onclick="nextRound()">Next Round ▶</button>
+      <button class="btn-sec" onclick="autoResolve()">Auto-Resolve ⚡</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+  RESULT SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-result" class="screen">
+  <div class="result-title" id="result-title">Victory</div>
+  <div class="result-subtitle" id="result-subtitle"></div>
+  <div class="result-teams" id="result-teams"></div>
+  <button class="btn-primary" onclick="resetGame()">Draft Again</button>
+</div>
+
+<!-- Hero Detail Panel (overlay) -->
+<div id="detail-backdrop" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;" onclick="closeDetail()"></div>
+<div class="hero-detail-panel" id="hero-detail-panel">
+  <button class="hdp-close" onclick="closeDetail()">✕</button>
+  <div class="hdp-name" id="hdp-name"></div>
+  <div class="hdp-meta" id="hdp-meta"></div>
+  <div class="hdp-stats" id="hdp-stats"></div>
+  <div class="hdp-relationships" id="hdp-relationships"></div>
+  <div class="hdp-lore" id="hdp-lore"></div>
+  <button class="btn-primary" id="hdp-draft-btn" style="width:100%;margin-top:0.75rem;padding:0.6rem;" onclick="draftFromDetail()">Draft this Hero</button>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// ROSTER DATA
+// ══════════════════════════════════════════════════════
+const HEROES = [
+  // LEADERS
+  { id:1,  name:"Aragorn",        universe:"Lord of the Rings",  alignment:"good",    role:"leader",   strength:82, leadership:95, durability:80, intelligence:78, agility:75, rivals:["Sauron"], allies:["Gandalf","Legolas","Gimli"], lore:"Rightful king of Gondor, ranger turned ruler" },
+  { id:2,  name:"Leonidas",       universe:"Ancient Greece",     alignment:"good",    role:"leader",   strength:90, leadership:92, durability:88, intelligence:72, agility:68, rivals:["Xerxes"], allies:["Achilles"], lore:"Spartan king who held the Hot Gates" },
+  { id:3,  name:"Mulan",          universe:"Chinese Folklore",   alignment:"good",    role:"leader",   strength:68, leadership:85, durability:65, intelligence:90, agility:88, rivals:[], allies:[], lore:"Warrior who saved China through cunning" },
+  { id:4,  name:"Jean-Luc Picard",universe:"Star Trek",          alignment:"good",    role:"leader",   strength:45, leadership:98, durability:50, intelligence:96, agility:40, rivals:["Borg Queen"], allies:[], lore:"Starship captain, diplomat, philosopher" },
+  { id:5,  name:"King T'Challa",  universe:"Marvel Comics",      alignment:"good",    role:"leader",   strength:78, leadership:90, durability:76, intelligence:92, agility:85, rivals:["Killmonger"], allies:["Okoye"], lore:"Black Panther, king and protector of Wakanda" },
+  { id:6,  name:"Atticus Finch",  universe:"To Kill a Mockingbird", alignment:"good", role:"leader",   strength:40, leadership:88, durability:45, intelligence:97, agility:35, rivals:[], allies:[], lore:"Moral compass of Maycomb, defender of justice" },
+
+  // HEROES
+  { id:7,  name:"Superman",       universe:"DC Comics",          alignment:"good",    role:"hero",     strength:99, leadership:72, durability:92, intelligence:72, agility:90, rivals:["Lex Luthor","General Zod","Thanos","Sauron"], allies:["Wonder Woman","Batman"], lore:"Last son of Krypton, Man of Steel" },
+  { id:8,  name:"Wonder Woman",   universe:"DC Comics",          alignment:"good",    role:"hero",     strength:92, leadership:78, durability:85, intelligence:82, agility:92, rivals:["Ares","Thanos","Loki"], allies:["Superman","Batman"], lore:"Amazon warrior princess, god killer" },
+  { id:9,  name:"Luke Skywalker", universe:"Star Wars",          alignment:"good",    role:"hero",     strength:72, leadership:75, durability:68, intelligence:82, agility:85, rivals:["Darth Vader","Emperor Palpatine"], allies:["Obi-Wan Kenobi"], lore:"Jedi Knight, hope of the Rebellion" },
+  { id:10, name:"Frodo Baggins",  universe:"Lord of the Rings",  alignment:"good",    role:"hero",     strength:32, leadership:50, durability:55, intelligence:70, agility:62, rivals:["Sauron","Gollum"], allies:["Aragorn","Gandalf","Samwise"], lore:"Hobbit who carried the One Ring to Mordor" },
+  { id:11, name:"Hermione Granger",universe:"Harry Potter",      alignment:"good",    role:"hero",     strength:45, leadership:72, durability:58, intelligence:99, agility:68, rivals:["Voldemort","Bellatrix"], allies:["Harry Potter"], lore:"Brightest witch of her age" },
+  { id:12, name:"Harry Potter",   universe:"Harry Potter",       alignment:"good",    role:"hero",     strength:62, leadership:78, durability:70, intelligence:82, agility:76, rivals:["Voldemort","Draco Malfoy"], allies:["Hermione Granger"], lore:"The Boy Who Lived, chosen one of prophecy" },
+  { id:13, name:"Katniss Everdeen",universe:"The Hunger Games",  alignment:"good",    role:"hero",     strength:62, leadership:70, durability:65, intelligence:80, agility:92, rivals:["President Snow"], allies:[], lore:"The Mockingjay, symbol of revolution" },
+  { id:14, name:"Ellen Ripley",   universe:"Alien",              alignment:"good",    role:"hero",     strength:65, leadership:75, durability:72, intelligence:85, agility:70, rivals:["Xenomorph Queen"], allies:[], lore:"Sole survivor, nemesis of the Xenomorphs" },
+
+  // DEFENDERS
+  { id:15, name:"Gandalf",        universe:"Lord of the Rings",  alignment:"good",    role:"defender", strength:70, leadership:85, durability:88, intelligence:99, agility:55, rivals:["Balrog","Sauron","Saruman"], allies:["Aragorn","Frodo Baggins","Legolas","Gimli"], lore:"Grey Pilgrim, servant of the Secret Fire" },
+  { id:16, name:"Obi-Wan Kenobi", universe:"Star Wars",          alignment:"good",    role:"defender", strength:68, leadership:80, durability:72, intelligence:90, agility:85, rivals:["Darth Vader","General Grievous"], allies:["Luke Skywalker"], lore:"Jedi Master, guardian of balance in the Force" },
+  { id:17, name:"Thor",           universe:"Marvel Comics",       alignment:"good",    role:"defender", strength:95, leadership:70, durability:95, intelligence:65, agility:82, rivals:["Loki","Thanos"], allies:["King T'Challa"], lore:"God of Thunder, Asgardian prince" },
+  { id:18, name:"Samwise Gamgee", universe:"Lord of the Rings",  alignment:"good",    role:"defender", strength:55, leadership:68, durability:92, intelligence:68, agility:60, rivals:["Gollum","Sauron"], allies:["Frodo Baggins","Aragorn","Gandalf","Legolas","Gimli"], lore:"Loyal gardener who carried Frodo to the end" },
+  { id:19, name:"Okoye",         universe:"Marvel Comics",       alignment:"good",    role:"defender", strength:74, leadership:75, durability:78, intelligence:80, agility:88, rivals:[], allies:["King T'Challa"], lore:"General of the Dora Milaje, Wakanda's shield" },
+
+  // WARRIORS
+  { id:20, name:"Achilles",       universe:"Ancient Greece",     alignment:"neutral", role:"warrior",  strength:97, leadership:62, durability:85, intelligence:65, agility:95, rivals:["Hector"], allies:["Leonidas"], lore:"Greatest Greek warrior, nearly invincible" },
+  { id:21, name:"Legolas",        universe:"Lord of the Rings",  alignment:"good",    role:"warrior",  strength:72, leadership:58, durability:70, intelligence:75, agility:98, rivals:["Sauron"], allies:["Aragorn","Gandalf","Gimli"], lore:"Elven prince, peerless archer of Middle-earth" },
+  { id:22, name:"Gimli",          universe:"Lord of the Rings",  alignment:"good",    role:"warrior",  strength:85, leadership:60, durability:90, intelligence:62, agility:45, rivals:["Sauron"], allies:["Aragorn","Gandalf","Legolas"], lore:"Son of Gloin, axe of the Fellowship" },
+  { id:23, name:"Maximus",        universe:"Gladiator",          alignment:"good",    role:"warrior",  strength:88, leadership:78, durability:82, intelligence:72, agility:80, rivals:["Commodus"], allies:[], lore:"General, slave, gladiator — loyal to Rome" },
+  { id:24, name:"Darth Vader",    universe:"Star Wars",          alignment:"evil",    role:"warrior",  strength:92, leadership:82, durability:90, intelligence:85, agility:78, rivals:["Luke Skywalker","Obi-Wan Kenobi","Emperor Palpatine"], allies:[], lore:"Dark Lord of the Sith, once Anakin Skywalker" },
+  { id:25, name:"Loki",           universe:"Marvel Comics",      alignment:"evil",    role:"warrior",  strength:78, leadership:70, durability:72, intelligence:94, agility:85, rivals:["Thor","Okoye"], allies:[], lore:"God of Mischief, master of deception" },
+
+  // SUPPORT
+  { id:26, name:"Merlin",         universe:"Arthurian Legend",   alignment:"good",    role:"support",  strength:42, leadership:78, durability:55, intelligence:98, agility:45, rivals:["Morgana"], allies:[], lore:"Wizard of Camelot, architect of a kingdom" },
+  { id:27, name:"Yoda",           universe:"Star Wars",          alignment:"good",    role:"support",  strength:55, leadership:88, durability:62, intelligence:99, agility:80, rivals:["Emperor Palpatine","Darth Vader"], allies:["Obi-Wan Kenobi","Luke Skywalker"], lore:"Jedi Grand Master, 800 years of wisdom" },
+  { id:28, name:"Q",              universe:"Star Trek",          alignment:"neutral", role:"support",  strength:50, leadership:60, durability:50, intelligence:100,agility:70, rivals:["Borg Queen"], allies:["Jean-Luc Picard"], lore:"Omnipotent trickster of the Q Continuum" },
+  { id:29, name:"Tyrion Lannister",universe:"Game of Thrones",   alignment:"neutral", role:"support",  strength:35, leadership:82, durability:48, intelligence:99, agility:55, rivals:[], allies:["Jaime Lannister","Cersei Lannister"], lore:"The Imp — sharpest mind in the Seven Kingdoms" },
+
+  // EVIL / NEUTRAL draftable (high risk, high reward)
+  { id:30, name:"Sauron",         universe:"Lord of the Rings",  alignment:"evil",    role:"warrior",  strength:98, leadership:88, durability:95, intelligence:90, agility:60, rivals:["Aragorn","Gandalf","Frodo Baggins","Legolas","Gimli","Samwise Gamgee"], allies:[], lore:"The Dark Lord, maker of the One Ring" },
+  { id:31, name:"Voldemort",      universe:"Harry Potter",       alignment:"evil",    role:"leader",   strength:62, leadership:93, durability:75, intelligence:97, agility:68, rivals:["Harry Potter","Hermione Granger"], allies:["Bellatrix Lestrange"], lore:"The Dark Lord who split his soul into seven" },
+  { id:32, name:"Bellatrix Lestrange", universe:"Harry Potter", alignment:"evil",    role:"warrior",  strength:76, leadership:58, durability:70, intelligence:84, agility:88, rivals:["Hermione Granger","Harry Potter"], allies:["Voldemort"], lore:"Most devoted and deranged of Voldemort's servants" },
+  { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:55, rivals:["Thor","King T’Challa"], allies:[], lore:"The Mad Titan who sought to halve all life" },
+  { id:34, name:"Cersei Lannister",universe:"Game of Thrones",  alignment:"evil",    role:"leader",   strength:35, leadership:88, durability:50, intelligence:95, agility:40, rivals:[], allies:["Jaime Lannister"], lore:"Queen of the Seven Kingdoms, never forgets a debt" },
+  { id:35, name:"Jaime Lannister",universe:"Game of Thrones",   alignment:"neutral", role:"warrior",  strength:88, leadership:60, durability:78, intelligence:72, agility:85, rivals:[], allies:["Cersei Lannister","Brienne of Tarth"], lore:"The Kingslayer, greatest swordsman in Westeros" },
+  { id:36, name:"Brienne of Tarth",universe:"Game of Thrones",  alignment:"good",    role:"defender", strength:85, leadership:65, durability:88, intelligence:70, agility:72, rivals:[], allies:["Jaime Lannister"], lore:"Lady knight, sworn to protect the innocent" },
+  { id:37, name:"Hannibal Lecter",universe:"Silence of the Lambs", alignment:"evil", role:"support",  strength:50, leadership:72, durability:58, intelligence:99, agility:62, rivals:[], allies:[], lore:"Brilliant psychiatrist and cannibalistic killer" },
+  { id:38, name:"Amy Dunne",      universe:"Gone Girl",          alignment:"evil",    role:"support",  strength:42, leadership:78, durability:55, intelligence:99, agility:65, rivals:[], allies:[], lore:"Cool Girl. The most calculating mind in any room" },
+  { id:39, name:"Walter White",   universe:"Breaking Bad",       alignment:"evil",    role:"leader",   strength:45, leadership:85, durability:52, intelligence:98, agility:48, rivals:[], allies:[], lore:"Chemistry teacher turned drug lord — I am the danger" },
+  { id:40, name:"Gollum",         universe:"Lord of the Rings",  alignment:"neutral", role:"hero",     strength:40, leadership:20, durability:60, intelligence:65, agility:95, rivals:["Frodo Baggins","Samwise Gamgee","Sauron"], allies:[], lore:"Wretched creature bound to the Ring's corruption" },
+];
+
+const ROSTER = HEROES;
+const CPU_HEROES = [...ROSTER];
+
+// ══════════════════════════════════════════════════════
+// ARMY UNITS — drafted by leaders; fight as a group
+// ══════════════════════════════════════════════════════
+const ARMIES = [
+  { id:'a1', name:'Spartan 300',       universe:'Ancient Greece',   alignment:'good',    strength:82, durability:85, size:300, lore:'Hold any line, fear no foe',       affinityLeaders:['Leonidas','Achilles'] },
+  { id:'a2', name:'Wakandan Royal Guard',universe:'Marvel Comics',  alignment:'good',    strength:78, durability:80, size:500, lore:'Sworn to protect Wakanda forever',   affinityLeaders:["King T'Challa",'Okoye'] },
+  { id:'a3', name:'Fellowship Scouts', universe:'Lord of the Rings',alignment:'good',    strength:65, durability:70, size:200, lore:'Eyes of Middle-earth, fleet of foot', affinityLeaders:['Aragorn','Gandalf','Legolas'] },
+  { id:'a4', name:'Rebel Alliance Troops',universe:'Star Wars',     alignment:'good',    strength:70, durability:65, size:1000,lore:'Ordinary people fighting impossible odds',affinityLeaders:['Luke Skywalker','Obi-Wan Kenobi'] },
+  { id:'a5', name:'Hogwarts Army',     universe:'Harry Potter',     alignment:'good',    strength:60, durability:62, size:400, lore:'Students who chose to fight back',    affinityLeaders:['Harry Potter','Hermione Granger'] },
+  { id:'a6', name:"Sauron's Orc Horde",universe:'Lord of the Rings',alignment:'evil',   strength:75, durability:72, size:10000,lore:'Numberless as shadow, relentless',    affinityLeaders:['Sauron','Saruman'] },
+  { id:'a7', name:'Death Eaters',      universe:'Harry Potter',     alignment:'evil',    strength:72, durability:68, size:300, lore:'Fanatical servants of the Dark Lord',  affinityLeaders:['Voldemort','Bellatrix Lestrange'] },
+  { id:'a8', name:"Thanos' Outriders", universe:'Marvel Comics',    alignment:'evil',    strength:80, durability:78, size:5000,lore:'The Black Order arrives without mercy',  affinityLeaders:['Thanos'] },
+  { id:'a9', name:'Lannister Army',    universe:'Game of Thrones',  alignment:'neutral', strength:74, durability:76, size:2000,lore:'A Lannister always pays his debts',    affinityLeaders:['Cersei Lannister','Jaime Lannister'] },
+  { id:'a10',name:'Starfleet Security',universe:'Star Trek',        alignment:'good',    strength:58, durability:60, size:800, lore:'The last line of Federation defence',  affinityLeaders:['Jean-Luc Picard','Q'] },
+];
+
+// ══════════════════════════════════════════════════════
+// GAME STATE
+// ══════════════════════════════════════════════════════
+let state = {
+  difficulty: 'medium',
+  playerTeam: [],
+  playerArmy: null,
+  cpuTeam: [],
+  cpuArmy: null,
+  filter: 'all',
+  battleState: null,
+  round: 0,
+  detailHero: null,
+  // Snake draft
+  snakeOrder: [],      // array of 'player'|'cpu' for each of 10 picks
+  snakePick: 0,        // current pick index (0-9)
+  draftLocked: false,  // true while CPU is "thinking"
+};
+
+const REQUIRED_ROLES = ['leader', 'hero', 'defender', 'warrior', 'support'];
+const ROLE_COLORS = { leader:'var(--leader)', hero:'var(--hero)', defender:'var(--defender)', warrior:'var(--warrior)', support:'var(--support)' };
+const ALIGN_COLORS = { good:'var(--good)', neutral:'var(--neutral)', evil:'var(--evil)' };
+
+function statColor(val) {
+  if (val >= 85) return '#f0c96a';
+  if (val >= 65) return '#60a5fa';
+  return 'var(--muted)';
+}
+
+// ══════════════════════════════════════════════════════
+// SCREENS
+// ══════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════
+// TITLE
+// ══════════════════════════════════════════════════════
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.difficulty = btn.dataset.diff;
+  });
+});
+
+// ══════════════════════════════════════════════════════
+// DRAFT
+// ══════════════════════════════════════════════════════
+
+function showBriefing() {
+  showScreen('screen-briefing');
+}
+
+function beginDraftFromBriefing() {
+  startDraft();
+}
+
+// ══════════════════════════════════════════════════════
+// MOBILE DRAFT TABS
+// ══════════════════════════════════════════════════════
+function switchDraftTab(tab) {
+  ['pool','team','cpu'].forEach(t => {
+    const p = document.getElementById('tab-' + t);
+    if (p) p.classList.toggle('active', t === tab);
+  });
+  document.querySelectorAll('.draft-tab-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('onclick').includes("'" + tab + "'"));
+  });
+  // Scroll to top of screen on every tab switch so content starts at the header
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function isMobile() {
+  return window.innerWidth <= 700;
+}
+
+// Render team slots into the mobile panel (mirrors renderTeamSlots but targets -mobile IDs)
+function renderTeamSlotsMobile() {
+  const slots = document.getElementById('team-slots-mobile');
+  if (!slots) return;
+  slots.innerHTML = '';
+  REQUIRED_ROLES.forEach(role => {
+    const filled = state.playerTeam.find(h => h.role === role);
+    const slot = document.createElement('div');
+    slot.className = 'team-slot' + (filled ? ' filled' : '');
+    if (filled) {
+      slot.innerHTML = `
+        <span class="slot-role-badge" style="background:${ROLE_COLORS[role]}22;color:${ROLE_COLORS[role]}">${role}</span>
+        <div><div class="slot-name">${filled.name}</div><div class="slot-lore" style="font-size:0.62rem;color:var(--muted)">${filled.universe}</div></div>
+      `;
+    } else {
+      const isNext = !state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'player';
+      slot.innerHTML = `
+        <span class="slot-role-badge" style="background:${ROLE_COLORS[role]}22;color:${ROLE_COLORS[role]}">${role}</span>
+        <span style="color:${isNext?'var(--muted)':'var(--dim)'}">— empty —</span>
+      `;
+    }
+    slots.appendChild(slot);
+  });
+}
+
+// ── Shared CPU intel builder ──
+function buildCpuIntel() {
+  if (state.cpuTeam.length === 0) return null;
+  const warnings = [];
+
+  // Universe synergies within CPU team
+  const uniGroups = {};
+  state.cpuTeam.forEach(h => { uniGroups[h.universe] = (uniGroups[h.universe]||[]).concat(h.name); });
+  Object.entries(uniGroups).forEach(([u, names]) => {
+    if (names.length >= 2) warnings.push({ type:'synergy', msg:`⚡ ${names.join(' & ')} — ${u} synergy` });
+  });
+
+  // CPU hero vendettas against YOUR heroes
+  state.cpuTeam.forEach(h => {
+    h.rivals.forEach(r => {
+      if (state.playerTeam.some(p => p.name === r))
+        warnings.push({ type:'threat', msg:`⚔ ${h.name} has a vendetta against your ${r}` });
+    });
+  });
+
+  // Internal CPU rivalries — these heroes may BETRAY each other mid-battle
+  state.cpuTeam.forEach(h => {
+    h.rivals.forEach(r => {
+      if (state.cpuTeam.some(t => t.name === r))
+        warnings.push({ type:'instability', msg:`⚠ ${h.name} & ${r} are rivals — betrayal risk` });
+    });
+  });
+
+  return warnings;
+}
+
+function renderCpuIntelEl(el, warnings) {
+  if (!warnings || warnings.length === 0) {
+    el.innerHTML = '<span style="color:var(--dim)">No notable synergies detected yet.</span>';
+    return;
+  }
+  const colors = { synergy:'var(--muted)', threat:'#fca5a5', instability:'#fdba74' };
+  el.innerHTML = warnings.map(w =>
+    `<div style="margin-bottom:4px;color:${colors[w.type]||'var(--muted)'}">${w.msg}</div>`
+  ).join('');
+}
+
+// Render CPU tab panel on mobile
+function renderCpuMiniSlots() {
+  // Full CPU team slots in the CPU tab
+  const slots = document.getElementById('cpu-team-slots-mobile');
+  if (slots) {
+    slots.innerHTML = '';
+    REQUIRED_ROLES.forEach(role => {
+      const filled = state.cpuTeam.find(h => h.role === role);
+      const cpuTurn = state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'cpu';
+      const slot = document.createElement('div');
+      slot.className = 'team-slot' + (filled ? ' filled' : '');
+      slot.style.borderColor = filled ? 'rgba(248,113,113,0.3)' : '';
+      if (filled) {
+        slot.innerHTML = `
+          <span class="slot-role-badge" style="background:rgba(248,113,113,0.15);color:#f87171">${role}</span>
+          <div><div class="slot-name">${filled.name}</div><div class="slot-lore" style="font-size:0.62rem;color:var(--muted)">${filled.universe}</div></div>
+        `;
+      } else {
+        slot.innerHTML = `
+          <span class="slot-role-badge" style="background:rgba(248,113,113,0.1);color:#f87171">${role}</span>
+          <span style="color:${cpuTurn && state.draftLocked ? '#f87171' : 'var(--dim)'}">
+            ${cpuTurn && state.draftLocked ? 'choosing…' : '— empty —'}
+          </span>
+        `;
+      }
+      slots.appendChild(slot);
+    });
+  }
+
+  // CPU army slot
+  const armyEl = document.getElementById('cpu-army-slot-mobile');
+  if (armyEl) {
+    if (state.cpuArmy) {
+      armyEl.style.color = '#f87171';
+      armyEl.style.borderStyle = 'solid';
+      armyEl.innerHTML = `<strong style="font-size:0.8rem">${state.cpuArmy.name}</strong><br><span style="color:var(--muted);font-size:0.65rem">${state.cpuArmy.universe}</span>`;
+    } else {
+      armyEl.style.color = 'var(--dim)';
+      armyEl.style.borderStyle = 'dashed';
+      armyEl.innerHTML = '— no army —';
+    }
+  }
+
+  // Intel
+  const intel = document.getElementById('cpu-intel-mobile2');
+  if (intel) renderCpuIntelEl(intel, buildCpuIntel());
+}
+
+// Mobile army slot mirror
+function renderArmySlotMobile() {
+  const slotEl = document.getElementById('army-slot-mobile');
+  if (!slotEl) return;
+  if (state.playerArmy) {
+    slotEl.style.color = 'var(--gold)';
+    slotEl.style.borderStyle = 'solid';
+    slotEl.innerHTML = `<strong style="font-size:0.8rem">${state.playerArmy.name}</strong>
+      <button onclick="state.playerArmy=null;renderDraft();" style="float:right;background:none;border:none;color:var(--dim);cursor:pointer;font-size:0.8rem;padding:0">✕</button>
+      <br><span style="color:var(--muted);font-size:0.65rem">${state.playerArmy.universe}</span>`;
+  } else {
+    slotEl.style.color = 'var(--dim)';
+    slotEl.style.borderStyle = 'dashed';
+    slotEl.innerHTML = '— no army —';
+  }
+}
+
+// Mobile army pool mirror
+function renderArmyPoolMobile() {
+  const pool = document.getElementById('army-pool-mobile');
+  if (!pool) return;
+  pool.innerHTML = '';
+  ARMIES.forEach(a => {
+    const isSelected = state.playerArmy && state.playerArmy.name === a.name;
+    const alreadyCpu = state.cpuArmy && state.cpuArmy.name === a.name;
+    const btn = document.createElement('button');
+    const leaderDrafted = state.playerTeam.find(h => h.role === 'leader');
+    const hasAffinity = leaderDrafted && a.affinityLeaders.includes(leaderDrafted.name);
+    btn.style.cssText = `width:100%;text-align:left;padding:0.45rem 0.6rem;border-radius:5px;
+      border:1px solid ${isSelected?'var(--gold)':alreadyCpu?'rgba(248,113,113,0.3)':'var(--border)'};
+      background:${isSelected?'rgba(212,168,67,0.1)':alreadyCpu?'rgba(248,113,113,0.05)':'var(--bg3)'};
+      color:${alreadyCpu?'var(--dim)':'var(--text)'};cursor:${alreadyCpu?'not-allowed':'pointer'};
+      font-size:0.72rem;font-family:var(--ui);transition:all 0.15s;`;
+    btn.innerHTML = `<strong>${a.name}</strong>${hasAffinity?' ⚡':''}${alreadyCpu?' (enemy)':''}
+      <span style="color:var(--muted);font-size:0.62rem;display:block">${a.universe}</span>`;
+    if (!alreadyCpu) btn.onclick = () => { state.playerArmy = isSelected ? null : a; renderDraft(); };
+    pool.appendChild(btn);
+  });
+}
+
+// Mobile alignment alerts
+function renderAlignmentAlertsMobile() {
+  const el = document.getElementById('alignment-alerts-mobile');
+  if (!el) return;
+  const alerts = buildAlignmentAlerts();
+  if (!alerts) {
+    el.innerHTML = '<div style="font-size:0.72rem; color:var(--dim);">Draft 2+ heroes to see synergies.</div>';
+  } else {
+    el.innerHTML = alerts.map(a => `<div class="alert-chip alert-${a.type}">${a.msg}</div>`).join('');
+  }
+}
+
+// Mobile battle button sync
+function syncMobileBattleBtn() {
+  const mobileBtn = document.getElementById('btn-begin-battle-mobile');
+  const desktopBtn = document.getElementById('btn-begin-battle');
+  if (!mobileBtn) return;
+  mobileBtn.disabled = desktopBtn ? desktopBtn.disabled : true;
+}
+
+function startDraft() {
+  state.playerTeam = [];
+  state.playerArmy = null;
+  state.cpuTeam    = [];
+  state.cpuArmy    = null;
+  state.snakePick  = 0;
+  state.draftLocked = false;
+
+  // Randomly decide who picks first, build 10-pick snake order
+  const firstPicker = Math.random() < 0.5 ? 'player' : 'cpu';
+  // Snake: 1-2-2-1-1-2-2-1-1-2 pattern based on who goes first
+  const snake10 = (first, second) =>
+    [first, second, second, first, first, second, second, first, first, second];
+  state.snakeOrder = firstPicker === 'player'
+    ? snake10('player','cpu')
+    : snake10('cpu','player');
+
+  switchDraftTab('pool');
+  renderDraft();
+  showScreen('screen-draft');
+
+  // If CPU goes first, trigger their pick immediately
+  if (state.snakeOrder[0] === 'cpu') {
+    setTimeout(doCpuPick, 800);
+  }
+}
+
+function renderDraft() {
+  renderPool();
+  renderTeamSlots();
+  renderCpuTeamSlots();
+  renderArmySlot();
+  renderArmyPool();
+  // Mobile mirrors
+  renderTeamSlotsMobile();
+  renderCpuMiniSlots();
+  renderArmySlotMobile();
+  renderArmyPoolMobile();
+  renderAlignmentAlertsMobile();
+  syncMobileBattleBtn();
+  renderCpuArmySlot();
+  renderAlignmentAlerts();
+  renderPickTracker();
+  updateDraftTurnLabel();
+  updateBattleButton();
+}
+
+// ── Pick tracker dots ──
+function renderPickTracker() {
+  const el = document.getElementById('pick-tracker');
+  if (!el) return;
+  el.innerHTML = state.snakeOrder.map((side, i) => {
+    let bg = 'var(--surface2)';
+    let border = 'var(--border2)';
+    let title = side === 'player' ? 'You' : 'CPU';
+    if (i < state.snakePick) {
+      bg = side === 'player' ? 'var(--gold)' : '#f87171';
+      border = bg;
+    } else if (i === state.snakePick) {
+      bg = side === 'player' ? 'rgba(212,168,67,0.3)' : 'rgba(248,113,113,0.3)';
+      border = side === 'player' ? 'var(--gold)' : '#f87171';
+    }
+    return `<div title="Pick ${i+1}: ${title}" style="width:14px;height:14px;border-radius:50%;background:${bg};border:1.5px solid ${border};flex-shrink:0;transition:all 0.3s;"></div>`;
+  }).join('');
+}
+
+function updateDraftTurnLabel() {
+  const el = document.getElementById('draft-turn-label');
+  if (!el) return;
+  const pick = state.snakePick;
+  if (pick >= 10) {
+    el.textContent = 'Draft complete — ready to march';
+    el.style.color = 'var(--gold)';
+    return;
+  }
+  const whose = state.snakeOrder[pick];
+  if (whose === 'player') {
+    el.innerHTML = `Pick ${pick + 1} of 10 — <span style="color:var(--gold)">Your turn to draft</span>`;
+  } else {
+    el.innerHTML = `Pick ${pick + 1} of 10 — <span style="color:#f87171">${state.draftLocked ? 'Enemy is choosing…' : 'Enemy is choosing…'}</span>`;
+  }
+}
+
+// ── Hero pool ──
+function renderPool() {
+  const pool = document.getElementById('hero-pool');
+  pool.innerHTML = '';
+
+  const takenIds = new Set([
+    ...state.playerTeam.map(h => h.id),
+    ...state.cpuTeam.map(h => h.id),
+  ]);
+
+  // Is it the player's turn?
+  const isPlayerTurn = !state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'player';
+
+  // What roles does the player still need?
+  const playerFilledRoles = new Set(state.playerTeam.map(h => h.role));
+  const playerNeeds = REQUIRED_ROLES.filter(r => !playerFilledRoles.has(r));
+
+  const filtered = ROSTER.filter(h => {
+    if (takenIds.has(h.id)) return false;
+    if (state.filter === 'all') return true;
+    if (state.filter.startsWith('role-')) return h.role === state.filter.replace('role-','');
+    if (state.filter.startsWith('align-')) return h.alignment === state.filter.replace('align-','');
+    return true;
+  });
+
+  filtered.forEach(hero => {
+    const roleFilled = playerFilledRoles.has(hero.role);
+    const card = document.createElement('div');
+    const unavailable = !isPlayerTurn || roleFilled;
+    card.className = 'hero-card' + (unavailable ? ' drafted' : '');
+    card.dataset.heroId = hero.id;
+
+    const stats = [
+      { key:'STR', val: hero.strength, color:'#fb923c' },
+      { key:'LDR', val: hero.leadership, color:'var(--leader)' },
+      { key:'DUR', val: hero.durability, color:'var(--defender)' },
+      { key:'INT', val: hero.intelligence, color:'#60a5fa' },
+      { key:'AGI', val: hero.agility, color:'#f472b6' },
+    ];
+
+    const neededTag = isPlayerTurn && playerNeeds.includes(hero.role)
+      ? `<span style="font-size:0.6rem;color:var(--gold);margin-left:4px;">needed</span>` : '';
+
+    card.innerHTML = `
+      <div class="hc-name">${hero.name}${neededTag}</div>
+      <div class="hc-universe">${hero.universe}</div>
+      <div class="hc-badges">
+        <span class="badge badge-role" style="color:${ROLE_COLORS[hero.role]}">${hero.role}</span>
+        <span class="badge badge-align-${hero.alignment}">${hero.alignment}</span>
+      </div>
+      ${stats.map(s => `
+        <div class="stat-bar-wrap">
+          <span class="stat-label">${s.key}</span>
+          <div class="stat-bar"><div class="stat-bar-fill" style="width:${s.val}%;background:${s.color};"></div></div>
+          <span style="font-size:0.6rem;color:${statColor(s.val)};width:22px;text-align:right;">${s.val}</span>
+        </div>
+      `).join('')}
+    `;
+
+    if (!unavailable) card.addEventListener('click', () => showDetail(hero));
+    pool.appendChild(card);
+  });
+}
+
+// ── Player team slots ──
+function renderTeamSlots() {
+  const slots = document.getElementById('team-slots');
+  slots.innerHTML = '';
+  const playerFilledRoles = new Set(state.playerTeam.map(h => h.role));
+  REQUIRED_ROLES.forEach(role => {
+    const filled = state.playerTeam.find(h => h.role === role);
+    const slot = document.createElement('div');
+    slot.className = 'team-slot' + (filled ? ' filled' : '');
+    if (filled) {
+      slot.innerHTML = `
+        <span class="slot-role-badge" style="background:${ROLE_COLORS[role]}22;color:${ROLE_COLORS[role]}">${role}</span>
+        <div><div class="slot-name">${filled.name}</div><div class="slot-lore">${filled.lore}</div></div>
+      `;
+    } else {
+      const isNext = !state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'player';
+      slot.innerHTML = `
+        <span class="slot-role-badge" style="background:${ROLE_COLORS[role]}22;color:${ROLE_COLORS[role]}">${role}</span>
+        <span style="color:${isNext?'var(--muted)':'var(--dim)'}">— empty —</span>
+      `;
+    }
+    slots.appendChild(slot);
+  });
+}
+
+// ── CPU team slots ──
+function renderCpuTeamSlots() {
+  const slots = document.getElementById('cpu-team-slots');
+  if (!slots) return;
+  slots.innerHTML = '';
+  REQUIRED_ROLES.forEach(role => {
+    const filled = state.cpuTeam.find(h => h.role === role);
+    const slot = document.createElement('div');
+    slot.className = 'team-slot' + (filled ? ' filled' : '');
+    slot.style.borderColor = filled ? 'rgba(248,113,113,0.3)' : '';
+    if (filled) {
+      slot.innerHTML = `
+        <span class="slot-role-badge" style="background:rgba(248,113,113,0.15);color:#f87171">${role}</span>
+        <div><div class="slot-name">${filled.name}</div><div class="slot-lore">${filled.lore}</div></div>
+      `;
+    } else {
+      const cpuTurn = state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'cpu';
+      slot.innerHTML = `
+        <span class="slot-role-badge" style="background:rgba(248,113,113,0.1);color:#f87171">${role}</span>
+        <span style="color:${cpuTurn && state.draftLocked ? '#f87171' : 'var(--dim)'}">
+          ${cpuTurn && state.draftLocked ? 'choosing…' : '— empty —'}
+        </span>
+      `;
+    }
+    slots.appendChild(slot);
+  });
+
+  // CPU intel: show synergy/rivalry warnings based on their visible picks
+  const intel = document.getElementById('cpu-intel');
+  if (intel) renderCpuIntelEl(intel, buildCpuIntel());
+}
+
+function renderCpuArmySlot() {
+  const el = document.getElementById('cpu-army-slot');
+  if (!el) return;
+  if (state.cpuArmy) {
+    el.style.color = '#f87171';
+    el.style.borderStyle = 'solid';
+    el.innerHTML = `<strong style="font-size:0.8rem">${state.cpuArmy.name}</strong><br><span style="color:var(--muted);font-size:0.65rem">${state.cpuArmy.universe}</span>`;
+  } else {
+    el.style.color = 'var(--dim)';
+    el.style.borderStyle = 'dashed';
+    el.innerHTML = '— no army —';
+  }
+}
+
+function renderRoleRequirements() { /* no-op, absorbed into renderTeamSlots */ }
+
+function buildAlignmentAlerts() {
+  const team = state.playerTeam;
+  if (team.length < 2) return null; // null = not enough heroes yet
+  const alerts = [];
+  const universeGroups = {};
+  team.forEach(h => { universeGroups[h.universe] = (universeGroups[h.universe]||[]).concat(h.name); });
+  Object.entries(universeGroups).forEach(([uni, names]) => {
+    if (names.length >= 2) alerts.push({ type:'synergy', msg:`✦ ${names.join(' & ')} — ${uni} bond` });
+  });
+  team.forEach(h => {
+    h.allies.forEach(a => {
+      if (team.find(t => t.name === a)) alerts.push({ type:'synergy', msg:`✦ ${h.name} & ${a} — sworn allies` });
+    });
+    h.rivals.forEach(r => {
+      if (team.find(t => t.name === r)) alerts.push({ type:'rivalry', msg:`⚠ ${h.name} & ${r} — rivals on same team` });
+    });
+  });
+  const evil = team.filter(h => h.alignment === 'evil');
+  evil.forEach(e => alerts.push({ type:'warning', msg:`☉ ${e.name} — uneasy with good allies` }));
+  if (!alerts.length) alerts.push({ type:'synergy', msg:`✦ Team aligned — no conflicts` });
+  const seen = new Set();
+  return alerts.filter(a => !seen.has(a.msg) && seen.add(a.msg));
+}
+
+function renderAlignmentAlerts() {
+  const el = document.getElementById('alignment-alerts');
+  el.innerHTML = '';
+  const alerts = buildAlignmentAlerts();
+  if (!alerts) {
+    el.innerHTML = '<div style="font-size:0.72rem;color:var(--dim);">Draft 2+ heroes to see effects.</div>';
+    return;
+  }
+  alerts.forEach(a => {
+    const div = document.createElement('div');
+    div.className = `alert-chip alert-${a.type}`;
+    div.textContent = a.msg;
+    el.appendChild(div);
+  });
+}
+
+function renderArmySlot() {
+  const el = document.getElementById('army-slot');
+  if (!el) return;
+  if (state.playerArmy) {
+    const a = state.playerArmy;
+    el.style.color = 'var(--text)';
+    el.style.borderStyle = 'solid';
+    el.innerHTML = `<strong style="font-size:0.8rem">${a.name}</strong><br><span style="color:var(--muted);font-size:0.65rem">${a.universe} · ${a.lore}</span>
+      <button onclick="state.playerArmy=null;renderDraft();" style="float:right;background:none;border:none;color:var(--dim);cursor:pointer;font-size:0.8rem;padding:0">✕</button>`;
+  } else {
+    el.style.color = 'var(--dim)';
+    el.style.borderStyle = 'dashed';
+    el.innerHTML = '— no army drafted —';
+  }
+}
+
+function renderArmyPool() {
+  const el = document.getElementById('army-pool');
+  if (!el) return;
+  const leader = state.playerTeam.find(h => h.role === 'leader');
+  el.innerHTML = '';
+  // Show a header if draft is still ongoing
+  if (state.snakePick < 10) {
+    const note = document.createElement('div');
+    note.style.cssText = 'font-size:0.65rem;color:var(--dim);margin-bottom:4px;';
+    note.textContent = leader ? 'Pick an army to deploy:' : 'Draft your leader first for affinity armies';
+    el.appendChild(note);
+  }
+  ARMIES.forEach(a => {
+    const isSelected = state.playerArmy && state.playerArmy.id === a.id;
+    const isAffinity = leader && a.affinityLeaders.includes(leader.name);
+    const btn = document.createElement('button');
+    btn.style.cssText = `width:100%;text-align:left;background:${isSelected?'var(--surface2)':'var(--surface)'};border:1px solid ${isAffinity?'var(--gold)':'var(--border)'};border-radius:5px;padding:0.4rem 0.6rem;cursor:pointer;color:${isSelected?'var(--gold)':'var(--text)'};font-size:0.68rem;font-family:var(--ui);transition:all 0.15s;margin-bottom:2px;`;
+    btn.innerHTML = `<strong>${a.name}</strong>${isAffinity?' ⚡':''}<br><span style="color:var(--muted)">${a.universe}</span>`;
+    btn.onclick = () => { state.playerArmy = isSelected ? null : a; renderDraft(); };
+    el.appendChild(btn);
+  });
+}
+
+function updateBattleButton() {
+  const allRoles = REQUIRED_ROLES.every(r => state.playerTeam.some(h => h.role === r));
+  const cpuDone  = REQUIRED_ROLES.every(r => state.cpuTeam.some(h => h.role === r));
+  const btn = document.getElementById('btn-begin-battle');
+  btn.disabled = !(allRoles && cpuDone && state.snakePick >= 10);
+}
+
+// ── Player makes a pick ──
+function draftHero(hero) {
+  if (state.draftLocked) return;
+  if (state.snakePick >= 10) return;
+  if (state.snakeOrder[state.snakePick] !== 'player') return;
+  if (state.playerTeam.some(h => h.role === hero.role)) {
+    alert(`You already have a ${hero.role}. Each role can only be filled once.`);
+    return;
+  }
+  state.playerTeam.push(hero);
+  state.snakePick++;
+  closeDetail();
+  renderDraft();
+  // On mobile: show player team so they see their pick land
+  if (isMobile()) switchDraftTab('team');
+  advanceSnake();
+}
+
+// ── Advance draft: trigger CPU picks automatically ──
+function advanceSnake() {
+  if (state.snakePick >= 10) {
+    // Draft complete — CPU picks army
+    const cpuLeader = state.cpuTeam.find(h => h.role === 'leader');
+    const affArmy = ARMIES.filter(a => cpuLeader && a.affinityLeaders.includes(cpuLeader.name));
+    state.cpuArmy = (affArmy.length ? affArmy : ARMIES)[Math.floor(Math.random() * (affArmy.length || ARMIES.length))];
+    renderDraft();
+    return;
+  }
+  if (state.snakeOrder[state.snakePick] === 'cpu') {
+    state.draftLocked = true;
+    renderDraft();
+    // Delay scales with difficulty for feel
+    const delay = { easy:600, medium:900, hard:1400 }[state.difficulty] || 900;
+    if (isMobile()) switchDraftTab('cpu');
+    setTimeout(doCpuPick, delay);
+  } else if (state.snakeOrder[state.snakePick] === 'player') {
+    // CPU done picking — return player to pool
+    if (isMobile()) switchDraftTab('pool');
+  }
+}
+
+// ── CPU pick logic ──
+function doCpuPick() {
+  const takenIds = new Set([...state.playerTeam.map(h=>h.id), ...state.cpuTeam.map(h=>h.id)]);
+  const cpuFilledRoles = new Set(state.cpuTeam.map(h => h.role));
+  const neededRoles = REQUIRED_ROLES.filter(r => !cpuFilledRoles.has(r));
+  // Pick a needed role (prioritise in order)
+  const role = neededRoles[0];
+  const candidates = ROSTER.filter(h => h.role === role && !takenIds.has(h.id));
+  if (!candidates.length) { state.draftLocked = false; state.snakePick++; renderDraft(); advanceSnake(); return; }
+
+  let picked;
+  if (state.difficulty === 'easy') {
+    picked = candidates[Math.floor(Math.random() * candidates.length)];
+  } else if (state.difficulty === 'medium') {
+    // Aware of power AND synergy/counters, but picks from top 2 — smarter than easy, not perfect
+    candidates.sort((a,b) => scoreMediumPick(b) - scoreMediumPick(a));
+    const top = candidates.slice(0, Math.min(2, candidates.length));
+    picked = top[Math.floor(Math.random() * top.length)];
+  } else {
+    // Hard: full counter-pick logic
+    candidates.sort((a,b) => scoreHardPick(b) - scoreHardPick(a));
+    picked = candidates[0];
+  }
+
+  state.cpuTeam.push(picked);
+  state.snakePick++;
+  state.draftLocked = false;
+  renderDraft();
+  // On mobile: stay on CPU tab for 1.8s so the player can see the pick, then advance
+  if (isMobile()) {
+    setTimeout(() => advanceSnake(), 1800);
+  } else {
+    advanceSnake();
+  }
+}
+
+function totalPower(h) {
+  return h.strength + h.leadership + h.durability + h.intelligence + h.agility;
+}
+
+function scoreMediumPick(hero) {
+  // Medium: power-focused but loosely aware of synergy — no rival counter-picking
+  let score = totalPower(hero) * 0.7;
+  // Some synergy awareness — prefers building within a universe
+  score += state.cpuTeam.filter(h => h.universe === hero.universe).length * 15;
+  // Light ally bond awareness
+  score += hero.allies.filter(a => state.cpuTeam.some(h => h.name === a)).length * 10;
+  // Small random noise so it doesn't always pick the same team
+  score += Math.random() * 40;
+  return score;
+}
+
+function scoreHardPick(hero) {
+  // Hard: power + counter-pick + synergy, deterministic
+  let score = totalPower(hero) * 0.5;
+  // Strong bonus for rivalling player heroes — actively counters your team
+  score += hero.rivals.filter(r => state.playerTeam.some(p => p.name === r)).length * 30;
+  // Universe synergy with own team
+  score += state.cpuTeam.filter(h => h.universe === hero.universe).length * 20;
+  // Named ally bond in own team
+  score += hero.allies.filter(a => state.cpuTeam.some(h => h.name === a)).length * 25;
+  // Penalise picking internal rivals (don't build a team that fights itself)
+  score -= hero.rivals.filter(r => state.cpuTeam.some(h => h.name === r)).length * 35;
+  return score;
+}
+
+
+// ══════════════════════════════════════════════════════
+// HERO DETAIL PANEL
+// ══════════════════════════════════════════════════════
+function showDetail(hero) {
+  state.detailHero = hero;
+  document.getElementById('hdp-name').textContent = hero.name;
+  document.getElementById('hdp-meta').textContent = `${hero.universe}  ·  ${hero.role}  ·  ${hero.alignment}`;
+  document.getElementById('hdp-lore').textContent = hero.lore;
+
+  const stats = [
+    ['Strength', hero.strength], ['Leadership', hero.leadership],
+    ['Durability', hero.durability], ['Intelligence', hero.intelligence],
+    ['Agility', hero.agility],
+  ];
+  document.getElementById('hdp-stats').innerHTML = stats.map(([k,v]) => `
+    <div class="hdp-stat">
+      <span class="stat-name">${k}</span>
+      <strong style="font-size:1rem; color:${statColor(v)}">${v}</strong>
+    </div>
+  `).join('');
+
+  const rels = [];
+  if (hero.allies.length) rels.push(`<span>Allies:</span> ${hero.allies.join(', ')}`);
+  if (hero.rivals.length) rels.push(`<span>Rivals:</span> ${hero.rivals.join(', ')}`);
+  document.getElementById('hdp-relationships').innerHTML = rels.join('<br>');
+
+  const drafted = state.playerTeam.some(h => h.id === hero.id) || state.cpuTeam.some(h => h.id === hero.id);
+  const roleFilled = state.playerTeam.some(h => h.role === hero.role);
+  const notMyTurn = state.draftLocked || state.snakePick >= 10 || state.snakeOrder[state.snakePick] !== 'player';
+  const btn = document.getElementById('hdp-draft-btn');
+  if (drafted) { btn.textContent = 'Already drafted'; btn.disabled = true; }
+  else if (notMyTurn) { btn.textContent = 'Not your turn'; btn.disabled = true; }
+  else if (roleFilled) { btn.textContent = `Role "${hero.role}" already filled`; btn.disabled = true; }
+  else { btn.textContent = `Draft ${hero.name}`; btn.disabled = false; }
+
+  document.getElementById('hero-detail-panel').classList.add('visible');
+  document.getElementById('detail-backdrop').style.display = 'block';
+}
+
+function closeDetail() {
+  document.getElementById('hero-detail-panel').classList.remove('visible');
+  document.getElementById('detail-backdrop').style.display = 'none';
+  state.detailHero = null;
+}
+
+function draftFromDetail() {
+  document.getElementById('detail-backdrop').style.display = 'none';
+  if (state.detailHero) draftHero(state.detailHero);
+}
+
+
+// ══════════════════════════════════════════════════════
+// BATTLE
+// ══════════════════════════════════════════════════════
+function beginBattle() {
+  // CPU army already drafted at end of snake draft
+  if (!state.cpuArmy) {
+    const cpuLeader = state.cpuTeam.find(h => h.role === 'leader');
+    const affArmy = ARMIES.filter(a => cpuLeader && a.affinityLeaders.includes(cpuLeader.name));
+    state.cpuArmy = (affArmy.length ? affArmy : ARMIES)[Math.floor(Math.random() * (affArmy.length || ARMIES.length))];
+  }
+  initBattleState();
+  renderBattleScreen();
+  showScreen('screen-battle');
+}
+
+const ROLE_HP = { leader: 55, hero: 80, defender: 100, warrior: 90, support: 50 };
+
+function heroMaxHp(h) {
+  return ROLE_HP[h.role] + Math.round(h.durability * 0.5);
+}
+
+// Army HP = scaled by size and strength, capped to be killable in ~8-12 rounds of focused fire
+function armyMaxHp(a) {
+  return Math.round((a.strength * 0.5 + a.durability * 0.5) * 2.2);
+}
+
+function initBattleState() {
+  const makeUnit = h => ({
+    ...h,
+    maxHp: heroMaxHp(h),
+    hp: heroMaxHp(h),
+    alive: true,
+    damageBuff: 0,
+    debuffed: false,
+    shielded: false,
+    isArmy: false,
+  });
+  const makeArmy = a => ({
+    ...a,
+    role: 'warrior',  // armies act as warriors in combat
+    maxHp: armyMaxHp(a),
+    hp: armyMaxHp(a),
+    alive: true,
+    damageBuff: 0,
+    debuffed: false,
+    shielded: false,
+    isArmy: true,
+    rivals: [],
+    allies: [],
+    alignment: a.alignment,
+    intelligence: 50,
+    leadership: 40,
+    agility: 55,
+  });
+
+  // Difficulty combat boosts: medium/hard CPU gets extra HP and damage
+  // Calibrated via 5000-game simulation to hit target win rates per difficulty
+  const cpuHpMult = (state.difficulty === 'medium' || state.difficulty === 'hard') ? 1.03 : 1.0;
+  const cpuDmgMult = (state.difficulty === 'medium' || state.difficulty === 'hard') ? 1.04 : 1.0;
+
+  const makeCpuUnit = h => {
+    const hp = Math.round(heroMaxHp(h) * cpuHpMult);
+    return { ...h, maxHp: hp, hp, alive: true, damageBuff: 0, debuffed: false, shielded: false, isArmy: false, cpuDmgMult };
+  };
+  const makeCpuArmy = a => {
+    const hp = Math.round(armyMaxHp(a) * cpuHpMult);
+    return { ...a, role: 'warrior', maxHp: hp, hp, alive: true, damageBuff: 0, debuffed: false, shielded: false, isArmy: true, rivals: [], allies: [], alignment: a.alignment, intelligence: 50, leadership: 40, agility: 55, cpuDmgMult };
+  };
+
+  const playerUnits = state.playerTeam.map(makeUnit);
+  const cpuUnits    = state.cpuTeam.map(makeCpuUnit);
+
+  if (state.playerArmy) playerUnits.push(makeArmy(state.playerArmy));
+  if (state.cpuArmy)    cpuUnits.push(makeCpuArmy(state.cpuArmy));
+
+  state.battleState = {
+    player: playerUnits,
+    cpu:    cpuUnits,
+    log: [],
+    finished: false,
+    winner: null,
+  };
+  state.round = 0;
+}
+
+// ── Narrative flavour lines per hero ──
+const HERO_QUIPS = {
+  'Aragorn':          { attack:['Aragorn charges, the Flame of the West raised high','Aragorn fights with the fury of the line of Isildur','The king has come — Aragorn strikes'], inspire:['Aragorn cries: For Frodo!','The White Tree burns bright in Aragorn’s eyes'] },
+  'Gandalf':          { attack:['You shall not pass! Gandalf unleashes the Secret Fire','Gandalf’s staff blazes white in the darkness','Gandalf’s power shakes the very earth'], defend:['Gandalf stands unmoveable — a fortress of light','None shall harm these charges while Gandalf draws breath'] },
+  'Legolas':          { attack:['Legolas looses three arrows before the first lands','The elf moves like water — Legolas strikes true','Legolas counts his kills with quiet efficiency'] },
+  'Gimli':            { attack:['Gimli bellows and brings his axe down with both hands','Nobody tosses a dwarf — but Gimli throws himself into battle','Gimli roars and cleaves through the line'] },
+  'Frodo Baggins':    { attack:['Sting glows blue as Frodo strikes from the shadows','Frodo’s eyes blaze with unexpected fury'] },
+  'Samwise Gamgee':   { defend:['Sam plants his feet: Not while I’m standing, you won’t','I can’t carry it for you, but I can carry you — Sam shields his companion'] },
+  'Superman':         { attack:['Superman moves faster than thought, striking with planet-cracking force','There is a blur of red and blue — then silence','Superman’s eyes blaze crimson as heat vision lances out'] },
+  'Wonder Woman':     { attack:['Diana whirls her lasso and strikes with godly precision','Wonder Woman’s bracelets flash as she deflects and counters','Diana fights with the fury of Ares himself'] },
+  'Luke Skywalker':   { attack:['Luke trusts the Force — his lightsaber finds the gap','The Force moves through Luke like a tide turning','Luke’s blue blade hums as he strikes'] },
+  'Obi-Wan Kenobi':   { defend:['If you strike me down I shall become more powerful — Obi-Wan holds','Obi-Wan positions himself between his ally and death','Obi-Wan’s form is perfect — Soresu, the impenetrable wall'] },
+  'Yoda':             { support:['Luminous beings are we — Yoda channels healing energy','Do or do not — Yoda’s focus steadies the team','Yoda’s ears lower as he concentrates, pouring strength into his allies'] },
+  'Darth Vader':      { attack:['I find your lack of faith disturbing — Vader’s grip tightens','Vader advances through blaster fire, breathing steadily','The dark side flows through Vader without mercy'] },
+  'Sauron':           { attack:['The Dark Lord’s mace falls like a verdict','Sauron’s mere presence saps the will to fight','The One Ring pulses as Sauron channels its malice'] },
+  'Voldemort':        { inspire:['Voldemort’s voice curls into his allies’ minds like smoke','Avada Kedavra whispered — Voldemort’s command galvanises his forces'], attack:['Voldemort’s wand slashes green light across the field'] },
+  'Bellatrix Lestrange':{ attack:['Bellatrix laughs as she duels — unhinged, untouchable','Crucio! Bellatrix casts without hesitation','Bellatrix fights like a woman with nothing to lose'] },
+  'Hermione Granger': { attack:['Hermione’s Protego shatters into Expelliarmus','She’s read about this — Hermione adapts instantly','Hermione Granger conjures a shield and strikes through it'] },
+  'Harry Potter':     { attack:['Expelliarmus! Harry disarms and presses forward','Harry fights on instinct — and instinct has always been enough','Something ancient stirs — Lily’s sacrifice, echoing in Harry’s wand'] },
+  'Thanos':           { attack:['With a single sweep Thanos scatters the opposition','Reality is often disappointing — Thanos reshapes it','The Mad Titan’s gauntlet blazes as he swings'] },
+  'Thor':             { attack:['Thunder rolls as Mjolnir returns to Thor’s hand','Thor calls the lightning — the field goes white','Worthy! Mjolnir crashes down'] },
+  'Loki':             { attack:['Was that Loki? Or an illusion? The wound is real either way','Loki smiles and strikes from somewhere unexpected'] },
+  'Leonidas':         { inspire:['Spartans! Tonight we dine in hell — Leonidas roars','THIS IS SPARTA! The battle cry shakes the earth'], attack:['Leonidas’ spear finds the gap in every armour'] },
+  'Achilles':         { attack:['No mortal hand can stop Achilles — he moves like death incarnate','The Myrmidon rage takes him — Achilles is unstoppable','Achilles fights with grief and fury as his fuel'] },
+  'Aragorn':          { attack:['The heir of Isildur strikes — Andúril blazes','Aragorn fights for every free people of Middle-earth'] },
+  'King T’Challa':   { attack:['Wakanda forever — T’Challa strikes with vibranium precision','The Black Panther leaps and the enemy has no answer','T’Challa’s suit absorbs the blow and channels it back'] },
+  'Mulan':            { attack:['Mulan reads the battle in a blink and exploits it','Ping fights with a plan — Mulan strikes where it hurts most'] },
+  'Jean-Luc Picard':  { inspire:['Make it so — Picard’s authority steadies every nerve','Engage! Picard’s composure transforms his team’s resolve'] },
+  'Cersei Lannister': { inspire:['When you play the game of thrones, you win or you die — Cersei’s voice is ice','Power is power — Cersei reminds her forces who they fight for'] },
+  'Jaime Lannister':  { attack:['The Kingslayer earns the name again — Jaime strikes clean','One hand or two, Jaime Lannister is peerless with a blade'] },
+  'Brienne of Tarth': { defend:['Brienne of Tarth will not yield — she stands','I am no lady — but I keep my vows, Brienne interposes herself'] },
+  'Walter White':     { inspire:['I am the one who knocks — White’s voice drops to a whisper','Say my name — the team rallies behind a man who has nothing to lose'] },
+  'Hannibal Lecter':  { support:['A census taker tried to test me once... Lecter studies the enemy carefully','Dr Lecter identifies the precise psychological pressure point'] },
+  'Amy Dunne':        { support:['Amazing Amy recalculates — the enemy never sees it coming','Cool girl doesn’t panic. Amy Dunne dismantles the opposition methodically'] },
+  'Gollum':           { attack:['Sneaky little hobbitses! Gollum strikes from behind','My precious gives Gollum strength beyond his wretched frame','Gollum bites and claws with feral desperation'] },
+  'Katniss Everdeen': { attack:['The Mockingjay draws and looses in one breath','Katniss fires from cover — they never see her coming','If we burn, you burn with us — Katniss stands her ground'] },
+  'Ellen Ripley':     { attack:['I’ve done this before — Ripley advances without flinching','Game over, man — except Ripley never says that. She just wins.'] },
+  'Merlin':           { support:['Merlin murmurs words older than the kingdom itself','The old magic flows through Merlin’s staff'] },
+  'Q':                { support:['Oh, very well — Q intervenes with casual omnipotence','Picard would disapprove. Q does it anyway and it works.'] },
+  'Tyrion Lannister': { support:['I drink and I know things — Tyrion identifies the weakness','Tyrion’s mind is the sharpest weapon on the field'] },
+  'Maximus':          { attack:['Are you not entertained? Maximus fights for those who cannot','My name is Maximus Decimus Meridius — the enemy flinches'] },
+  'Achilles':         { attack:['No mortal hand can stop Achilles today'] },
+};
+
+function getNarrative(h, type) {
+  const lines = HERO_QUIPS[h.name]?.[type];
+  if (lines && lines.length) return lines[Math.floor(Math.random() * lines.length)];
+  // Generic fallbacks by role
+  const fallbacks = {
+    attack:  [`${h.name} strikes with focused intensity`, `${h.name} presses the attack`, `${h.name} finds the opening`],
+    defend:  [`${h.name} holds the line`, `${h.name} refuses to yield`],
+    inspire: [`${h.name} rallies their allies`, `${h.name}'s presence lifts the team`],
+    support: [`${h.name} focuses their power inward`, `${h.name} tends to the wounded`],
+    army:    [`${h.name} commands their forces forward`, `${h.name}'s army surges ahead`],
+  };
+  const list = fallbacks[type] || fallbacks.attack;
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function getArmyNarrative(army, type) {
+  const lines = {
+    charge: [
+      `The ${army.name} charges with a war cry that shakes the ground`,
+      `${army.name}: a tide of steel and fury sweeps forward`,
+      `The ${army.name} advance in locked formation — unstoppable`,
+      `${army.name} crash into the enemy line`,
+    ],
+    rout: [
+      `The ${army.name} rout the enemy flank`,
+      `${army.name} cut through the opposition in a wave`,
+    ],
+    fall: [
+      `The last of the ${army.name} fall — they died as they lived`,
+      `The ${army.name} are broken — the field is quieter now`,
+    ],
+  };
+  const list = lines[type] || lines.charge;
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+// ── Alignment: synergies, rivalries, betrayals ──
+function getAlignmentResult(h, team, enemy) {
+  let mod = 1.0;
+  const msgs = [];
+
+  const uniAllies = team.filter(t => t.id !== h.id && t.universe === h.universe && t.alive && !t.isArmy);
+  if (uniAllies.length > 0) {
+    const bonus = 0.10 * uniAllies.length;
+    mod += bonus;
+    msgs.push({ type:'synergy', msg:`⚡ ${uniAllies.map(a=>a.name).join(' & ')} — universe bond fuels ${h.name} (+${Math.round(bonus*100)}%)` });
+  }
+
+  const namedAlly = team.find(t => t.id !== h.id && h.allies && h.allies.includes(t.name) && t.alive);
+  if (namedAlly) {
+    mod += 0.15;
+    msgs.push({ type:'synergy', msg:`✦ ${h.name} and ${namedAlly.name} fight as one — sworn bond (+15%)` });
+  }
+
+  const internalRival = team.find(t => t.id !== h.id && h.rivals && h.rivals.includes(t.name) && t.alive);
+  if (internalRival && Math.random() < 0.18) {
+    msgs.push({ type:'rivalry', msg:`☠ ${h.name} turns on ${internalRival.name}! The old hatred is too strong!` });
+    return { mod: 0, msgs, betrayTarget: internalRival };
+  }
+
+  const enemyRival = enemy.find(t => h.rivals && h.rivals.includes(t.name) && t.alive);
+  if (enemyRival) {
+    mod += 0.20;
+    msgs.push({ type:'focus', msg:`⚔ ${h.name} sees ${enemyRival.name} across the field — nothing else exists (+20%)` });
+  }
+
+  // Army affinity: leader gets a bonus if their drafted army has them as affinity leader
+  if (h.role === 'leader') {
+    const armyUnit = team.find(t => t.isArmy && t.alive && t.affinityLeaders && t.affinityLeaders.includes(h.name));
+    if (armyUnit) {
+      mod += 0.12;
+      msgs.push({ type:'synergy', msg:`⚔ The ${armyUnit.name} fight harder under ${h.name}'s command (+12%)` });
+    }
+  }
+
+  if (h.alignment === 'evil') {
+    const goodAllies = team.filter(t => t.id !== h.id && t.alignment === 'good' && t.alive && !t.isArmy);
+    if (goodAllies.length > 0) {
+      mod -= 0.10;
+      msgs.push({ type:'rivalry', msg:`☉ ${h.name} bristles beside ${goodAllies[0].name} — the alliance is uneasy (-10%)` });
+    }
+  }
+
+  return { mod, msgs, betrayTarget: null };
+}
+
+// ── Targeting: rivals first, then softest enemy ──
+function pickTarget(attacker, enemies) {
+  const alive = enemies.filter(h => h.alive);
+  if (!alive.length) return null;
+  const rival = alive.find(h => attacker.rivals.includes(h.name));
+  if (rival) return rival;
+  // Warriors hunt lowest HP; others hunt lowest HP too but heroes may prefer high-threat targets
+  if (attacker.role === 'warrior') return alive.reduce((a, b) => a.hp < b.hp ? a : b);
+  return alive.reduce((a, b) => a.hp < b.hp ? a : b);
+}
+
+// ── Defender intercept: steps in front of an ally being hit ──
+function tryIntercept(target, targetTeam, logs) {
+  const defender = targetTeam.find(h =>
+    h.alive && h.id !== target.id && h.role === 'defender'
+  );
+  if (!defender) return null;
+  // Intercept chance scales with defender's agility (faster = more able to jump in)
+  const chance = 0.2 + (defender.agility / 100) * 0.4; // 20–60%
+  if (Math.random() < chance) {
+    logs.push({ type:'synergy', msg:`🛡 ${defender.name} throws themselves in front of ${target.name}!` });
+    return defender;
+  }
+  return null;
+}
+
+// ── Role actions ──
+function doWarrior(h, team, enemy, mod, logs) {
+  if (h.isArmy) { doArmyAttack(h, team, enemy, mod, logs); return; }
+  const target = pickTarget(h, enemy);
+  if (!target) return;
+  const base = (h.strength * 0.6 + h.agility * 0.4) / 9;
+  const roleBonus = target.role === 'hero' ? 1.20 : 1.0;
+  const dmg = Math.round(base * mod * roleBonus * (0.85 + Math.random() * 0.3));
+  const interceptor = tryIntercept(target, enemy, logs);
+  const actualTarget = interceptor || target;
+  const finalDmg = interceptor ? Math.round(dmg * 0.6) : dmg;
+  applyDamage(actualTarget, finalDmg, logs);
+  const narrative = getNarrative(h, 'attack');
+  logs.push({ type:'attack', msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
+}
+
+function doArmyAttack(army, team, enemy, mod, logs) {
+  const targets = enemy.filter(t => t.alive);
+  if (!targets.length) return;
+  const base = (army.strength * 0.6 + army.durability * 0.4) / 9;
+  const narrative = getArmyNarrative(army, 'charge');
+  logs.push({ type:'attack', msg:`\u2694 ${narrative}` });
+  targets.forEach(t => {
+    const splash = Math.round(base * mod * (0.5 + Math.random() * 0.6) / targets.length * 2.5);
+    const interceptor = tryIntercept(t, enemy, logs);
+    const actualTarget = interceptor || t;
+    const finalDmg = interceptor ? Math.round(splash * 0.6) : splash;
+    applyDamage(actualTarget, finalDmg, logs);
+    if (finalDmg > 0) logs.push({ type:'attack', msg:`  \u21b3 ${actualTarget.name} takes ${finalDmg} from the ${army.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
+  });
+}
+
+function doHero(h, team, enemy, mod, logs) {
+  const target = pickTarget(h, enemy);
+  if (!target) return;
+  const base = (h.strength * 0.45 + h.intelligence * 0.30 + h.agility * 0.25) / 9;
+  const dmg = Math.round(base * mod * (0.85 + Math.random() * 0.3));
+  const interceptor = tryIntercept(target, enemy, logs);
+  const actualTarget = interceptor || target;
+  const finalDmg = interceptor ? Math.round(dmg * 0.6) : dmg;
+  applyDamage(actualTarget, finalDmg, logs);
+  const narrative = getNarrative(h, 'attack');
+  logs.push({ type:'attack', msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
+}
+
+function doDefender(h, team, enemy, mod, logs) {
+  const target = pickTarget(h, enemy);
+  if (target) {
+    const base = (h.strength * 0.3 + h.durability * 0.4 + h.intelligence * 0.3) / 11;
+    const dmg = Math.round(base * mod * (0.85 + Math.random() * 0.3));
+    applyDamage(target, dmg, logs);
+    const narrative = getNarrative(h, 'attack');
+    logs.push({ type:'attack', msg:`${narrative} — ${dmg} to ${target.name}${target.hp > 0 ? ` (${target.hp} HP)` : ''}` });
+  }
+  const wounded = team.filter(t => t.id !== h.id && t.alive).sort((a,b) => (a.hp/a.maxHp) - (b.hp/b.maxHp));
+  if (wounded.length > 0) {
+    const ally = wounded[0];
+    ally.shielded = true;
+    const narrative = getNarrative(h, 'defend');
+    logs.push({ type:'synergy', msg:`\ud83d\udee1 ${narrative} — shields ${ally.name} (next hit halved)` });
+  }
+}
+
+function doLeader(h, team, enemy, mod, logs) {
+  const allies = team.filter(t => t.id !== h.id && t.alive);
+  const buffPct = Math.round((h.leadership / 100) * 25);
+  allies.forEach(a => { a.damageBuff = (a.damageBuff || 0) + buffPct / 100; });
+  const narrative = getNarrative(h, 'inspire');
+  logs.push({ type:'synergy', msg:`\u2605 ${narrative} — all allies +${buffPct}% this round` });
+  const target = pickTarget(h, enemy);
+  if (target) {
+    const base = (h.leadership * 0.5 + h.intelligence * 0.3 + h.strength * 0.2) / 12;
+    const dmg = Math.round(base * mod * (0.8 + Math.random() * 0.3));
+    const interceptor = tryIntercept(target, enemy, logs);
+    const actualTarget = interceptor || target;
+    const finalDmg = interceptor ? Math.round(dmg * 0.6) : dmg;
+    applyDamage(actualTarget, finalDmg, logs);
+    logs.push({ type:'attack', msg:`  \u21b3 ${h.name} strikes ${actualTarget.name} personally for ${finalDmg}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
+  }
+}
+
+function doSupport(h, team, enemy, mod, logs) {
+  const wounded = team.filter(t => t.alive).sort((a,b) => (a.hp/a.maxHp) - (b.hp/b.maxHp));
+  if (wounded.length > 0) {
+    const ally = wounded[0];
+    const heal = Math.round((h.intelligence / 100) * 16 * (0.8 + Math.random() * 0.4));
+    const before = ally.hp;
+    ally.hp = Math.min(ally.maxHp, ally.hp + heal);
+    const actual = ally.hp - before;
+    if (actual > 0) {
+      const narrative = getNarrative(h, 'support');
+      logs.push({ type:'synergy', msg:`\u271a ${narrative} — ${ally.name} restored ${actual} HP (${ally.hp}/${ally.maxHp})` });
+    }
+  }
+  const threats = enemy.filter(t => t.alive).sort((a,b) => (b.strength + b.agility) - (a.strength + a.agility));
+  if (threats.length > 0 && Math.random() < 0.55) {
+    threats[0].debuffed = true;
+    logs.push({ type:'focus', msg:`\u2726 ${h.name} turns their focus on ${threats[0].name} — weakened for next round` });
+  }
+}
+
+function applyDamage(target, dmg, logs) {
+  if (target.shielded) {
+    dmg = Math.max(1, Math.round(dmg * 0.5));
+    target.shielded = false;
+  }
+  target.hp = Math.max(0, target.hp - dmg);
+  if (target.hp === 0) {
+    target.alive = false;
+    if (target.isArmy) {
+      logs.push({ type:'rivalry', msg:'☠ ' + getArmyNarrative(target, 'fall') });
+    } else {
+      const deathLines = {
+        'Sauron':'The Dark Lord falls — the One Ring loses its master!',
+        'Gandalf':'Fly, you fools… Gandalf falls into shadow',
+        'Superman':'The Man of Steel is down — the world holds its breath',
+        'Darth Vader':'The dark side retreats… Vader falls',
+        'Voldemort':'Tom Riddle falls at last — the Horcruxes fail',
+        'Thanos':'The Mad Titan kneels. Not inevitable after all.',
+        'Achilles':'The arrow finds its mark — Achilles falls',
+        'Leonidas':'Come back with your shield or on it. Leonidas falls on it.',
+        'Luke Skywalker':'The Force grows quiet… Luke Skywalker falls',
+        'Hermione Granger':'The brightest witch of her age falls silent',
+        'Harry Potter':'The Boy Who Lived… falls',
+        'Wonder Woman':'Even a goddess can fall. Diana falls.',
+        'Aragorn':'The king has fallen — Gondor weeps',
+      };
+      const line = deathLines[target.name] || ('☠ ' + target.name + ' has fallen!');
+      logs.push({ type:'rivalry', msg:line });
+    }
+  }
+}
+
+function resolveRound() {
+  const bs = state.battleState;
+  state.round++;
+  const roundLogs = [];
+  roundLogs.push({ type:'round', msg:`─── Round ${state.round} ───` });
+
+  // Reset per-round buffs from previous round
+  [...bs.player, ...bs.cpu].forEach(h => { h.damageBuff = 0; });
+
+  // Turn order: leaders go first (to buff teammates), then support (heal before combat),
+  // then warriors, heroes, defenders
+  const ORDER = ['leader', 'support', 'warrior', 'hero', 'defender'];
+
+  const makeCombatants = (team, enemy) =>
+    ORDER.flatMap(role => team.filter(h => h.alive && h.role === role).map(h => ({ h, team, enemy })));
+
+  const allCombatants = [
+    ...makeCombatants(bs.player, bs.cpu),
+    ...makeCombatants(bs.cpu, bs.player),
+  ];
+
+  allCombatants.forEach(({ h, team, enemy }) => {
+    if (!h.alive) return;
+
+    // Alignment check
+    const { mod: alignMod, msgs: alignMsgs, betrayTarget } = getAlignmentResult(h, team, enemy);
+    alignMsgs.forEach(m => roundLogs.push(m));
+
+    // Betrayal: attack own ally instead of performing role action
+    if (betrayTarget && betrayTarget.alive) {
+      const dmg = Math.round((h.strength * 0.5 + h.agility * 0.5) / 10 * (0.8 + Math.random() * 0.4));
+      applyDamage(betrayTarget, dmg, roundLogs);
+      roundLogs.push({ type:'rivalry', msg:`☠ ${h.name} lashes out at ${betrayTarget.name} for ${dmg} damage in blind rage!` });
+      return;
+    }
+
+    // Apply debuff if flagged; CPU units carry their difficulty damage multiplier
+    const diffDmgMult = h.cpuDmgMult || 1.0;
+    const effectiveMod = (alignMod + (h.damageBuff || 0)) * (h.debuffed ? 0.65 : 1.0) * diffDmgMult;
+    h.debuffed = false;
+
+    // Dispatch role action
+    switch(h.role) {
+      case 'warrior':  doWarrior(h, team, enemy, effectiveMod, roundLogs); break;
+      case 'hero':     doHero(h, team, enemy, effectiveMod, roundLogs); break;
+      case 'defender': doDefender(h, team, enemy, effectiveMod, roundLogs); break;
+      case 'leader':   doLeader(h, team, enemy, effectiveMod, roundLogs); break;
+      case 'support':  doSupport(h, team, enemy, effectiveMod, roundLogs); break;
+    }
+  });
+
+  bs.log.push(...roundLogs);
+
+  // Win condition
+  const playerAlive = bs.player.filter(h => h.alive).length;
+  const cpuAlive    = bs.cpu.filter(h => h.alive).length;
+  if (playerAlive === 0 && cpuAlive === 0) { bs.finished = true; bs.winner = 'draw'; }
+  else if (playerAlive === 0) { bs.finished = true; bs.winner = 'cpu'; }
+  else if (cpuAlive    === 0) { bs.finished = true; bs.winner = 'player'; }
+
+  return roundLogs;
+}
+
+function renderBattleScreen() {
+  const bs = state.battleState;
+  document.getElementById('round-badge').textContent = `Round ${state.round}`;
+
+  // Player team
+  const pEl = document.getElementById('battle-team-player');
+  pEl.innerHTML = '<div class="team-label">Your Forces</div>';
+  bs.player.forEach(h => pEl.appendChild(makeBattleHeroEl(h, false)));
+
+  // CPU team
+  const cEl = document.getElementById('battle-team-cpu');
+  cEl.innerHTML = '<div class="team-label" style="text-align:right;">Enemy Forces</div>';
+  bs.cpu.forEach(h => cEl.appendChild(makeBattleHeroEl(h, true)));
+}
+
+function hpColor(pct) {
+  return pct > 60 ? 'var(--good)' : pct > 30 ? 'var(--gold)' : 'var(--evil)';
+}
+
+function makeBattleHeroEl(h, isEnemy) {
+  const pct = Math.max(0, Math.round((h.hp / h.maxHp) * 100));
+  const circ = 57; // stroke-dasharray = 2π×r where r≈9
+  const offset = circ - (circ * pct / 100);
+  const color = hpColor(pct);
+  const roleAbbr = { leader:'LDR', hero:'HERO', defender:'DEF', warrior:'WAR', support:'SUP' }[h.role] || h.role;
+  const div = document.createElement('div');
+  div.className = `battle-hero ${!h.alive ? 'defeated' : ''}`;
+  div.id = `bh-${h.id}`;
+  div.innerHTML = `
+    <svg class="bh-circle" width="22" height="22" viewBox="0 0 22 22">
+      <circle class="bh-circle-track" cx="11" cy="11" r="9"/>
+      <circle class="bh-circle-fill" cx="11" cy="11" r="9"
+        style="stroke:${color}; stroke-dashoffset:${offset}"/>
+    </svg>
+    <div class="bh-info">
+      <div class="bh-name">${h.name}</div>
+      <div class="bh-role-tag">${roleAbbr} · ${h.hp}HP</div>
+    </div>
+  `;
+  return div;
+}
+
+function updateBattleScreen(newLogs) {
+  const bs = state.battleState;
+  document.getElementById('round-badge').textContent = `Round ${state.round}`;
+
+  // Update hero cards
+  [...bs.player, ...bs.cpu].forEach(h => {
+    const el = document.getElementById(`bh-${h.id}`);
+    if (!el) return;
+    const pct = Math.max(0, Math.round((h.hp / h.maxHp) * 100));
+    const circ = 57;
+    const offset = circ - (circ * pct / 100);
+    const color = hpColor(pct);
+    el.className = `battle-hero ${!h.alive ? 'defeated' : ''}`;
+    const circleFill = el.querySelector('.bh-circle-fill');
+    if (circleFill) { circleFill.style.stroke = color; circleFill.style.strokeDashoffset = offset; }
+    const roleTag = el.querySelector('.bh-role-tag');
+    const roleAbbr = { leader:'LDR', hero:'HERO', defender:'DEF', warrior:'WAR', support:'SUP' }[h.role] || h.role;
+    if (roleTag) roleTag.textContent = `${roleAbbr} · ${h.hp}HP`;
+  });
+
+  // Append new logs
+  const logEl = document.getElementById('battle-log');
+  newLogs.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = `log-entry log-${entry.type}`;
+    div.textContent = entry.msg;
+    logEl.appendChild(div);
+  });
+  logEl.scrollTop = logEl.scrollHeight;
+
+  if (bs.finished) {
+    document.getElementById('btn-next-round').disabled = true;
+    setTimeout(showResult, 1200);
+  }
+}
+
+function nextRound() {
+  const logs = resolveRound();
+  updateBattleScreen(logs);
+}
+
+function autoResolve() {
+  const bs = state.battleState;
+  let safetyLimit = 100;
+  while (!bs.finished && safetyLimit-- > 0) resolveRound();
+
+  // If safety limit hit without a winner, decide by total remaining HP
+  if (!bs.finished) {
+    const playerHp = bs.player.reduce((sum, h) => sum + (h.alive ? h.hp : 0), 0);
+    const cpuHp = bs.cpu.reduce((sum, h) => sum + (h.alive ? h.hp : 0), 0);
+    bs.finished = true;
+    if (playerHp > cpuHp) bs.winner = 'player';
+    else if (cpuHp > playerHp) bs.winner = 'cpu';
+    else bs.winner = 'draw';
+    bs.log.push({ type:'round', msg:`— Battle decided after ${state.round} rounds by remaining HP —` });
+  }
+
+  // Rebuild log display
+  const logEl = document.getElementById('battle-log');
+  logEl.innerHTML = '';
+  bs.log.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = `log-entry log-${entry.type}`;
+    div.textContent = entry.msg;
+    logEl.appendChild(div);
+  });
+  logEl.scrollTop = logEl.scrollHeight;
+
+  renderBattleScreen();
+  document.getElementById('btn-next-round').disabled = true;
+
+  setTimeout(showResult, 800);
+}
+
+// ══════════════════════════════════════════════════════
+// RESULT
+// ══════════════════════════════════════════════════════
+function showResult() {
+  const bs = state.battleState;
+  const titleEl = document.getElementById('result-title');
+  const subEl = document.getElementById('result-subtitle');
+
+  // Fallback: decide by HP if winner wasn't set
+  if (!bs.winner) {
+    const playerHp = bs.player.reduce((sum, h) => sum + (h.alive ? h.hp : 0), 0);
+    const cpuHp = bs.cpu.reduce((sum, h) => sum + (h.alive ? h.hp : 0), 0);
+    bs.winner = playerHp > cpuHp ? 'player' : cpuHp > playerHp ? 'cpu' : 'draw';
+  }
+
+  if (bs.winner === 'player') {
+    titleEl.textContent = 'Victory'; titleEl.className = 'result-title victory';
+    subEl.textContent = `Your champions triumphed in ${state.round} rounds.`;
+  } else if (bs.winner === 'cpu') {
+    titleEl.textContent = 'Defeat'; titleEl.className = 'result-title defeat';
+    subEl.textContent = `The enemy prevailed after ${state.round} rounds of fierce combat.`;
+  } else {
+    titleEl.textContent = 'Draw'; titleEl.className = 'result-title';
+    subEl.textContent = `All champions fell. The field belongs to none.`;
+  }
+
+  const teamsEl = document.getElementById('result-teams');
+  teamsEl.innerHTML = '';
+
+  [{ label:'Your Forces', heroes: bs.player }, { label:'Enemy Forces', heroes: bs.cpu }].forEach(side => {
+    const card = document.createElement('div');
+    card.className = 'result-team-card';
+    card.innerHTML = `<h3>${side.label}</h3>` + side.heroes.map(h => `
+      <div class="result-hero-row ${!h.alive?'dead':''}">
+        <span>${h.name}</span>
+        <span class="hero-hp">${h.alive ? h.hp + ' HP' : '✝'}</span>
+      </div>
+    `).join('');
+    teamsEl.appendChild(card);
+  });
+
+  showScreen('screen-result');
+}
+
+function resetGame() {
+  state.playerTeam = [];
+  state.cpuTeam = [];
+  state.battleState = null;
+  state.round = 0;
+  showScreen('screen-title');
+}
+
+// Close detail on outside click
+// Filter bar
+// Single delegated filter listener covering both desktop and mobile filter bars
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  const bar = btn.closest('#filter-bar, .mobile-filter-row');
+  if (!bar) return;
+  // Clear active only within the same bar, then set the clicked one
+  bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Sync the other bar to match
+  const otherBar = bar.id === 'filter-bar'
+    ? document.querySelector('.mobile-filter-row')
+    : document.getElementById('filter-bar');
+  if (otherBar) {
+    otherBar.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.filter === btn.dataset.filter);
+    });
+  }
+  state.filter = btn.dataset.filter;
+  renderPool();
+});
+
+document.addEventListener('click', e => {
+  const panel = document.getElementById('hero-detail-panel');
+  if (panel.classList.contains('visible') && !panel.contains(e.target) && !e.target.closest('.hero-card')) {
+    closeDetail();
+  }
+});
+</script>
+</body>
+</html>
