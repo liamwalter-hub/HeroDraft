@@ -1660,16 +1660,22 @@
       </div>
       <div id="pick-tracker" style="display:flex; gap:4px; align-items:center; flex-wrap:wrap;"></div>
       <div class="desktop-filter-wrap" style="display:flex; gap:0.5rem; align-items:center;">
-        <div class="filter-bar" id="filter-bar" style="padding:0; background:none; border:none; gap:0.35rem;">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="role-leader" style="color:var(--leader);border-color:var(--leader);">Leader</button>
-          <button class="filter-btn" data-filter="role-hero" style="color:var(--hero);border-color:var(--hero);">Hero</button>
-          <button class="filter-btn" data-filter="role-defender" style="color:var(--defender);border-color:var(--defender);">Defender</button>
-          <button class="filter-btn" data-filter="role-warrior" style="color:var(--warrior);border-color:var(--warrior);">Warrior</button>
-          <button class="filter-btn" data-filter="role-support" style="color:var(--support);border-color:var(--support);">Support</button>
-          <button class="filter-btn" data-filter="align-good" style="color:var(--good);border-color:var(--good);">Good</button>
-          <button class="filter-btn" data-filter="align-evil" style="color:var(--evil);border-color:var(--evil);">Evil</button>
-          <button class="filter-btn" data-filter="role-army" style="color:var(--good);border-color:var(--good);">Army</button>
+        <div style="display:flex;flex-direction:column;gap:0.3rem;">
+          <div class="filter-bar" id="filter-bar-role" style="padding:0;background:none;border:none;gap:0.35rem;">
+            <button class="filter-btn active" data-filter-role="all">All</button>
+            <button class="filter-btn" data-filter-role="role-leader" style="color:var(--leader);border-color:var(--leader);">Leader</button>
+            <button class="filter-btn" data-filter-role="role-hero" style="color:var(--hero);border-color:var(--hero);">Hero</button>
+            <button class="filter-btn" data-filter-role="role-defender" style="color:var(--defender);border-color:var(--defender);">Defender</button>
+            <button class="filter-btn" data-filter-role="role-warrior" style="color:var(--warrior);border-color:var(--warrior);">Warrior</button>
+            <button class="filter-btn" data-filter-role="role-support" style="color:var(--support);border-color:var(--support);">Support</button>
+            <button class="filter-btn" data-filter-role="role-army" style="color:var(--good);border-color:var(--good);">Army</button>
+          </div>
+          <div class="filter-bar" id="filter-bar-align" style="padding:0;background:none;border:none;gap:0.35rem;">
+            <button class="filter-btn active" data-filter-align="all">All</button>
+            <button class="filter-btn" data-filter-align="good" style="color:var(--good);border-color:var(--good);">Good</button>
+            <button class="filter-btn" data-filter-align="neutral" style="color:var(--muted);border-color:var(--muted);">Neutral</button>
+            <button class="filter-btn" data-filter-align="evil" style="color:var(--evil);border-color:var(--evil);">Evil</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1686,19 +1692,22 @@
 
     <!-- DESKTOP: hero pool (always visible in col 1) -->
     <!-- MOBILE: tab panel 1 — hero pool -->
+    <div class="mobile-filter-row" id="mobile-filter-role">
+      <button class="filter-btn active" data-filter-role="all">All</button>
+      <button class="filter-btn" data-filter-role="role-leader" style="color:var(--leader);border-color:var(--leader);">Leader</button>
+      <button class="filter-btn" data-filter-role="role-hero" style="color:var(--hero);border-color:var(--hero);">Hero</button>
+      <button class="filter-btn" data-filter-role="role-defender" style="color:var(--defender);border-color:var(--defender);">Defender</button>
+      <button class="filter-btn" data-filter-role="role-warrior" style="color:var(--warrior);border-color:var(--warrior);">Warrior</button>
+      <button class="filter-btn" data-filter-role="role-support" style="color:var(--support);border-color:var(--support);">Support</button>
+      <button class="filter-btn" data-filter-role="role-army" style="color:var(--good);border-color:var(--good);">Army</button>
+    </div>
+    <div class="mobile-filter-row" id="mobile-filter-align">
+      <button class="filter-btn active" data-filter-align="all">All</button>
+      <button class="filter-btn" data-filter-align="good" style="color:var(--good);border-color:var(--good);">Good</button>
+      <button class="filter-btn" data-filter-align="neutral" style="color:var(--muted);border-color:var(--muted);">Neutral</button>
+      <button class="filter-btn" data-filter-align="evil" style="color:var(--evil);border-color:var(--evil);">Evil</button>
+    </div>
     <div class="draft-tab-panel active" id="tab-pool">
-      <!-- Mobile-only filter row above pool -->
-      <div class="mobile-filter-row">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="role-leader" style="color:var(--leader);border-color:var(--leader);">Leader</button>
-        <button class="filter-btn" data-filter="role-hero" style="color:var(--hero);border-color:var(--hero);">Hero</button>
-        <button class="filter-btn" data-filter="role-defender" style="color:var(--defender);border-color:var(--defender);">Defender</button>
-        <button class="filter-btn" data-filter="role-warrior" style="color:var(--warrior);border-color:var(--warrior);">Warrior</button>
-        <button class="filter-btn" data-filter="role-support" style="color:var(--support);border-color:var(--support);">Support</button>
-        <button class="filter-btn" data-filter="align-good" style="color:var(--good);border-color:var(--good);">Good</button>
-        <button class="filter-btn" data-filter="align-evil" style="color:var(--evil);border-color:var(--evil);">Evil</button>
-        <button class="filter-btn" data-filter="role-army" style="color:var(--good);border-color:var(--good);">Army</button>
-      </div>
       <div class="hero-pool" id="hero-pool"></div>
     </div>
 
@@ -1997,8 +2006,8 @@ const HEROES = [
   { id:6,  name:"Atticus Finch",  universe:"To Kill a Mockingbird", alignment:"good", role:"leader",   strength:40, leadership:88, durability:45, intelligence:97, agility:35, rivals:[], allies:[], lore:"Moral compass of Maycomb, defender of justice" },
 
   // HEROES
-  { id:7,  name:"Superman",       universe:"DC Comics",          alignment:"good",    role:"hero",     strength:99, leadership:72, durability:92, intelligence:72, agility:90, rivals:["Lex Luthor","General Zod","Thanos","Sauron"], allies:["Wonder Woman","Batman"], lore:"Last son of Krypton, Man of Steel" },
-  { id:8,  name:"Wonder Woman",   universe:"DC Comics",          alignment:"good",    role:"hero",     strength:92, leadership:78, durability:85, intelligence:82, agility:92, rivals:["Ares","Thanos","Loki"], allies:["Superman","Batman"], lore:"Amazon warrior princess, god killer" },
+  { id:7,  name:"Superman",       universe:"DC Comics",          alignment:"good",    role:"hero",     strength:99, leadership:72, durability:92, intelligence:72, agility:90, rivals:["Lex Luthor","General Zod"], allies:["Wonder Woman","Batman"], lore:"Last son of Krypton, Man of Steel" },
+  { id:8,  name:"Wonder Woman",   universe:"DC Comics",          alignment:"good",    role:"hero",     strength:92, leadership:78, durability:85, intelligence:82, agility:92, rivals:[], allies:["Superman","Batman"], lore:"Amazon warrior princess, god killer" },
   { id:9,  name:"Luke Skywalker", universe:"Star Wars",          alignment:"good",    role:"hero",     strength:72, leadership:75, durability:68, intelligence:82, agility:85, rivals:["Darth Vader","Emperor Palpatine"], allies:["Obi-Wan Kenobi"], lore:"Jedi Knight, hope of the Rebellion" },
   { id:10, name:"Frodo Baggins",  universe:"Lord of the Rings",  alignment:"good",    role:"hero",     strength:32, leadership:50, durability:55, intelligence:70, agility:62, rivals:["Sauron","Gollum"], allies:["Aragorn","Gandalf","Samwise"], lore:"Hobbit who carried the One Ring to Mordor" },
   { id:11, name:"Hermione Granger",universe:"Harry Potter",      alignment:"good",    role:"support",  strength:45, leadership:78, durability:58, intelligence:99, agility:68, rivals:["Voldemort","Bellatrix"], allies:["Harry Potter"], lore:"Brightest witch of her age — the mind behind every plan" },
@@ -2019,7 +2028,7 @@ const HEROES = [
   { id:22, name:"Gimli",          universe:"Lord of the Rings",  alignment:"good",    role:"warrior",  strength:85, leadership:60, durability:90, intelligence:62, agility:45, rivals:["Sauron"], allies:["Aragorn","Gandalf","Legolas"], lore:"Son of Gloin, axe of the Fellowship" },
   { id:23, name:"Maximus",        universe:"Gladiator",          alignment:"good",    role:"warrior",  strength:88, leadership:78, durability:82, intelligence:72, agility:80, rivals:["Commodus"], allies:[], lore:"General, slave, gladiator — loyal to Rome" },
   { id:24, name:"Darth Vader",    universe:"Star Wars",          alignment:"evil",    role:"warrior",  strength:92, leadership:82, durability:90, intelligence:85, agility:78, rivals:["Luke Skywalker","Obi-Wan Kenobi","Emperor Palpatine"], allies:[], lore:"Dark Lord of the Sith, once Anakin Skywalker" },
-  { id:25, name:"Loki",           universe:"Marvel Comics",      alignment:"evil",    role:"warrior",  strength:78, leadership:70, durability:72, intelligence:94, agility:85, rivals:["Thor","Okoye"], allies:[], lore:"God of Mischief, master of deception" },
+  { id:25, name:"Loki",           universe:"Marvel Comics",      alignment:"evil",    role:"warrior",  strength:78, leadership:70, durability:72, intelligence:94, agility:85, rivals:["Thor"], allies:[], lore:"God of Mischief, master of deception" },
 
   // SUPPORT
   { id:26, name:"Merlin",         universe:"Arthurian Legend",   alignment:"good",    role:"support",  strength:42, leadership:78, durability:55, intelligence:98, agility:45, rivals:["Morgana"], allies:[], lore:"Wizard of Camelot, architect of a kingdom" },
@@ -2031,7 +2040,7 @@ const HEROES = [
   { id:30, name:"Sauron",         universe:"Lord of the Rings",  alignment:"evil",    role:"warrior",  strength:98, leadership:88, durability:95, intelligence:90, agility:60, rivals:["Aragorn","Gandalf","Frodo Baggins","Legolas","Gimli","Samwise Gamgee"], allies:[], lore:"The Dark Lord, maker of the One Ring" },
   { id:31, name:"Voldemort",      universe:"Harry Potter",       alignment:"evil",    role:"leader",   strength:62, leadership:93, durability:75, intelligence:97, agility:68, rivals:["Harry Potter","Hermione Granger"], allies:["Bellatrix Lestrange"], lore:"The Dark Lord who split his soul into seven" },
   { id:32, name:"Bellatrix Lestrange", universe:"Harry Potter", alignment:"evil",    role:"warrior",  strength:76, leadership:58, durability:70, intelligence:84, agility:88, rivals:["Hermione Granger","Harry Potter"], allies:["Voldemort"], lore:"Most devoted and deranged of Voldemort’s servants" },
-  { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:55, rivals:["Thor","King T’Challa"], allies:[], lore:"The Mad Titan who sought to halve all life" },
+  { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:55, rivals:["Thor","King T’Challa","Spider-Man","Black Widow","Okoye"], allies:[], lore:"The Mad Titan who sought to halve all life" },
   { id:34, name:"Cersei Lannister",universe:"Game of Thrones",  alignment:"evil",    role:"leader",   strength:35, leadership:88, durability:50, intelligence:95, agility:40, rivals:[], allies:["Jaime Lannister"], lore:"Queen of the Seven Kingdoms, never forgets a debt" },
   { id:35, name:"Jaime Lannister",universe:"Game of Thrones",   alignment:"neutral", role:"warrior",  strength:88, leadership:60, durability:78, intelligence:72, agility:85, rivals:[], allies:["Cersei Lannister","Brienne of Tarth"], lore:"The Kingslayer, greatest swordsman in Westeros" },
   { id:36, name:"Brienne of Tarth",universe:"Game of Thrones",  alignment:"good",    role:"defender", strength:85, leadership:65, durability:88, intelligence:70, agility:72, rivals:[], allies:["Jaime Lannister"], lore:"Lady knight, sworn to protect the innocent" },
@@ -2040,26 +2049,26 @@ const HEROES = [
   { id:39, name:"Walter White",   universe:"Breaking Bad",       alignment:"evil",    role:"leader",   strength:45, leadership:85, durability:52, intelligence:98, agility:48, rivals:[], allies:[], lore:"Chemistry teacher turned drug lord — I am the danger" },
 
   // DC COMICS — new additions to make DC synergy viable after Marvel split
-  { id:41, name:"Batman",         universe:"DC Comics",          alignment:"good",    role:"defender", strength:78, leadership:82, durability:80, intelligence:97, agility:90, rivals:["Joker","Lex Luthor"], allies:["Superman","Wonder Woman"], lore:"The Dark Knight — Gotham's vigilante, peak human perfection" },
+  { id:41, name:"Batman",         universe:"DC Comics",          alignment:"good",    role:"defender", strength:78, leadership:82, durability:80, intelligence:97, agility:90, rivals:["Joker","Lex Luthor"], allies:["Superman","Wonder Woman"], lore:"The Dark Knight — Gotham’s vigilante, peak human perfection" },
   { id:42, name:"The Joker",      universe:"DC Comics",          alignment:"evil",    role:"warrior",  strength:72, leadership:55, durability:65, intelligence:88, agility:80, rivals:["Batman"], allies:[], lore:"Agent of chaos — the clown who wants to watch the world burn" },
   { id:43, name:"Lex Luthor",     universe:"DC Comics",          alignment:"evil",    role:"leader",   strength:50, leadership:90, durability:58, intelligence:100,agility:45, rivals:["Superman","Batman"], allies:[], lore:"The most brilliant and dangerous man on Earth" },
 
   // MARVEL COMICS — additional heroes to strengthen the synergy block
-  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin"], allies:["King T'Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
-  { id:45, name:"Black Widow",    universe:"Marvel Comics",      alignment:"neutral", role:"support",  strength:62, leadership:75, durability:65, intelligence:95, agility:96, rivals:[], allies:["Okoye","King T'Challa"], lore:"Master spy and assassin — the most dangerous woman alive" },
+  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin"], allies:["King T’Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
+  { id:45, name:"Black Widow",    universe:"Marvel Comics",      alignment:"neutral", role:"support",  strength:62, leadership:75, durability:65, intelligence:95, agility:96, rivals:[], allies:["Okoye","King T’Challa"], lore:"Master spy and assassin — the most dangerous woman alive" },
 
   // THE WITCHER
   { id:46, name:"Geralt of Rivia",universe:"The Witcher",        alignment:"neutral", role:"warrior",  strength:94, leadership:55, durability:88, intelligence:78, agility:90, rivals:["Eredin"], allies:[], lore:"White Wolf, professional monster hunter — evil is evil" },
 
   // DUNE
-  { id:47, name:"Paul Atreides",  universe:"Dune",               alignment:"neutral", role:"leader",   strength:72, leadership:94, durability:68, intelligence:96, agility:82, rivals:["Baron Harkonnen"], allies:[], lore:"Muad'Dib — the sleeper must awaken" },
+  { id:47, name:"Paul Atreides",  universe:"Dune",               alignment:"neutral", role:"leader",   strength:72, leadership:94, durability:68, intelligence:96, agility:82, rivals:["Baron Harkonnen"], allies:[], lore:"Muad’Dib — the sleeper must awaken" },
 
   // THE MATRIX
   { id:48, name:"Morpheus",       universe:"The Matrix",         alignment:"good",    role:"leader",   strength:70, leadership:92, durability:68, intelligence:90, agility:88, rivals:["Agent Smith"], allies:["Neo"], lore:"Captain of the Nebuchadnezzar — he believed before anyone else did" },
-  { id:49, name:"Neo",            universe:"The Matrix",         alignment:"good",    role:"hero",     strength:82, leadership:68, durability:78, intelligence:88, agility:97, rivals:["Agent Smith"], allies:["Morpheus"], lore:"The One — he doesn't dodge bullets, he doesn't have to" },
+  { id:49, name:"Neo",            universe:"The Matrix",         alignment:"good",    role:"hero",     strength:82, leadership:68, durability:78, intelligence:88, agility:97, rivals:["Agent Smith"], allies:["Morpheus"], lore:"The One — he doesn’t dodge bullets, he doesn’t have to" },
 
   // SHERLOCK HOLMES
-  { id:50, name:"Sherlock Holmes",universe:"Baker Street",       alignment:"neutral", role:"support",  strength:52, leadership:65, durability:55, intelligence:100,agility:72, rivals:["Professor Moriarty"], allies:["Dr Watson"], lore:"The world's only consulting detective — the game is afoot" },
+  { id:50, name:"Sherlock Holmes",universe:"Baker Street",       alignment:"neutral", role:"support",  strength:52, leadership:65, durability:55, intelligence:100,agility:72, rivals:["Professor Moriarty"], allies:["Dr Watson"], lore:"The world’s only consulting detective — the game is afoot" },
 
   // ANCIENT GREECE — third member to make synergy viable
   { id:51, name:"Odysseus",       universe:"Ancient Greece",     alignment:"neutral", role:"hero",     strength:72, leadership:78, durability:70, intelligence:98, agility:78, rivals:[], allies:["Achilles","Leonidas"], lore:"The craftiest of the Greeks — patient, brilliant, ruthless" },
@@ -2069,6 +2078,29 @@ const HEROES = [
 
   // ARTHURIAN LEGEND — give Merlin a companion for synergy
   { id:53, name:"King Arthur",    universe:"Arthurian Legend",   alignment:"good",    role:"leader",   strength:82, leadership:92, durability:78, intelligence:80, agility:72, rivals:["Mordred"], allies:["Merlin"], lore:"Once and future king — he who pulls the sword from the stone" },
+
+  // ── EVIL EXPANSION PACK ──
+
+  // DEFENDERS
+  { id:54, name:"Saruman",         universe:"Lord of the Rings",  alignment:"evil",    role:"defender", strength:65, leadership:88, durability:85, intelligence:98, agility:50, rivals:["Gandalf","Aragorn"], allies:["Sauron"], lore:"The White Wizard turned, whose voice could bend the will of any listener" },
+  { id:55, name:"Magneto",         universe:"Marvel Comics",      alignment:"evil",    role:"defender", strength:80, leadership:82, durability:88, intelligence:92, agility:68, rivals:["Professor X"], allies:[], lore:"Master of magnetism — he has been to hell and back, and hell was men" },
+
+  // WARRIORS
+  { id:56, name:"Killmonger",      universe:"Marvel Comics",      alignment:"evil",    role:"warrior",  strength:90, leadership:72, durability:82, intelligence:85, agility:88, rivals:["King T’Challa"], allies:[], lore:"Erik Stevens — the outsider who nearly took the throne of Wakanda" },
+  { id:57, name:"Ra’s al Ghul",    universe:"DC Comics",          alignment:"evil",    role:"warrior",  strength:85, leadership:80, durability:80, intelligence:92, agility:90, rivals:["Batman"], allies:[], lore:"Immortal head of the League of Shadows — death is not the end" },
+  { id:58, name:"General Zod",     universe:"DC Comics",          alignment:"evil",    role:"warrior",  strength:96, leadership:78, durability:92, intelligence:80, agility:85, rivals:["Superman"], allies:[], lore:"Kryptonian general who knelt for no one — until he was made to" },
+
+  // SUPPORT
+  { id:59, name:"Emperor Palpatine",universe:"Star Wars",         alignment:"evil",    role:"leader",   strength:55, leadership:96, durability:62, intelligence:99, agility:52, rivals:["Yoda","Luke Skywalker"], allies:["Darth Vader"], lore:"The Senate. The Republic. The Empire. All of it was him." },
+  { id:60, name:"Moriarty",        universe:"Baker Street",       alignment:"evil",    role:"support",  strength:48, leadership:80, durability:52, intelligence:100,agility:70, rivals:["Sherlock Holmes"], allies:[], lore:"The Napoleon of Crime — the only man Sherlock Holmes ever feared" },
+  { id:61, name:"Littlefinger",    universe:"Game of Thrones",    alignment:"evil",    role:"support",  strength:32, leadership:78, durability:45, intelligence:99, agility:60, rivals:[], allies:[], lore:"Chaos isn’t a pit — chaos is a ladder. Petyr Baelish climbs." },
+  { id:62, name:"President Snow",  universe:"The Hunger Games",   alignment:"evil",    role:"leader",   strength:38, leadership:90, durability:52, intelligence:96, agility:38, rivals:["Katniss Everdeen"], allies:[], lore:"The man who turned hope into the Capitol’s most powerful weapon" },
+  { id:63, name:"Dolores Umbridge",universe:"Harry Potter",       alignment:"evil",    role:"support",  strength:35, leadership:75, durability:55, intelligence:90, agility:45, rivals:["Harry Potter","Hermione Granger"], allies:[], lore:"Hem hem. The cruelty of Umbridge was worse than Voldemort’s — it smiled." },
+
+  // ── EVIL HERO ADDITIONS ──
+  { id:64, name:"Daenerys Targaryen", universe:"Game of Thrones",   alignment:"evil",    role:"hero",     strength:82, leadership:78, durability:72, intelligence:88, agility:80, rivals:["Cersei Lannister"], allies:[], lore:"She came to break the wheel. She burned the world instead." },
+  { id:65, name:"Count Dracula",      universe:"Gothic Horror",      alignment:"evil",    role:"hero",     strength:68, leadership:62, durability:78, intelligence:92, agility:95, rivals:[], allies:[], lore:"I have crossed oceans of time to find you. I do not stop at dawn." },
+  { id:66, name:"Dorian Gray",        universe:"Oscar Wilde",        alignment:"neutral", role:"hero",     strength:65, leadership:55, durability:95, intelligence:88, agility:85, rivals:[], allies:[], lore:"The only way to get rid of a temptation is to yield to it. Dorian yields to everything." },
   { id:40, name:"Gollum",         universe:"Lord of the Rings",  alignment:"neutral", role:"hero",     strength:40, leadership:20, durability:60, intelligence:65, agility:95, rivals:["Frodo Baggins","Samwise Gamgee","Sauron"], allies:[], lore:"Wretched creature bound to the Ring’s corruption" },
 ];
 
@@ -2087,12 +2119,17 @@ const ARMIES = [
   { id:'a6', name:"Sauron’s Orc Horde",universe:'Lord of the Rings',alignment:'evil',   strength:75, durability:72, size:10000,lore:'Numberless as shadow, relentless',    affinityLeaders:['Sauron','Saruman'] },
   { id:'a7', name:'Death Eaters',      universe:'Harry Potter',     alignment:'evil',    strength:72, durability:68, size:300, lore:'Fanatical servants of the Dark Lord',  affinityLeaders:['Voldemort','Bellatrix Lestrange'] },
   { id:'a8', name:"Thanos' Outriders", universe:'Marvel Comics',    alignment:'evil',    strength:80, durability:78, size:5000,lore:'The Black Order arrives without mercy',  affinityLeaders:['Thanos'] },
-  { id:'a9', name:'Lannister Army',    universe:'Game of Thrones',  alignment:'neutral', strength:74, durability:76, size:2000,lore:'A Lannister always pays his debts',    affinityLeaders:['Cersei Lannister','Jaime Lannister'] },
+  { id:'a9', name:'Lannister Army',    universe:'Game of Thrones',  alignment:'neutral', strength:74, durability:76, size:2000,lore:'A Lannister always pays his debts',    affinityLeaders:['Cersei Lannister','Jaime Lannister','Daenerys Targaryen'] },
   { id:'a10',name:'Starfleet Security',universe:'Star Trek',        alignment:'good',    strength:58, durability:60, size:800, lore:'The last line of Federation defence',  affinityLeaders:['Jean-Luc Picard','Q','Spock'] },
   { id:'a11', name:'Gotham City Police',        universe:'DC Comics',          alignment:'good',    strength:62, durability:68, size:300, lore:'The thin blue line between Gotham and chaos',           affinityLeaders:['Batman','Superman','Wonder Woman'] },
   { id:'a12', name:'Fremen Warriors',           universe:'Dune',               alignment:'neutral', strength:80, durability:75, size:500, lore:'Desert fighters who ride sandworms and fear nothing',   affinityLeaders:['Paul Atreides'] },
   { id:'a13', name:'Knights of the Round Table',universe:'Arthurian Legend',   alignment:'good',    strength:74, durability:80, size:150, lore:'The greatest knights of Camelot, sworn to the code',   affinityLeaders:['King Arthur','Merlin'] },
   { id:'a14', name:'Resistance Fighters',       universe:'The Matrix',         alignment:'good',    strength:65, durability:62, size:200, lore:'Those who chose the red pill — humanity fighting back', affinityLeaders:['Morpheus','Neo'] },
+  { id:'a15', name:'Uruk-hai',                universe:'Lord of the Rings',  alignment:'evil',    strength:82, durability:78, size:600, lore:'Bred for war — faster and stronger than any orc before them', affinityLeaders:['Saruman','Sauron'] },
+  { id:'a16', name:'Imperial Stormtroopers',  universe:'Star Wars',           alignment:'evil',    strength:68, durability:72, size:1000, lore:'The faceless might of the Galactic Empire', affinityLeaders:['Emperor Palpatine','Darth Vader'] },
+  { id:'a17', name:'Capitol Peacekeepers',    universe:'The Hunger Games',    alignment:'evil',    strength:65, durability:70, size:400, lore:'The iron fist of the Capitol, trained to suppress and eliminate', affinityLeaders:['President Snow'] },
+  { id:'a18', name:'League of Shadows',       universe:'DC Comics',           alignment:'evil',    strength:78, durability:72, size:300, lore:'Ancient assassins sworn to cleanse the world through destruction', affinityLeaders:["Ra’s al Ghul","Batman"] },
+  { id:'a19', name:'The Unsullied', universe:'Game of Thrones', alignment:'neutral', strength:76, durability:80, size:8000, lore:'Slave soldiers forged into the perfect weapon — they fear nothing', affinityLeaders:['Daenerys Targaryen'] },
 ];
 
 // ══════════════════════════════════════════════════════
@@ -2110,7 +2147,8 @@ let state = {
   playerArmy: null,
   cpuTeam: [],
   cpuArmy: null,
-  filter: 'all',
+  filterRole: 'all',   // role filter: 'all' | 'role-leader' | ... | 'role-army'
+  filterAlign: 'all',  // alignment filter: 'all' | 'good' | 'evil' | 'neutral'
   battleState: null,
   round: 0,
   detailHero: null,
@@ -2221,7 +2259,7 @@ function rdGenerateOffers(side) {
   // Army is handled separately in the army stage after all heroes are picked
 }
 
-// Clear the offer for a slot after it's been picked or declined
+// Clear the offer for a slot after it’s been picked or declined
 function rdClearOffer(side, role) {
   if (rdState[side]) delete rdState[side].offers[role];
 }
@@ -2253,7 +2291,7 @@ function rdPlayerPick(type, id) {
     return;
   }
 
-  // Army pick doesn't consume a snake pick — just refresh the display
+  // Army pick doesn’t consume a snake pick — just refresh the display
   renderRestrictedDraft();
 }
 
@@ -2301,7 +2339,7 @@ function rdAdvanceSnake() {
     renderRestrictedDraft();
     setTimeout(rdDoCpuPick, delay);
   } else {
-    // Generate fresh offers for the player's next needed role
+    // Generate fresh offers for the player’s next needed role
     rdGenerateOffers('player');
     if (isMobile()) switchDraftTab('pool');
     renderRestrictedDraft();
@@ -2342,7 +2380,7 @@ function rdDoCpuPick() {
   state.snakePick++;
   state.draftLocked = false;
 
-  // Generate new offers for CPU's next pick
+  // Generate new offers for CPU’s next pick
   rdGenerateOffers('cpu');
 
   renderRestrictedDraft();
@@ -2360,7 +2398,7 @@ function renderRestrictedDraft() {
   const isCpuTurn    = !isArmyStage && state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'cpu';
   const draftDone    = !isArmyStage && state.snakePick >= 10 && !!state.playerArmy;
 
-  // Always refresh offers before rendering — invalidates anything that's been taken
+  // Always refresh offers before rendering — invalidates anything that’s been taken
   if (isPlayerTurn) rdGenerateOffers('player');
 
   // Header
@@ -2828,9 +2866,13 @@ function renderPool() {
 
   const filtered = ROSTER.filter(h => {
     if (takenIds.has(h.id)) return false;
-    if (state.filter === 'all') return true;
-    if (state.filter.startsWith('role-')) return h.role === state.filter.replace('role-','');
-    if (state.filter.startsWith('align-')) return h.alignment === state.filter.replace('align-','');
+    // Role filter
+    if (state.filterRole !== 'all') {
+      const role = state.filterRole.replace('role-', '');
+      if (h.role !== role) return false;
+    }
+    // Alignment filter
+    if (state.filterAlign !== 'all' && h.alignment !== state.filterAlign) return false;
     return true;
   });
 
@@ -2873,7 +2915,7 @@ function renderPool() {
   });
 
   // ── Army cards in the pool ──
-  if (state.filter === 'all' || state.filter === 'role-army') {
+  if (state.filterAlign === 'all' && (state.filterRole === 'all' || state.filterRole === 'role-army')) {
     const leader = state.playerTeam.find(h => h.role === 'leader');
     ARMIES.forEach(a => {
       const cpuHas = state.cpuArmy && state.cpuArmy.id === a.id;
@@ -3001,7 +3043,40 @@ function buildAlignmentAlerts() {
     });
   });
   const evil = team.filter(h => h.alignment === 'evil');
-  evil.forEach(e => alerts.push({ type:'warning', msg:`☉ ${e.name} — uneasy with good allies` }));
+  const good = team.filter(h => h.alignment === 'good');
+  const neutral = team.filter(h => h.alignment === 'neutral');
+  if (evil.length > 0 && good.length > 0) {
+    evil.forEach(e => alerts.push({ type:'warning', msg:`☉ ${e.name} — uneasy with good allies (-10%)` }));
+    good.forEach(g => alerts.push({ type:'warning', msg:`☉ ${g.name} — uneasy with evil allies (-8%)` }));
+  }
+  if (evil.length >= 2) {
+    alerts.push({ type:'synergy', msg:`☠ ${evil.length} evil heroes — dark cohesion (+${Math.min(evil.length-1,2)*10}%)` });
+  }
+  if (good.length >= 2) {
+    alerts.push({ type:'synergy', msg:`✦ ${good.length} good heroes — shared cause (+${Math.min(good.length-1,2)*8}%)` });
+  }
+  // Fury bonuses — player heroes whose rivals are already on the CPU team
+  state.playerTeam.forEach(h => {
+    const furyTargets = state.cpuTeam.filter(c => h.rivals && h.rivals.includes(c.name));
+    if (furyTargets.length > 0) {
+      const bonus = Math.min(furyTargets.length * 15, 45);
+      const names = furyTargets.map(c => c.name).join(' & ');
+      const verb = h.alignment === 'evil' ? `has a vendetta against` : `is galvanised facing`;
+      alerts.push({ type:'focus', msg:`⚔ ${h.name} ${verb} ${names} — fury bonus (+${bonus}%)` });
+    }
+  });
+
+  // Reverse — CPU heroes whose rivals are on the player team (warn the player)
+  state.cpuTeam.forEach(c => {
+    const furyTargets = state.playerTeam.filter(h => c.rivals && c.rivals.includes(h.name));
+    if (furyTargets.length > 0) {
+      const bonus = Math.min(furyTargets.length * 15, 45);
+      const names = furyTargets.map(h => h.name).join(' & ');
+      const verb = c.alignment === 'evil' ? `has a vendetta against` : `is galvanised facing`;
+      alerts.push({ type:'rivalry', msg:`⚠ ${c.name} ${verb} ${names} — they'll fight harder (+${bonus}%)` });
+    }
+  });
+
   if (!alerts.length) alerts.push({ type:'synergy', msg:`✦ Team aligned — no conflicts` });
   const seen = new Set();
   return alerts.filter(a => !seen.has(a.msg) && seen.add(a.msg));
@@ -3116,7 +3191,7 @@ function advanceSnake() {
   const whose = state.snakeOrder[state.snakePick];
 
   if (whose === 'cpu' || (whose === undefined && !cpuDoneNow)) {
-    // It's the CPU's turn (or we've run out of scheduled slots but CPU still needs picks)
+    // It’s the CPU’s turn (or we’ve run out of scheduled slots but CPU still needs picks)
     if (cpuDoneNow) {
       // CPU done — if player still needs picks, give them control
       if (!playerDoneNow) { if (isMobile()) switchDraftTab('pool'); renderDraft(); }
@@ -3128,7 +3203,7 @@ function advanceSnake() {
     if (isMobile()) switchDraftTab('cpu');
     setTimeout(doCpuPick, delay);
   } else if (whose === 'player' || (whose === undefined && !playerDoneNow)) {
-    // It's the player's turn (or overflow but player still needs picks)
+    // It’s the player’s turn (or overflow but player still needs picks)
     if (playerDoneNow) return;
     if (isMobile()) switchDraftTab('pool');
     renderDraft();
@@ -3144,7 +3219,7 @@ function doCpuPick() {
   const alreadyDone = REQUIRED_ROLES.every(r => state.cpuTeam.some(h => h.role === r)) && !!state.cpuArmy;
   if (alreadyDone) {
     state.draftLocked = false;
-    state.snakePick++; // consume the pick slot so we don't loop
+    state.snakePick++; // consume the pick slot so we don’t loop
     renderDraft();
     advanceSnake();
     return;
@@ -3202,7 +3277,7 @@ function doCpuPick() {
     }
   }
 
-  // Fallback if nothing scored (shouldn't happen)
+  // Fallback if nothing scored (shouldn’t happen)
   if (!pickedHero && !pickedArmy) {
     if (neededRoles.length) {
       const candidates = ROSTER.filter(h => h.role === neededRoles[0] && !takenIds.has(h.id));
@@ -3250,28 +3325,41 @@ function totalPower(h) {
 }
 
 function scoreMediumPick(hero) {
-  // Medium: power-focused but loosely aware of synergy — no rival counter-picking
+  // Medium: power + synergy + basic alignment and fury awareness
   let score = totalPower(hero) * 0.7;
-  // Some synergy awareness — prefers building within a universe
+  // Universe synergy with own team
   score += state.cpuTeam.filter(h => h.universe === hero.universe).length * 15;
-  // Light ally bond awareness
+  // Named ally bond
   score += hero.allies.filter(a => state.cpuTeam.some(h => h.name === a)).length * 10;
-  // Small random noise so it doesn’t always pick the same team
+  // Alignment cohesion — mild preference for building same-alignment team
+  const sameAlign = state.cpuTeam.filter(h => h.alignment === hero.alignment && hero.alignment !== 'neutral').length;
+  score += sameAlign * 8;
+  // Fury awareness — bonus if this hero has rivals already in player team
+  const furyCount = hero.rivals.filter(r => state.playerTeam.some(p => p.name === r)).length;
+  score += furyCount * 12;
+  // Small random noise
   score += Math.random() * 40;
   return score;
 }
 
 function scoreHardPick(hero) {
-  // Hard: power + counter-pick + synergy, deterministic
+  // Hard: power + counter-pick + synergy + alignment cohesion + fury stacking
   let score = totalPower(hero) * 0.5;
-  // Strong bonus for rivalling player heroes — actively counters your team
-  score += hero.rivals.filter(r => state.playerTeam.some(p => p.name === r)).length * 30;
+  // Stacked fury: each rival in player team is extremely valuable (+15% per in combat)
+  const furyCount = hero.rivals.filter(r => state.playerTeam.some(p => p.name === r)).length;
+  score += Math.min(furyCount, 3) * 45;
   // Universe synergy with own team
   score += state.cpuTeam.filter(h => h.universe === hero.universe).length * 20;
   // Named ally bond in own team
   score += hero.allies.filter(a => state.cpuTeam.some(h => h.name === a)).length * 25;
-  // Penalise picking internal rivals (don’t build a team that fights itself)
+  // Alignment cohesion — prefer building same-alignment team for combat bonus
+  const sameAlign = state.cpuTeam.filter(h => h.alignment === hero.alignment && hero.alignment !== 'neutral').length;
+  score += sameAlign * 18;
+  // Penalise picking internal rivals (betrayal risk)
   score -= hero.rivals.filter(r => state.cpuTeam.some(h => h.name === r)).length * 35;
+  // Deny player fury: avoid giving the player fury bonuses against us
+  const givesPlayerFury = state.playerTeam.filter(p => p.rivals && p.rivals.includes(hero.name)).length;
+  score -= givesPlayerFury * 20;
   return score;
 }
 
@@ -3413,7 +3501,7 @@ function initBattleState() {
     winner: null,
   };
   state.round = 0;
-  // Clear battle log DOM and animation queue so previous battle doesn't bleed through
+  // Clear battle log DOM and animation queue so previous battle doesn’t bleed through
   const logEl = document.getElementById('battle-log');
   if (logEl) logEl.innerHTML = '';
   killblowQueue = [];
@@ -3462,6 +3550,19 @@ const HERO_QUIPS = {
   'Tyrion Lannister': { support:['I drink and I know things — Tyrion identifies the weakness','Tyrion’s mind is the sharpest weapon on the field'] },
   'Maximus':          { attack:['Are you not entertained? Maximus fights for those who cannot','My name is Maximus Decimus Meridius — the enemy flinches'] },
   'Achilles':         { attack:['No mortal hand can stop Achilles today'] },
+  'Saruman':          { defend:['Saruman’s voice wraps around his enemies like a trap — and springs', 'The will of Saruman holds this line like iron'], attack:['Saruman’s power shakes stone and sky alike'] },
+  'Magneto':          { defend:['Metal bends to Magneto’s will — nothing passes', 'Magneto raises a wall of iron between his allies and annihilation'], attack:['Magneto’s fury tears the field apart at a molecular level'] },
+  'Killmonger':       { attack:['Killmonger strikes with the precision of a trained killer and the rage of an exile', 'All that rage, all that pain — Killmonger channels it into something deadly', 'Is this your warrior? Killmonger disagrees.'] },
+  "Ra’s al Ghul":     { attack:['The League of Shadows trained him for this exact moment', 'Ra’s al Ghul has died before. He fights like someone with nothing to lose.', 'Centuries of combat knowledge — Ra’s strikes with unhurried precision'] },
+  'General Zod':      { attack:['Zod moves like a Kryptonian weapon — because he was one', 'The general’s training makes even Superman look improvised', 'Kneel before Zod — or don’t. It ends the same.'] },
+  'Emperor Palpatine':{ inspire:['The Emperor’s whisper reaches every dark heart on the field', 'Do it. Let the hate flow — Palpatine feeds on the darkness he creates'] },
+  'Moriarty':         { support:['Moriarty has already predicted this outcome — three moves ahead', 'The Napoleon of Crime doesn’t fight. He arranges.'] },
+  'Littlefinger':     { support:['Littlefinger identifies exactly who can be turned and applies pressure', 'Chaos is a ladder. Littlefinger is already at the top.'] },
+  'President Snow':   { inspire:['Snow’s voice carries the quiet threat of absolute power', 'The Capitol’s will flows through Snow — hope weaponised'] },
+  'Dolores Umbridge': { support:['Hem hem. Umbridge locates the weakness and exploits it with bureaucratic precision', 'Detention, I think. Umbridge dismantles the opposition with a smile'] },
+  'Daenerys Targaryen':{ attack:['Dracarys — Daenerys’s word and the world burns', 'She came to break the wheel. She’s breaking it now.', 'The Mother of Dragons does not ask twice'] },
+  'Count Dracula':     { attack:['Dracula moves through the shadows like he owns them — because he does', 'Centuries of predation distilled into one perfect strike', 'The Count’s eyes find the weakness before his hands do'] },
+  'Dorian Gray':       { attack:['Dorian strikes with the careless cruelty of someone who cannot be hurt', 'The portrait absorbs the damage. Dorian walks away unmarked.', 'Nothing wounds Dorian Gray. The portrait ensures it.'] },
 
   // New heroes
   'Batman':           { defend:['I’m Batman. That’s reason enough.','Batman positions himself between the enemy and his allies'], attack:['The Dark Knight strikes from the shadows — they never hear him coming','Batman calculates the outcome before throwing a single punch'] },
@@ -3522,6 +3623,19 @@ const KILL_QUOTES = {
   'Merlin':            ['The greatest teacher, failure is not — that’s the other one. I know things older than time.'],
   'Q':                 ['Oh, very well. I suppose I must help you — again.', 'The trial never ends, Picard.'],
   'Atticus Finch':     ['You never really understand a person until you climb into their skin.', 'Courage is not a man with a gun.'],
+  'Saruman':           ['I am Saruman the Wise, Saruman Ring-maker, Saruman of Many Colours!', 'He that breaks a thing to find out what it is has left the path of wisdom.'],
+  'Magneto':           ['Never again.', 'I have been to the promised land. It is called Genosha. And men like you burned it down.', 'We are the future, Charles.'],
+  'Killmonger':        ['Is this your king?', 'Bury me in the ocean with my ancestors who jumped from ships — because they knew death was better than bondage.', 'The sun will never set on the Wakandan empire.'],
+  "Ra’s al Ghul":      ['You are not the devil. You are practice.', 'Justice is balance. You burned down our home and left nothing but ash.', 'Death does not wait for you to be ready.'],
+  'General Zod':       ['Kneel before Zod.', 'I will find him. I will find Kal-El, and I will make him watch this world die.', 'Every Kryptonian instinct I have screams at me to destroy you.'],
+  'Emperor Palpatine': ['I am the Senate.', 'Good. Let the hate flow through you.', 'Do it. Strike me down with all your hatred.'],
+  'Moriarty':          ['Every fairytale needs a good old-fashioned villain.', 'I am so changeable. It is a weakness with me.', 'You’ve been so clever. But I am a specialist, you see.'],
+  'Littlefinger':      ['Chaos isn’t a pit. Chaos is a ladder.', 'I did warn you not to trust me.', 'Always keep your foes confused.'],
+  'President Snow':    ['Hope. It is the only thing stronger than fear.', 'Make an example of them.', 'Become my ally, or become a lesson.'],
+  'Dolores Umbridge':  ['Hem hem.', 'I will have order!', 'You applied logic to a situation that does not warrant it.'],
+  'Daenerys Targaryen':['Dracarys.', 'I am not your queen. I am your conqueror.', 'I am the blood of the dragon. You cannot kill me.'],
+  'Count Dracula':     ['I am the Monster that breathing men would kill. I am Dracula.', 'To die — to truly die — that must be glorious.', 'I have survived centuries. You will not survive tonight.'],
+  'Dorian Gray':       ['To define is to limit.', 'The books that the world calls immoral are books that show the world its own shame.', 'Behind every exquisite thing that existed, there was something tragic.'],
   'Batman':           ['I’m Batman.', 'Justice.', 'The night is darkest just before the dawn.'],
   'The Joker':        ['Why so serious?', 'Madness is the emergency exit.', 'I’m not a monster. I’m just ahead of the curve.'],
   'Lex Luthor':       ['Genius always wins in the end.', 'I’m the most dangerous man on Earth — and now you know why.'],
@@ -3603,10 +3717,12 @@ function getAlignmentResult(h, team, enemy) {
     return { mod: 0, msgs, betrayTarget: internalRival };
   }
 
-  const enemyRival = enemy.find(t => h.rivals && h.rivals.includes(t.name) && t.alive);
-  if (enemyRival) {
-    mod += 0.20;
-    msgs.push({ type:'focus', msg:`⚔ ${h.name} sees ${enemyRival.name} across the field — nothing else exists (+20%)` });
+  const enemyRivals = enemy.filter(t => h.rivals && h.rivals.includes(t.name) && t.alive);
+  if (enemyRivals.length > 0) {
+    const furyBonus = Math.min(0.15 * enemyRivals.length, 0.45);
+    mod += furyBonus;
+    const rivalNames = enemyRivals.map(t => t.name).join(' & ');
+    msgs.push({ type:'focus', msg:`⚔ ${h.name} sees ${rivalNames} across the field — hatred made manifest (+${Math.round(furyBonus*100)}%)` });
   }
 
   // Army affinity: leader gets a bonus if their drafted army has them as affinity leader
@@ -3618,13 +3734,33 @@ function getAlignmentResult(h, team, enemy) {
     }
   }
 
+  // Alignment cohesion: bonus for same-alignment teammates, penalty for opposing
   if (h.alignment === 'evil') {
+    const evilAllies = team.filter(t => t.id !== h.id && t.alignment === 'evil' && t.alive && !t.isArmy);
     const goodAllies = team.filter(t => t.id !== h.id && t.alignment === 'good' && t.alive && !t.isArmy);
+    if (evilAllies.length > 0) {
+      const bonus = Math.min(0.10 * evilAllies.length, 0.20);
+      mod += bonus;
+      msgs.push({ type:'synergy', msg:`☠ ${h.name} feeds on the darkness around them — dark cohesion (+${Math.round(bonus*100)}%)` });
+    }
     if (goodAllies.length > 0) {
       mod -= 0.10;
       msgs.push({ type:'rivalry', msg:`☉ ${h.name} bristles beside ${goodAllies[0].name} — the alliance is uneasy (-10%)` });
     }
+  } else if (h.alignment === 'good') {
+    const goodAllies = team.filter(t => t.id !== h.id && t.alignment === 'good' && t.alive && !t.isArmy);
+    const evilAllies = team.filter(t => t.id !== h.id && t.alignment === 'evil' && t.alive && !t.isArmy);
+    if (goodAllies.length > 0) {
+      const bonus = Math.min(0.08 * goodAllies.length, 0.16);
+      mod += bonus;
+      msgs.push({ type:'synergy', msg:`✦ ${h.name} draws strength from allies who share their cause (+${Math.round(bonus*100)}%)` });
+    }
+    if (evilAllies.length > 0) {
+      mod -= 0.08;
+      msgs.push({ type:'rivalry', msg:`☉ ${h.name} fights uneasily beside ${evilAllies[0].name} — honour is compromised (-8%)` });
+    }
   }
+  // Neutral heroes: no alignment modifiers — they fight for their own reasons
 
   return { mod, msgs, betrayTarget: null };
 }
@@ -3668,7 +3804,7 @@ function doWarrior(h, team, enemy, mod, logs) {
   const finalDmg = interceptor ? Math.round(dmg * 0.6) : dmg;
   applyDamage(actualTarget, finalDmg, logs);
   const narrative = getNarrative(h, 'attack');
-  logs.push({ type:'attack', attackerId: h.id, targetId: actualTarget.id, msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
+  logs.push({ type:'attack', attackerId: h.id, targetId: actualTarget.id, dmg: finalDmg, side: team === state.battleState.player ? 'player' : 'cpu', msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
 }
 
 function doArmyAttack(army, team, enemy, mod, logs) {
@@ -3697,7 +3833,7 @@ function doHero(h, team, enemy, mod, logs) {
   const finalDmg = interceptor ? Math.round(dmg * 0.6) : dmg;
   applyDamage(actualTarget, finalDmg, logs);
   const narrative = getNarrative(h, 'attack');
-  logs.push({ type:'attack', attackerId: h.id, targetId: actualTarget.id, msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
+  logs.push({ type:'attack', attackerId: h.id, targetId: actualTarget.id, dmg: finalDmg, side: team === state.battleState.player ? 'player' : 'cpu', msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
 }
 
 function doDefender(h, team, enemy, mod, logs) {
@@ -3707,7 +3843,7 @@ function doDefender(h, team, enemy, mod, logs) {
     const dmg = Math.round(base * mod * (0.85 + Math.random() * 0.3));
     applyDamage(target, dmg, logs);
     const narrative = getNarrative(h, 'attack');
-    logs.push({ type:'attack', attackerId: h.id, targetId: target.id, msg:`${narrative} — ${dmg} to ${target.name}${target.hp > 0 ? ` (${target.hp} HP)` : ''}` });
+    logs.push({ type:'attack', attackerId: h.id, targetId: target.id, dmg: dmg, side: team === state.battleState.player ? 'player' : 'cpu', msg:`${narrative} — ${dmg} to ${target.name}${target.hp > 0 ? ` (${target.hp} HP)` : ''}` });
   }
   const wounded = team.filter(t => t.id !== h.id && t.alive).sort((a,b) => (a.hp/a.maxHp) - (b.hp/b.maxHp));
   if (wounded.length > 0) {
@@ -3746,7 +3882,7 @@ function doSupport(h, team, enemy, mod, logs) {
     const actual = ally.hp - before;
     if (actual > 0) {
       const narrative = getNarrative(h, 'support');
-      logs.push({ type:'synergy', healTargetId: ally.id, msg:`\u271a ${narrative} — ${ally.name} restored ${actual} HP (${ally.hp}/${ally.maxHp})` });
+      logs.push({ type:'synergy', healTargetId: ally.id, healAmt: actual, side: team === state.battleState.player ? 'player' : 'cpu', msg:`\u271a ${narrative} — ${ally.name} restored ${actual} HP (${ally.hp}/${ally.maxHp})` });
     }
   }
   const threats = enemy.filter(t => t.alive).sort((a,b) => (b.strength + b.agility) - (a.strength + a.agility));
@@ -3764,7 +3900,7 @@ function applyDamage(target, dmg, logs) {
   target.hp = Math.max(0, target.hp - dmg);
   if (target.hp === 0) {
     target.alive = false;
-    target.hp = 0; // ensure HP stays zero — support self-heal can't resurrect a zero-HP hero
+    target.hp = 0; // ensure HP stays zero — support self-heal can’t resurrect a zero-HP hero
     if (target.isArmy) {
       logs.push({ type:'rivalry', msg:'☠ ' + getArmyNarrative(target, 'fall') });
       if (logs._killer) {
@@ -4115,15 +4251,39 @@ function showSummary() {
     taglineEl.textContent = `All champions fell. The field belongs to none.`;
   }
 
-  // ── Stats ──
+  // ── Stats — aggregate from tagged log entries ──
   const playerAlive = bs.player.filter(h => h.alive && !h.isArmy).length;
   const cpuAlive    = bs.cpu.filter(h => h.alive && !h.isArmy).length;
-  const totalFallen = bs.player.concat(bs.cpu).filter(h => !h.alive && !h.isArmy).length;
   const kills = log.filter(e => e.type === 'killblow' && !e.isArmy).length;
+
+  // Total damage dealt by each side
+  const playerDmg = log.filter(e => e.dmg && e.side === 'player').reduce((s,e) => s + e.dmg, 0);
+  const cpuDmg    = log.filter(e => e.dmg && e.side === 'cpu').reduce((s,e) => s + e.dmg, 0);
+
+  // Total healing by each side
+  const playerHeal = log.filter(e => e.healAmt && e.side === 'player').reduce((s,e) => s + e.healAmt, 0);
+  const cpuHeal    = log.filter(e => e.healAmt && e.side === 'cpu').reduce((s,e) => s + e.healAmt, 0);
+
+  // Per-hero damage dealt (from attackerId in log)
+  const heroDmg = {};
+  const heroHeal = {};
+  [...bs.player, ...bs.cpu].filter(h => !h.isArmy).forEach(h => {
+    heroDmg[h.id]  = log.filter(e => e.dmg && e.attackerId === h.id).reduce((s,e) => s+e.dmg, 0);
+    heroHeal[h.id] = log.filter(e => e.healAmt && e.healTargetId === h.id).reduce((s,e) => s+e.healAmt, 0);
+  });
+
+  // Top damage dealer
+  const allHeroes = [...bs.player, ...bs.cpu].filter(h => !h.isArmy);
+  const topDmgHero = allHeroes.reduce((a,b) => (heroDmg[a.id]||0) > (heroDmg[b.id]||0) ? a : b, allHeroes[0]);
+  const topHealHero = allHeroes.reduce((a,b) => (heroHeal[a.id]||0) > (heroHeal[b.id]||0) ? a : b, allHeroes[0]);
+
   document.getElementById('summary-stats').innerHTML = [
-    { val: state.round, label: 'Rounds' },
-    { val: kills,       label: 'Heroes Fallen' },
+    { val: state.round,            label: 'Rounds' },
+    { val: kills,                  label: 'Heroes Fallen' },
     { val: `${playerAlive}v${cpuAlive}`, label: 'Survivors' },
+    { val: playerDmg,              label: 'Your Damage' },
+    { val: cpuDmg,                 label: 'Enemy Damage' },
+    { val: playerHeal,             label: 'Your Healing' },
   ].map(s => `
     <div class="summary-stat">
       <div class="summary-stat-val">${s.val}</div>
@@ -4139,10 +4299,14 @@ function showSummary() {
         ? (pct > 60 ? 'var(--good)' : pct > 30 ? 'var(--gold)' : 'var(--evil)')
         : 'var(--dim)';
       const hp = h.alive ? `${h.hp}HP` : '✝';
+      const dmgDealt = heroDmg[h.id] || 0;
+      const healRcvd = heroHeal[h.id] || 0;
       return `<div class="summary-hero-row ${h.alive?'':'dead'}">
         <div class="shr-dot" style="background:${dot}"></div>
         <span class="shr-name">${h.name}</span>
         <span class="shr-hp">${hp}</span>
+        ${dmgDealt > 0 ? `<span style="font-size:0.6rem;color:#fb923c;margin-left:auto">${dmgDealt} dmg</span>` : ''}
+        ${healRcvd > 0 ? `<span style="font-size:0.6rem;color:var(--good);margin-left:${dmgDealt>0?'4px':'auto'}">${healRcvd} healed</span>` : ''}
       </div>`;
     }).join('');
   }
@@ -4151,6 +4315,29 @@ function showSummary() {
 
   // ── Key moments — mine log for interesting events ──
   const highlights = [];
+
+  // Top damage dealer
+  if (topDmgHero && (heroDmg[topDmgHero.id] || 0) > 0) {
+    const side = bs.player.some(h => h.id === topDmgHero.id) ? 'your' : 'the enemy';
+    highlights.push({ cls:'hl-kill', msg:`⚔ ${topDmgHero.name} led all heroes with ${heroDmg[topDmgHero.id]} total damage — ${side} most destructive force` });
+  }
+
+  // Healing edge — if one side out-healed significantly
+  if (Math.abs(playerHeal - cpuHeal) > 20) {
+    const leader = playerHeal > cpuHeal ? 'Your support' : 'Enemy support';
+    const diff = Math.abs(playerHeal - cpuHeal);
+    highlights.push({ cls:'hl-synergy', msg:`✚ ${leader} out-healed by ${diff} HP — a decisive margin over ${state.round} rounds` });
+  }
+
+  // Damage deficit — if one side significantly out-damaged
+  if (playerDmg > 0 && cpuDmg > 0) {
+    const ratio = Math.max(playerDmg, cpuDmg) / Math.min(playerDmg, cpuDmg);
+    if (ratio > 1.3) {
+      const dominant = playerDmg > cpuDmg ? 'Your forces' : 'The enemy';
+      const pct = Math.round((ratio - 1) * 100);
+      highlights.push({ cls: playerDmg > cpuDmg ? 'hl-moment' : 'hl-kill', msg:`⚔ ${dominant} dealt ${pct}% more damage — ${playerDmg} vs ${cpuDmg} total` });
+    }
+  }
 
   // Killing blows (hero kills only, pick most dramatic)
   const heroKills = log.filter(e => e.type === 'killblow' && !e.isArmy);
@@ -4310,7 +4497,7 @@ function showStreakScreen(broken, outcome) {
     4: 'Four victories. Legends have been built on less.',
     5: 'Five wins. You were becoming something fearsome.',
   };
-  const tag = taglines[broken] || `${broken} consecutive victories. They'll be talking about this for ages.`;
+  const tag = taglines[broken] || `${broken} consecutive victories. They’ll be talking about this for ages.`;
   document.getElementById('streak-tagline').textContent = tag;
   document.getElementById('streak-best').textContent =
     streak.best > broken ? `Personal best: ${streak.best}` : `New personal best!`;
@@ -4363,26 +4550,35 @@ function resetGame() {
 
 // Close detail on outside click
 // Filter bar
-// Single delegated filter listener covering both desktop and mobile filter bars
+// Filter bar click handler — role and alignment filters are independent
 document.addEventListener('click', e => {
   const btn = e.target.closest('.filter-btn');
   if (!btn) return;
-  const bar = btn.closest('#filter-bar, .mobile-filter-row');
-  if (!bar) return;
-  // Clear active only within the same bar, then set the clicked one
-  bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  // Sync the other bar to match
-  const otherBar = bar.id === 'filter-bar'
-    ? document.querySelector('.mobile-filter-row')
-    : document.getElementById('filter-bar');
-  if (otherBar) {
-    otherBar.querySelectorAll('.filter-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.filter === btn.dataset.filter);
+
+  if (btn.dataset.filterRole !== undefined) {
+    // Role filter button
+    const val = btn.dataset.filterRole;
+    // Update all role filter bars
+    ['filter-bar-role','mobile-filter-role'].forEach(id => {
+      const bar = document.getElementById(id);
+      if (bar) bar.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.filterRole === val);
+      });
     });
+    state.filterRole = val;
+    renderPool();
+  } else if (btn.dataset.filterAlign !== undefined) {
+    // Alignment filter button
+    const val = btn.dataset.filterAlign;
+    ['filter-bar-align','mobile-filter-align'].forEach(id => {
+      const bar = document.getElementById(id);
+      if (bar) bar.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.filterAlign === val);
+      });
+    });
+    state.filterAlign = val;
+    renderPool();
   }
-  state.filter = btn.dataset.filter;
-  renderPool();
 });
 
 document.addEventListener('click', e => {
