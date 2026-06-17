@@ -2341,10 +2341,12 @@ function rdAdvanceSnake() {
     state.draftLocked = true;
     const delay = { easy:700, medium:1000, hard:1500 }[state.difficulty] || 1000;
     if (isMobile()) switchDraftTab('cpu');
-    renderRestrictedDraft();
+    // No render here — rdDoCpuPick renders after the pick lands,
+    // preventing the player's offer cards from flashing up prematurely
     setTimeout(rdDoCpuPick, delay);
   } else {
-    // Generate fresh offers for the player’s next needed role
+    // Player's turn — generate fresh offers then render
+    state.draftLocked = false;
     rdGenerateOffers('player');
     if (isMobile()) switchDraftTab('pool');
     renderRestrictedDraft();
