@@ -1328,9 +1328,11 @@
 
   @media (max-width: 700px) {
     .rd-offer-grid { grid-template-columns: 1fr 1fr; }
-    .rd-teams { grid-template-columns: 1fr; }
+    .rd-teams { grid-template-columns: 1fr 1fr; }
     .rd-body { padding: 0.75rem; gap: 0.75rem; }
     .rd-hero-name { font-size: 0.82rem; }
+    .rd-team-slot .slot-role { width: 38px; font-size: 0.55rem; }
+    .rd-team-slot .slot-name { font-size: 0.7rem; }
   }
   @media (max-width: 400px) {
     .rd-offer-grid { grid-template-columns: 1fr; }
@@ -1904,13 +1906,7 @@
   </div>
 
   <div class="rd-body">
-    <!-- Current offer -->
-    <div>
-      <div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:0.6rem;" id="rd-offer-label">Choose one</div>
-      <div class="rd-offer-grid" id="rd-offer-grid"></div>
-    </div>
-
-    <!-- Both teams -->
+    <!-- Both teams — shown first so player sees their roster -->
     <div class="rd-teams">
       <div class="rd-team-panel">
         <div class="rd-team-title" style="color:var(--gold);">⚔ Your Forces</div>
@@ -1920,6 +1916,12 @@
         <div class="rd-team-title" style="color:var(--evil);">☠ Enemy Forces</div>
         <div id="rd-cpu-slots"></div>
       </div>
+    </div>
+
+    <!-- Current offer -->
+    <div>
+      <div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:0.6rem;" id="rd-offer-label">Choose one</div>
+      <div class="rd-offer-grid" id="rd-offer-grid"></div>
     </div>
   </div>
 
