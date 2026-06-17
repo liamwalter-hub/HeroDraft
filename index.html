@@ -862,6 +862,217 @@
     .hero-pool { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
     .draft-header { padding: 0.6rem 0.7rem; }
   }
+
+  /* ─── GAUNTLET SCREENS ─── */
+  #screen-gauntlet-pick {
+    align-items: center;
+    justify-content: flex-start;
+    background: radial-gradient(ellipse at 50% 30%, #1a1020 0%, var(--bg) 70%);
+    padding: 1.5rem 1rem 2rem;
+    gap: 1.5rem;
+  }
+
+  .gauntlet-title {
+    font-family: var(--font);
+    font-size: clamp(1.6rem, 5vw, 2.5rem);
+    color: #f97316;
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  .gauntlet-subtitle {
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-align: center;
+    max-width: 480px;
+    line-height: 1.6;
+    margin-top: -0.75rem;
+  }
+
+  /* Gauntlet enemies preview strip */
+  .gauntlet-enemies {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 560px;
+  }
+
+  .gauntlet-enemy-card {
+    background: var(--surface);
+    border: 1px solid rgba(249,115,22,0.25);
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.75rem;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .gauntlet-enemy-card .gec-num {
+    font-size: 0.6rem;
+    color: #f97316;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.2rem;
+  }
+
+  .gauntlet-enemy-card .gec-name {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .gauntlet-enemy-card .gec-members {
+    font-size: 0.62rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Team picker */
+  .gauntlet-pick-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.6rem;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  .gauntlet-role-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .gauntlet-role-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-align: center;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gauntlet-hero-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.45rem 0.3rem;
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-family: var(--ui);
+    color: var(--muted);
+    text-align: center;
+    transition: all 0.15s;
+    line-height: 1.35;
+  }
+  .gauntlet-hero-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+  .gauntlet-hero-btn.selected { background: rgba(249,115,22,0.15); border-color: #f97316; color: var(--text); }
+  .gauntlet-hero-btn .ghb-name { font-weight: 600; font-size: 0.68rem; }
+  .gauntlet-hero-btn .ghb-uni { font-size: 0.58rem; color: var(--dim); }
+
+  .gauntlet-clone-warning {
+    font-size: 0.7rem;
+    color: #f97316;
+    text-align: center;
+    min-height: 1.2em;
+  }
+
+  /* Gauntlet battle header */
+  .gauntlet-battle-header {
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.2);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .gauntlet-stage-label {
+    font-size: 0.7rem;
+    color: #f97316;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .gauntlet-progress-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .gauntlet-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(249,115,22,0.4);
+    background: transparent;
+    transition: background 0.3s;
+  }
+  .gauntlet-dot.done { background: #f97316; border-color: #f97316; }
+  .gauntlet-dot.current { background: rgba(249,115,22,0.4); border-color: #f97316; }
+
+  .gauntlet-clone-badge {
+    font-size: 0.62rem;
+    background: rgba(249,115,22,0.15);
+    border: 1px solid rgba(249,115,22,0.3);
+    border-radius: 20px;
+    padding: 0.15rem 0.5rem;
+    color: #f97316;
+  }
+
+  /* Gauntlet result screen */
+  #screen-gauntlet-result {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 30%, #1a1020 0%, var(--bg) 70%);
+    padding: 2rem;
+  }
+
+  .gauntlet-result-title {
+    font-family: var(--font);
+    font-size: clamp(2rem, 7vw, 3.5rem);
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+    color: #f97316;
+  }
+
+  .gauntlet-result-title.cleared { color: var(--gold2); }
+  .gauntlet-result-title.fallen { color: var(--evil); }
+
+  .gauntlet-scorecard {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1.25rem 0;
+    flex-wrap: wrap;
+  }
+
+  .gauntlet-score-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
+    min-width: 90px;
+  }
+  .gauntlet-score-item.win { border-color: var(--good); background: rgba(74,222,128,0.08); }
+  .gauntlet-score-item.loss { border-color: var(--evil); background: rgba(248,113,113,0.08); }
+  .gauntlet-score-item .gs-stage { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+  .gauntlet-score-item .gs-result { font-weight: 600; }
+
+  @media (max-width: 700px) {
+    .gauntlet-pick-grid { grid-template-columns: repeat(5, 1fr); gap: 0.35rem; }
+    .gauntlet-hero-btn { font-size: 0.58rem; padding: 0.4rem 0.2rem; }
+    .gauntlet-hero-btn .ghb-name { font-size: 0.6rem; }
+    .gauntlet-hero-btn .ghb-uni { display: none; }
+    .gauntlet-enemies { gap: 0.35rem; }
+    .gauntlet-enemy-card { min-width: 80px; font-size: 0.68rem; padding: 0.5rem 0.6rem; }
+    #screen-gauntlet-pick { padding: 1rem 0.75rem 5rem; }
+  }
 </style>
 </head>
 <body>
@@ -883,9 +1094,17 @@
     </div>
   </div>
 
-  <button class="btn-primary" onclick="showBriefing()">Begin Draft</button>
+  <button class="btn-primary" onclick="startDraft()">Begin Draft</button>
 
-  <p style="margin-top:2rem; font-size:0.75rem; color:var(--dim);">
+  <button class="btn-primary" onclick="showGauntlet()" style="background:transparent; border:1px solid #f97316; color:#f97316; margin-top:0.6rem;">
+    ⚔ Gauntlet Mode
+  </button>
+
+  <button class="btn-primary" onclick="showScreen('screen-briefing')" style="background:transparent; border:1px solid var(--border2); color:var(--muted); margin-top:0.6rem;">
+    How to Play
+  </button>
+
+  <p style="margin-top:1rem; font-size:0.75rem; color:var(--dim);">
     Draft 5 heroes · Fill your roles · Pray your allies don't turn on each other
   </p>
 </div>
@@ -896,16 +1115,16 @@
 ═══════════════════════════════════════════════ -->
 <div id="screen-briefing" class="screen">
   <div class="briefing-card">
-    <h2>Commander's Briefing</h2>
+    <h2>How to Play</h2>
 
-    <p>You are about to draft a team of five heroes from across the multiverse and lead them into battle. You and the CPU alternate picks in a <strong>snake draft</strong> — whoever picks first gets one pick, then the other side gets two, and so on, so neither side can run away with all the best heroes.</p>
+    <p>HeroDraft has two modes. In <strong>Draft Mode</strong> you and the CPU take turns picking heroes in a snake draft — one pick, then the other side gets two, and so on. In <strong>Gauntlet Mode</strong> you build your team freely and fight five preset opponents back to back.</p>
 
-    <p>Each team must fill one of each role. Think carefully about who fits where:</p>
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Roles</p>
 
     <div class="briefing-roles">
       <div class="briefing-role">
         <strong style="color:var(--leader);">Leader</strong>
-        Buffs your whole team at the start of each round. A strong leader makes everyone hit harder.
+        Buffs the whole team at the start of each round. A strong leader makes everyone hit harder.
       </div>
       <div class="briefing-role">
         <strong style="color:var(--hero);">Hero</strong>
@@ -913,11 +1132,11 @@
       </div>
       <div class="briefing-role">
         <strong style="color:var(--defender);">Defender</strong>
-        Low damage but shields your most wounded ally every round and intercepts hits aimed at them.
+        Shields your most wounded ally every round and intercepts hits aimed at teammates.
       </div>
       <div class="briefing-role">
         <strong style="color:var(--warrior);">Warrior</strong>
-        Hits hardest. Deals bonus damage to heroes and is harder to intercept. Your main damage dealer.
+        Hits hardest. Bonus damage vs heroes, harder to intercept. Your main damage dealer.
       </div>
       <div class="briefing-role">
         <strong style="color:var(--support);">Support</strong>
@@ -927,12 +1146,24 @@
 
     <hr class="briefing-divider">
 
-    <p>Beyond raw stats, pay attention to <strong>universe synergies</strong> — heroes from the same world fight better together. Watch for <strong>ally bonds</strong> (named pairs who boost each other in combat) and be wary of <strong>rivals</strong>: a hero who hates a teammate might turn on them mid-battle. Draft around what the CPU is picking, not just who looks strongest on paper.</p>
+    <p>Pay attention to <strong>universe synergies</strong> — heroes from the same world fight better together. <strong>Ally bonds</strong> between named pairs give further bonuses. Be wary of <strong>rivals</strong>: a hero who hates a teammate has an 18% chance to betray them mid-battle instead of attacking the enemy.</p>
 
-    <p>You'll also pick an <strong>army unit</strong> — waves of soldiers that deal splash damage to the whole enemy team each round. Choose one whose leader affinity matches your pick.</p>
+    <p>Each team also fields an <strong>army unit</strong> — soldiers who deal splash damage to the whole enemy team every round. Pick one with leader affinity for a bonus.</p>
 
-    <div class="briefing-footer">
-      <button class="btn-primary" onclick="beginDraftFromBriefing()">Continue to Draft</button>
+    <hr class="briefing-divider">
+
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Gauntlet Mode</p>
+
+    <p>Pick your roster once and fight five legendary teams in sequence. HP resets fully between stages — but your team is locked for the entire run. Stages escalate in difficulty, with the most dominant team in the multiverse waiting at Stage 5.</p>
+
+    <p>There's a catch: if any of your heroes appear on that stage's enemy roster, they're treated as <strong>clones</strong> and deal <strong>25% less damage</strong> that fight. Copying the final boss team gets you to Stage 5 — it won't get you through it. Finding the team that can clear all five is the real challenge.</p>
+
+    <div class="briefing-footer" style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="startDraft()" style="flex:1;min-width:140px;max-width:200px;">Begin Draft</button>
+      <button class="btn-primary" onclick="showGauntlet()" style="flex:1;min-width:140px;max-width:200px;background:transparent;border:1px solid #f97316;color:#f97316;">⚔ Gauntlet Mode</button>
+    </div>
+    <div style="text-align:center;margin-top:0.85rem;">
+      <button onclick="showScreen('screen-title')" style="background:none;border:none;color:var(--muted);font-size:0.75rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px;">Back</button>
     </div>
   </div>
 </div>
@@ -1113,6 +1344,44 @@
   <button class="btn-primary" onclick="resetGame()">Draft Again</button>
 </div>
 
+
+<!-- ═══════════════════════════════════════════════
+  GAUNTLET PICK SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-gauntlet-pick" class="screen">
+  <div class="title-emblem" style="border-color:#f97316; box-shadow:0 0 30px rgba(249,115,22,0.3); font-size:28px;">⚔</div>
+  <h1 class="gauntlet-title">Gauntlet Mode</h1>
+  <p class="gauntlet-subtitle">
+    Build your team and fight 5 legendary opponents back to back. HP resets between battles — but your roster doesn't.
+    <br><strong style="color:#f97316">Warning:</strong> heroes matching an opponent are <em>clones</em> and fight at −25% damage.
+  </p>
+
+  <div class="gauntlet-enemies" id="gauntlet-enemies-preview"></div>
+
+  <div style="width:100%;max-width:700px;">
+    <div style="font-size:0.7rem;color:var(--muted);text-align:center;margin-bottom:0.75rem;letter-spacing:0.1em;text-transform:uppercase;">Pick one hero per role</div>
+    <div class="gauntlet-pick-grid" id="gauntlet-pick-grid"></div>
+  </div>
+
+  <div class="gauntlet-clone-warning" id="gauntlet-clone-warning"></div>
+
+  <button class="btn-primary" id="gauntlet-start-btn" onclick="startGauntlet()"
+    style="background:#f97316; border-color:#f97316; margin-top:0.5rem;" disabled>
+    Begin Gauntlet
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+  GAUNTLET RESULT SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-gauntlet-result" class="screen">
+  <div class="gauntlet-result-title" id="gauntlet-result-title">Gauntlet Clear!</div>
+  <div class="result-subtitle" id="gauntlet-result-subtitle"></div>
+  <div class="gauntlet-scorecard" id="gauntlet-scorecard"></div>
+  <button class="btn-primary" onclick="showGauntlet()" style="background:#f97316;border-color:#f97316;margin-bottom:0.75rem;">Try Again</button>
+  <button class="btn-primary" onclick="resetGame()" style="background:transparent;border:1px solid var(--border2);color:var(--muted);">Main Menu</button>
+</div>
+
 <!-- Hero Detail Panel (overlay) -->
 <div id="detail-backdrop" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;" onclick="closeDetail()"></div>
 <div class="hero-detail-panel" id="hero-detail-panel">
@@ -1143,7 +1412,7 @@ const HEROES = [
   { id:8,  name:"Wonder Woman",   universe:"DC Comics",          alignment:"good",    role:"hero",     strength:92, leadership:78, durability:85, intelligence:82, agility:92, rivals:["Ares","Thanos","Loki"], allies:["Superman","Batman"], lore:"Amazon warrior princess, god killer" },
   { id:9,  name:"Luke Skywalker", universe:"Star Wars",          alignment:"good",    role:"hero",     strength:72, leadership:75, durability:68, intelligence:82, agility:85, rivals:["Darth Vader","Emperor Palpatine"], allies:["Obi-Wan Kenobi"], lore:"Jedi Knight, hope of the Rebellion" },
   { id:10, name:"Frodo Baggins",  universe:"Lord of the Rings",  alignment:"good",    role:"hero",     strength:32, leadership:50, durability:55, intelligence:70, agility:62, rivals:["Sauron","Gollum"], allies:["Aragorn","Gandalf","Samwise"], lore:"Hobbit who carried the One Ring to Mordor" },
-  { id:11, name:"Hermione Granger",universe:"Harry Potter",      alignment:"good",    role:"hero",     strength:45, leadership:72, durability:58, intelligence:99, agility:68, rivals:["Voldemort","Bellatrix"], allies:["Harry Potter"], lore:"Brightest witch of her age" },
+  { id:11, name:"Hermione Granger",universe:"Harry Potter",      alignment:"good",    role:"support",  strength:45, leadership:78, durability:58, intelligence:99, agility:68, rivals:["Voldemort","Bellatrix"], allies:["Harry Potter"], lore:"Brightest witch of her age — the mind behind every plan" },
   { id:12, name:"Harry Potter",   universe:"Harry Potter",       alignment:"good",    role:"hero",     strength:62, leadership:78, durability:70, intelligence:82, agility:76, rivals:["Voldemort","Draco Malfoy"], allies:["Hermione Granger"], lore:"The Boy Who Lived, chosen one of prophecy" },
   { id:13, name:"Katniss Everdeen",universe:"The Hunger Games",  alignment:"good",    role:"hero",     strength:62, leadership:70, durability:65, intelligence:80, agility:92, rivals:["President Snow"], allies:[], lore:"The Mockingjay, symbol of revolution" },
   { id:14, name:"Ellen Ripley",   universe:"Alien",              alignment:"good",    role:"hero",     strength:65, leadership:75, durability:72, intelligence:85, agility:70, rivals:["Xenomorph Queen"], allies:[], lore:"Sole survivor, nemesis of the Xenomorphs" },
@@ -1254,13 +1523,7 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
 // DRAFT
 // ══════════════════════════════════════════════════════
 
-function showBriefing() {
-  showScreen('screen-briefing');
-}
-
-function beginDraftFromBriefing() {
-  startDraft();
-}
+// How to Play accessible from title screen via showScreen('screen-briefing')
 
 // ══════════════════════════════════════════════════════
 // MOBILE DRAFT TABS
@@ -1948,6 +2211,8 @@ function armyMaxHp(a) {
 }
 
 function initBattleState() {
+  // Clone debuff: gauntlet heroes matching this stage's opponents fight at −25% damage
+  const cloneNames = state.gauntletClones || new Set();
   const makeUnit = h => ({
     ...h,
     maxHp: heroMaxHp(h),
@@ -1957,6 +2222,7 @@ function initBattleState() {
     debuffed: false,
     shielded: false,
     isArmy: false,
+    clonePenalty: cloneNames.has(h.name) ? 0.75 : 1.0,
   });
   const makeArmy = a => ({
     ...a,
@@ -2023,7 +2289,7 @@ const HERO_QUIPS = {
   'Sauron':           { attack:['The Dark Lord’s mace falls like a verdict','Sauron’s mere presence saps the will to fight','The One Ring pulses as Sauron channels its malice'] },
   'Voldemort':        { inspire:['Voldemort’s voice curls into his allies’ minds like smoke','Avada Kedavra whispered — Voldemort’s command galvanises his forces'], attack:['Voldemort’s wand slashes green light across the field'] },
   'Bellatrix Lestrange':{ attack:['Bellatrix laughs as she duels — unhinged, untouchable','Crucio! Bellatrix casts without hesitation','Bellatrix fights like a woman with nothing to lose'] },
-  'Hermione Granger': { attack:['Hermione’s Protego shatters into Expelliarmus','She’s read about this — Hermione adapts instantly','Hermione Granger conjures a shield and strikes through it'] },
+  'Hermione Granger': { support:['Hermione’s Protego holds — she’s keeping everyone alive','She’s already three steps ahead — Hermione steadies the team','Every shield, every counter-curse — Hermione keeps her allies standing'] },
   'Harry Potter':     { attack:['Expelliarmus! Harry disarms and presses forward','Harry fights on instinct — and instinct has always been enough','Something ancient stirs — Lily’s sacrifice, echoing in Harry’s wand'] },
   'Thanos':           { attack:['With a single sweep Thanos scatters the opposition','Reality is often disappointing — Thanos reshapes it','The Mad Titan’s gauntlet blazes as he swings'] },
   'Thor':             { attack:['Thunder rolls as Mjolnir returns to Thor’s hand','Thor calls the lightning — the field goes white','Worthy! Mjolnir crashes down'] },
@@ -2331,9 +2597,10 @@ function resolveRound() {
       return;
     }
 
-    // Apply debuff if flagged; CPU units carry their difficulty damage multiplier
+    // Apply debuff, difficulty multiplier, and gauntlet clone penalty
     const diffDmgMult = h.cpuDmgMult || 1.0;
-    const effectiveMod = (alignMod + (h.damageBuff || 0)) * (h.debuffed ? 0.65 : 1.0) * diffDmgMult;
+    const cloneMult = h.clonePenalty || 1.0;
+    const effectiveMod = (alignMod + (h.damageBuff || 0)) * (h.debuffed ? 0.65 : 1.0) * diffDmgMult * cloneMult;
     h.debuffed = false;
 
     // Dispatch role action
@@ -2479,6 +2746,10 @@ function autoResolve() {
 // ══════════════════════════════════════════════════════
 function showResult() {
   const bs = state.battleState;
+  // Gauntlet intercept — let gauntlet handle result if active
+  if (gauntlet.active) {
+    if (gauntletOnBattleEnd(bs.winner)) return;
+  }
   const titleEl = document.getElementById('result-title');
   const subEl = document.getElementById('result-subtitle');
 
@@ -2523,6 +2794,10 @@ function resetGame() {
   state.cpuTeam = [];
   state.battleState = null;
   state.round = 0;
+  state.gauntletClones = new Set();
+  gauntlet.active = false;
+  gauntlet.stage = 0;
+  gauntlet.results = [];
   showScreen('screen-title');
 }
 
@@ -2556,6 +2831,241 @@ document.addEventListener('click', e => {
     closeDetail();
   }
 });
+
+
+// ══════════════════════════════════════════════════════
+// GAUNTLET MODE
+// ══════════════════════════════════════════════════════
+
+const GAUNTLET_STAGES = [
+  {
+    name: 'The Dark Fellowship',
+    lore: 'Villains who can barely stand each other. Their rivalries are your opening.',
+    team: ['Voldemort','Gollum','Gandalf','Sauron','Hannibal Lecter'],
+  },
+  {
+    name: "Marvel's Finest",
+    lore: 'Gods, kings, and conquerors assembled. Power without cohesion.',
+    team: ["King T'Challa",'Superman','Thor','Thanos','Yoda'],
+  },
+  {
+    name: 'The Shattered Council',
+    lore: 'Legends from across the ages, powerful alone — but they share no common cause.',
+    team: ['Aragorn','Wonder Woman','Gandalf','Sauron','Merlin'],
+  },
+  {
+    name: 'House Lannister',
+    lore: 'A dynasty united by blood and hunger. Four lions, one crown, zero mercy.',
+    team: ['Cersei Lannister','Wonder Woman','Brienne of Tarth','Jaime Lannister','Tyrion Lannister'],
+  },
+  {
+    name: 'The Spartan-Jedi Alliance',
+    lore: 'The apex predator. Ancient discipline and Force mastery in perfect unison. Your final test.',
+    team: ['Leonidas','Luke Skywalker','Obi-Wan Kenobi','Achilles','Yoda'],
+  },
+];
+
+const gauntlet = {
+  playerTeam: [],     // hero objects, one per role
+  playerArmy: null,
+  picks: {},          // role -> hero
+  stage: 0,
+  results: [],        // 'win'|'loss' per stage
+  active: false,
+};
+
+function heroByName(name) {
+  return ROSTER.find(h => h.name === name);
+}
+
+function armyForLeader(leader) {
+  if (!leader) return ARMIES[0];
+  const aff = ARMIES.filter(a => a.affinityLeaders && a.affinityLeaders.includes(leader.name));
+  return aff.length ? aff[0] : ARMIES[0];
+}
+
+function showGauntlet() {
+  gauntlet.picks = {};
+  gauntlet.stage = 0;
+  gauntlet.results = [];
+  renderGauntletPick();
+  showScreen('screen-gauntlet-pick');
+}
+
+function renderGauntletPick() {
+  // Enemy preview strip
+  const preview = document.getElementById('gauntlet-enemies-preview');
+  preview.innerHTML = GAUNTLET_STAGES.map((s,i) => `
+    <div class="gauntlet-enemy-card">
+      <div class="gec-num">Stage ${i+1}</div>
+      <div class="gec-name">${s.name}</div>
+      <div class="gec-members">${s.team.join(' · ')}</div>
+    </div>
+  `).join('');
+
+  // Pick grid — one column per role
+  const grid = document.getElementById('gauntlet-pick-grid');
+  grid.innerHTML = '';
+  const ROLE_COLORS_MAP = { leader:'var(--leader)', hero:'var(--hero)', defender:'var(--defender)', warrior:'var(--warrior)', support:'var(--support)' };
+
+  REQUIRED_ROLES.forEach(role => {
+    const col = document.createElement('div');
+    col.className = 'gauntlet-role-col';
+    col.innerHTML = `<div class="gauntlet-role-label" style="color:${ROLE_COLORS_MAP[role]}">${role}</div>`;
+    const roleHeroes = ROSTER.filter(h => h.role === role);
+    roleHeroes.forEach(hero => {
+      const btn = document.createElement('button');
+      btn.className = 'gauntlet-hero-btn' + (gauntlet.picks[role]?.id === hero.id ? ' selected' : '');
+      btn.innerHTML = `<div class="ghb-name">${hero.name}</div><div class="ghb-uni">${hero.universe}</div>`;
+      btn.onclick = () => {
+        gauntlet.picks[role] = gauntlet.picks[role]?.id === hero.id ? null : hero;
+        renderGauntletPick();
+      };
+      col.appendChild(btn);
+    });
+    grid.appendChild(col);
+  });
+
+  updateGauntletCloneWarning();
+}
+
+function allStageNames() {
+  return new Set(GAUNTLET_STAGES.flatMap(s => s.team));
+}
+
+function updateGauntletCloneWarning() {
+  const picked = Object.values(gauntlet.picks).filter(Boolean);
+  const allOpponents = allStageNames();
+  const clones = picked.filter(h => allOpponents.has(h.name));
+  const warn = document.getElementById('gauntlet-clone-warning');
+  const btn = document.getElementById('gauntlet-start-btn');
+  const complete = REQUIRED_ROLES.every(r => gauntlet.picks[r]);
+  btn.disabled = !complete;
+  if (clones.length) {
+    warn.textContent = `⚠ ${clones.map(h=>h.name).join(', ')} appear in the gauntlet — clone penalty (−25% damage) applies in those stages.`;
+  } else {
+    warn.textContent = complete ? '✓ No clones — full damage in all stages.' : '';
+  }
+}
+
+function startGauntlet() {
+  gauntlet.playerTeam = REQUIRED_ROLES.map(r => gauntlet.picks[r]);
+  gauntlet.playerArmy = armyForLeader(gauntlet.picks.leader);
+  gauntlet.stage = 0;
+  gauntlet.results = [];
+  gauntlet.active = true;
+  launchGauntletStage();
+}
+
+function launchGauntletStage() {
+  const stage = GAUNTLET_STAGES[gauntlet.stage];
+  const cpuTeam = stage.team.map(heroByName).filter(Boolean);
+  const cpuLeader = cpuTeam.find(h => h.role === 'leader');
+  const cpuArmy = armyForLeader(cpuLeader);
+
+  // Determine clone names for this stage
+  const stageNames = new Set(stage.team);
+  const cloneNames = new Set(gauntlet.playerTeam.filter(h => stageNames.has(h.name)).map(h => h.name));
+
+  // Set up state for the normal battle engine to use
+  state.playerTeam = gauntlet.playerTeam;
+  state.playerArmy = gauntlet.playerArmy;
+  state.cpuTeam = cpuTeam;
+  state.cpuArmy = cpuArmy;
+  state.gauntletClones = cloneNames; // used by initBattleState
+
+  initBattleState();
+  injectGauntletHeader(gauntlet.stage, stage, cloneNames);
+  renderBattleScreen();
+  showScreen('screen-battle');
+}
+
+function injectGauntletHeader(stageIdx, stage, cloneNames) {
+  const arena = document.querySelector('.battle-arena');
+  // Remove any existing gauntlet header
+  arena.querySelector('.gauntlet-battle-header')?.remove();
+
+  const dots = GAUNTLET_STAGES.map((_,i) =>
+    `<div class="gauntlet-dot ${i < stageIdx ? 'done' : i === stageIdx ? 'current' : ''}"></div>`
+  ).join('');
+
+  const cloneBadge = cloneNames.size
+    ? `<span class="gauntlet-clone-badge">⚠ ${[...cloneNames].join(', ')} −25% dmg</span>`
+    : '';
+
+  const header = document.createElement('div');
+  header.className = 'gauntlet-battle-header';
+  header.innerHTML = `
+    <div>
+      <div class="gauntlet-stage-label">Stage ${stageIdx+1} of ${GAUNTLET_STAGES.length}</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--text);margin-top:2px">${stage.name}</div>
+      <div style="font-size:0.68rem;color:var(--muted);font-style:italic">${stage.lore}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+      <div class="gauntlet-progress-dots">${dots}</div>
+      ${cloneBadge}
+    </div>
+  `;
+  arena.insertBefore(header, arena.firstChild);
+}
+
+// Called by the normal battle end flow — intercept if gauntlet is active
+function gauntletOnBattleEnd(winner) {
+  if (!gauntlet.active) return false; // not gauntlet, let normal flow handle it
+
+  gauntlet.results.push(winner === 'player' ? 'win' : 'loss');
+
+  if (winner !== 'player' || gauntlet.stage >= GAUNTLET_STAGES.length - 1) {
+    // Either lost, or cleared all stages
+    showGauntletResult();
+    return true;
+  }
+
+  // Won — advance to next stage
+  gauntlet.stage++;
+  // Brief pause then next stage
+  setTimeout(() => {
+    launchGauntletStage();
+  }, 1200);
+  return true;
+}
+
+function showGauntletResult() {
+  gauntlet.active = false;
+  const wins = gauntlet.results.filter(r => r === 'win').length;
+  const cleared = wins === GAUNTLET_STAGES.length;
+  const titleEl = document.getElementById('gauntlet-result-title');
+  titleEl.className = 'gauntlet-result-title ' + (cleared ? 'cleared' : wins > 0 ? '' : 'fallen');
+  titleEl.textContent = cleared ? 'Gauntlet Cleared!' : wins > 0 ? `Fell at Stage ${wins+1}` : 'Defeated at the Gates';
+
+  document.getElementById('gauntlet-result-subtitle').textContent =
+    cleared
+      ? `Undefeated across all ${GAUNTLET_STAGES.length} stages. Legendary.`
+      : `${wins} of ${GAUNTLET_STAGES.length} stages conquered.`;
+
+  const scorecard = document.getElementById('gauntlet-scorecard');
+  scorecard.innerHTML = gauntlet.results.map((r,i) => `
+    <div class="gauntlet-score-item ${r}">
+      <div class="gs-stage">Stage ${i+1}</div>
+      <div class="gs-result" style="color:${r==='win'?'var(--good)':'var(--evil)'}">${r==='win'?'Victory':'Defeated'}</div>
+      <div style="font-size:0.65rem;color:var(--muted);margin-top:2px">${GAUNTLET_STAGES[i].name}</div>
+    </div>
+  `).join('');
+
+  // Add remaining unplayed stages as grey
+  for (let i = gauntlet.results.length; i < GAUNTLET_STAGES.length; i++) {
+    scorecard.innerHTML += `
+      <div class="gauntlet-score-item">
+        <div class="gs-stage">Stage ${i+1}</div>
+        <div class="gs-result" style="color:var(--dim)">—</div>
+        <div style="font-size:0.65rem;color:var(--dim);margin-top:2px">${GAUNTLET_STAGES[i].name}</div>
+      </div>
+    `;
+  }
+
+  showScreen('screen-gauntlet-result');
+}
+
 </script>
 </body>
 </html>
