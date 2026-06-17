@@ -398,6 +398,192 @@
   .btn-battle:disabled { opacity: 0.4; cursor: not-allowed; }
   .btn-battle:not(:disabled):hover { background: var(--gold2); }
 
+
+
+  /* ─── KILLING BLOW OVERLAY ─── */
+  @keyframes kb-in {
+    0%   { opacity:0; transform:scale(0.92); }
+    100% { opacity:1; transform:scale(1); }
+  }
+  @keyframes kb-out {
+    0%   { opacity:1; transform:scale(1); }
+    100% { opacity:0; transform:scale(1.05); }
+  }
+  @keyframes kb-bg-in {
+    0%   { background:rgba(0,0,0,0); }
+    100% { background:rgba(0,0,0,0.82); }
+  }
+  @keyframes kb-bg-out {
+    0%   { background:rgba(0,0,0,0.82); }
+    100% { background:rgba(0,0,0,0); }
+  }
+  #killblow-overlay.kb-showing {
+    display:flex !important;
+    animation: kb-bg-in 0.25s ease-out forwards;
+  }
+  #killblow-overlay.kb-hiding {
+    display:flex !important;
+    animation: kb-bg-out 0.3s ease-in forwards;
+  }
+  #killblow-overlay.kb-showing #killblow-inner {
+    animation: kb-in 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  #killblow-overlay.kb-hiding #killblow-inner {
+    animation: kb-out 0.3s ease-in forwards;
+  }
+
+
+  /* ─── BATTLE SUMMARY SCREEN ─── */
+  #screen-summary {
+    align-items: center;
+    justify-content: flex-start;
+    background: radial-gradient(ellipse at 50% 20%, #0f1a2a 0%, var(--bg) 70%);
+    padding: 1.5rem 1rem 2rem;
+    gap: 1.25rem;
+  }
+
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    width: 100%;
+    max-width: 580px;
+  }
+
+  .summary-heading {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .summary-outcome {
+    font-family: var(--font);
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 0.25rem;
+  }
+  .summary-outcome.victory { color: var(--gold2); }
+  .summary-outcome.defeat  { color: var(--evil); }
+  .summary-outcome.draw    { color: var(--muted); }
+
+  .summary-tagline {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+
+  /* Stats row */
+  .summary-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+  .summary-stat {
+    background: var(--bg3);
+    border-radius: 6px;
+    padding: 0.6rem 0.5rem;
+    text-align: center;
+  }
+  .summary-stat-val {
+    font-size: 1.4rem;
+    font-family: var(--font);
+    color: var(--gold2);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .summary-stat-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* Hero roster */
+  .summary-roster {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem;
+  }
+  .summary-hero-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    padding: 0.3rem 0.4rem;
+    border-radius: 4px;
+    background: var(--bg3);
+  }
+  .summary-hero-row.dead { opacity: 0.45; }
+  .summary-hero-row .shr-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .summary-hero-row .shr-name { flex: 1; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .summary-hero-row .shr-hp   { font-size: 0.65rem; color: var(--muted); flex-shrink: 0; }
+
+  /* Highlights */
+  .summary-highlight {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    border-left: 3px solid var(--border2);
+    color: var(--muted);
+    line-height: 1.5;
+    background: var(--bg3);
+  }
+  .summary-highlight + .summary-highlight { margin-top: 0.35rem; }
+  .summary-highlight.hl-kill    { border-color: var(--evil);    color: #fca5a5; }
+  .summary-highlight.hl-synergy { border-color: var(--good);    color: #86efac; }
+  .summary-highlight.hl-betray  { border-color: var(--gold);    color: #fde68a; }
+  .summary-highlight.hl-moment  { border-color: var(--muted);   color: var(--text); }
+
+  @media (max-width: 700px) {
+    #screen-summary { padding: 1rem 0.75rem 2rem; gap: 0.85rem; }
+    .summary-card { padding: 0.85rem 0.85rem; }
+    .summary-stats { grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+    .summary-stat-val { font-size: 1.1rem; }
+    .summary-roster { grid-template-columns: 1fr; }
+  }
+
+  /* ─── BATTLE ANIMATIONS ─── */
+  @keyframes bh-hit {
+    0%   { transform: translateX(0);    background: var(--surface); }
+    20%  { transform: translateX(-5px); background: rgba(248,113,113,0.35); }
+    40%  { transform: translateX(4px);  background: rgba(248,113,113,0.25); }
+    60%  { transform: translateX(-3px); background: rgba(248,113,113,0.15); }
+    100% { transform: translateX(0);    background: var(--surface); }
+  }
+  @keyframes bh-heal {
+    0%   { box-shadow: none; }
+    40%  { box-shadow: 0 0 12px 3px rgba(74,222,128,0.5); background: rgba(74,222,128,0.12); }
+    100% { box-shadow: none; background: var(--surface); }
+  }
+  @keyframes bh-attack-flash {
+    0%   { box-shadow: none; }
+    30%  { box-shadow: 0 0 10px 2px rgba(212,168,67,0.6); }
+    100% { box-shadow: none; }
+  }
+  @keyframes bh-death {
+    0%   { opacity: 1; }
+    100% { opacity: 0.28; }
+  }
+  @keyframes bh-circle-hit {
+    0%,100% { transform: scale(1) rotate(-90deg); transform-origin: 50% 50%; }
+    50%      { transform: scale(1.4) rotate(-90deg); transform-origin: 50% 50%; }
+  }
+
+  .bh-hitting   { animation: bh-attack-flash 0.3s ease-out; }
+  .bh-hit       { animation: bh-hit 0.4s ease-out; }
+  .bh-healing   { animation: bh-heal 0.5s ease-out; }
+  .bh-dying     { animation: bh-death 0.6s ease-out forwards; }
+  .bh-circle-fill.circle-hit { animation: bh-circle-hit 0.35s ease-out; }
+
   /* ─── BATTLE SCREEN ─── */
   #screen-battle { padding: 0.75rem; gap: 0.75rem; }
 
@@ -1105,7 +1291,7 @@
   </button>
 
   <p style="margin-top:1rem; font-size:0.75rem; color:var(--dim);">
-    Draft 5 heroes · Fill your roles · Pray your allies don't turn on each other
+    Draft 5 heroes · Fill your roles · Pray your allies don’t turn on each other
   </p>
 </div>
 
@@ -1156,7 +1342,7 @@
 
     <p>Pick your roster once and fight five legendary teams in sequence. HP resets fully between stages — but your team is locked for the entire run. Stages escalate in difficulty, with the most dominant team in the multiverse waiting at Stage 5.</p>
 
-    <p>There's a catch: if any of your heroes appear on that stage's enemy roster, they're treated as <strong>clones</strong> and deal <strong>25% less damage</strong> that fight. Copying the final boss team gets you to Stage 5 — it won't get you through it. Finding the team that can clear all five is the real challenge.</p>
+    <p>There’s a catch: if any of your heroes appear on that stage’s enemy roster, they’re treated as <strong>clones</strong> and deal <strong>25% less damage</strong> that fight. Copying the final boss team gets you to Stage 5 — it won’t get you through it. Finding the team that can clear all five is the real challenge.</p>
 
     <div class="briefing-footer" style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
       <button class="btn-primary" onclick="startDraft()" style="flex:1;min-width:140px;max-width:200px;">Begin Draft</button>
@@ -1337,6 +1523,41 @@
 <!-- ═══════════════════════════════════════════════
   RESULT SCREEN
 ═══════════════════════════════════════════════ -->
+
+<!-- ═══════════════════════════════════════════════
+  BATTLE SUMMARY SCREEN (auto-resolve)
+═══════════════════════════════════════════════ -->
+<div id="screen-summary" class="screen">
+  <div style="width:100%;max-width:580px">
+    <div class="summary-outcome" id="summary-outcome">Victory</div>
+    <div class="summary-tagline" id="summary-tagline"></div>
+  </div>
+
+  <div class="summary-card" style="max-width:580px">
+    <div class="summary-heading">Battle Statistics</div>
+    <div class="summary-stats" id="summary-stats"></div>
+  </div>
+
+  <div class="summary-card" style="max-width:580px">
+    <div class="summary-heading">Your Forces</div>
+    <div class="summary-roster" id="summary-roster-player"></div>
+  </div>
+
+  <div class="summary-card" style="max-width:580px">
+    <div class="summary-heading">Enemy Forces</div>
+    <div class="summary-roster" id="summary-roster-cpu"></div>
+  </div>
+
+  <div class="summary-card" id="summary-highlights-card" style="max-width:580px">
+    <div class="summary-heading">Key Moments</div>
+    <div id="summary-highlights"></div>
+  </div>
+
+  <button class="btn-primary" id="summary-continue-btn" onclick="showResult()" style="max-width:320px;width:100%">
+    See Final Result
+  </button>
+</div>
+
 <div id="screen-result" class="screen">
   <div class="result-title" id="result-title">Victory</div>
   <div class="result-subtitle" id="result-subtitle"></div>
@@ -1352,7 +1573,7 @@
   <div class="title-emblem" style="border-color:#f97316; box-shadow:0 0 30px rgba(249,115,22,0.3); font-size:28px;">⚔</div>
   <h1 class="gauntlet-title">Gauntlet Mode</h1>
   <p class="gauntlet-subtitle">
-    Build your team and fight 5 legendary opponents back to back. HP resets between battles — but your roster doesn't.
+    Build your team and fight 5 legendary opponents back to back. HP resets between battles — but your roster doesn’t.
     <br><strong style="color:#f97316">Warning:</strong> heroes matching an opponent are <em>clones</em> and fight at −25% damage.
   </p>
 
@@ -1382,6 +1603,19 @@
   <button class="btn-primary" onclick="resetGame()" style="background:transparent;border:1px solid var(--border2);color:var(--muted);">Main Menu</button>
 </div>
 
+
+<!-- ═══════════════════════════════════════════════
+  KILLING BLOW OVERLAY
+═══════════════════════════════════════════════ -->
+<div id="killblow-overlay" style="display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0); pointer-events:none; align-items:center; justify-content:center; flex-direction:column;">
+  <div id="killblow-inner" style="text-align:center; padding:2rem; max-width:440px;">
+    <div id="killblow-killer" style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--muted); margin-bottom:0.5rem;"></div>
+    <div id="killblow-quote" style="font-family:var(--font); font-size:clamp(1.3rem,4vw,2rem); font-weight:400; color:var(--gold2); line-height:1.3; margin-bottom:1rem;"></div>
+    <div id="killblow-victim" style="font-size:0.8rem; color:var(--evil); letter-spacing:0.05em;"></div>
+  </div>
+</div>
+
 <!-- Hero Detail Panel (overlay) -->
 <div id="detail-backdrop" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;" onclick="closeDetail()"></div>
 <div class="hero-detail-panel" id="hero-detail-panel">
@@ -1404,7 +1638,7 @@ const HEROES = [
   { id:2,  name:"Leonidas",       universe:"Ancient Greece",     alignment:"good",    role:"leader",   strength:90, leadership:92, durability:88, intelligence:72, agility:68, rivals:["Xerxes"], allies:["Achilles"], lore:"Spartan king who held the Hot Gates" },
   { id:3,  name:"Mulan",          universe:"Chinese Folklore",   alignment:"good",    role:"leader",   strength:68, leadership:85, durability:65, intelligence:90, agility:88, rivals:[], allies:[], lore:"Warrior who saved China through cunning" },
   { id:4,  name:"Jean-Luc Picard",universe:"Star Trek",          alignment:"good",    role:"leader",   strength:45, leadership:98, durability:50, intelligence:96, agility:40, rivals:["Borg Queen"], allies:[], lore:"Starship captain, diplomat, philosopher" },
-  { id:5,  name:"King T'Challa",  universe:"Marvel Comics",      alignment:"good",    role:"leader",   strength:78, leadership:90, durability:76, intelligence:92, agility:85, rivals:["Killmonger"], allies:["Okoye"], lore:"Black Panther, king and protector of Wakanda" },
+  { id:5,  name:"King T’Challa",  universe:"Marvel Comics",      alignment:"good",    role:"leader",   strength:78, leadership:90, durability:76, intelligence:92, agility:85, rivals:["Killmonger"], allies:["Okoye"], lore:"Black Panther, king and protector of Wakanda" },
   { id:6,  name:"Atticus Finch",  universe:"To Kill a Mockingbird", alignment:"good", role:"leader",   strength:40, leadership:88, durability:45, intelligence:97, agility:35, rivals:[], allies:[], lore:"Moral compass of Maycomb, defender of justice" },
 
   // HEROES
@@ -1420,9 +1654,9 @@ const HEROES = [
   // DEFENDERS
   { id:15, name:"Gandalf",        universe:"Lord of the Rings",  alignment:"good",    role:"defender", strength:70, leadership:85, durability:88, intelligence:99, agility:55, rivals:["Balrog","Sauron","Saruman"], allies:["Aragorn","Frodo Baggins","Legolas","Gimli"], lore:"Grey Pilgrim, servant of the Secret Fire" },
   { id:16, name:"Obi-Wan Kenobi", universe:"Star Wars",          alignment:"good",    role:"defender", strength:68, leadership:80, durability:72, intelligence:90, agility:85, rivals:["Darth Vader","General Grievous"], allies:["Luke Skywalker"], lore:"Jedi Master, guardian of balance in the Force" },
-  { id:17, name:"Thor",           universe:"Marvel Comics",       alignment:"good",    role:"defender", strength:95, leadership:70, durability:95, intelligence:65, agility:82, rivals:["Loki","Thanos"], allies:["King T'Challa"], lore:"God of Thunder, Asgardian prince" },
+  { id:17, name:"Thor",           universe:"Marvel Comics",       alignment:"good",    role:"defender", strength:95, leadership:70, durability:95, intelligence:65, agility:82, rivals:["Loki","Thanos"], allies:["King T’Challa"], lore:"God of Thunder, Asgardian prince" },
   { id:18, name:"Samwise Gamgee", universe:"Lord of the Rings",  alignment:"good",    role:"defender", strength:55, leadership:68, durability:92, intelligence:68, agility:60, rivals:["Gollum","Sauron"], allies:["Frodo Baggins","Aragorn","Gandalf","Legolas","Gimli"], lore:"Loyal gardener who carried Frodo to the end" },
-  { id:19, name:"Okoye",         universe:"Marvel Comics",       alignment:"good",    role:"defender", strength:74, leadership:75, durability:78, intelligence:80, agility:88, rivals:[], allies:["King T'Challa"], lore:"General of the Dora Milaje, Wakanda's shield" },
+  { id:19, name:"Okoye",         universe:"Marvel Comics",       alignment:"good",    role:"defender", strength:74, leadership:75, durability:78, intelligence:80, agility:88, rivals:[], allies:["King T’Challa"], lore:"General of the Dora Milaje, Wakanda’s shield" },
 
   // WARRIORS
   { id:20, name:"Achilles",       universe:"Ancient Greece",     alignment:"neutral", role:"warrior",  strength:97, leadership:62, durability:85, intelligence:65, agility:95, rivals:["Hector"], allies:["Leonidas"], lore:"Greatest Greek warrior, nearly invincible" },
@@ -1441,7 +1675,7 @@ const HEROES = [
   // EVIL / NEUTRAL draftable (high risk, high reward)
   { id:30, name:"Sauron",         universe:"Lord of the Rings",  alignment:"evil",    role:"warrior",  strength:98, leadership:88, durability:95, intelligence:90, agility:60, rivals:["Aragorn","Gandalf","Frodo Baggins","Legolas","Gimli","Samwise Gamgee"], allies:[], lore:"The Dark Lord, maker of the One Ring" },
   { id:31, name:"Voldemort",      universe:"Harry Potter",       alignment:"evil",    role:"leader",   strength:62, leadership:93, durability:75, intelligence:97, agility:68, rivals:["Harry Potter","Hermione Granger"], allies:["Bellatrix Lestrange"], lore:"The Dark Lord who split his soul into seven" },
-  { id:32, name:"Bellatrix Lestrange", universe:"Harry Potter", alignment:"evil",    role:"warrior",  strength:76, leadership:58, durability:70, intelligence:84, agility:88, rivals:["Hermione Granger","Harry Potter"], allies:["Voldemort"], lore:"Most devoted and deranged of Voldemort's servants" },
+  { id:32, name:"Bellatrix Lestrange", universe:"Harry Potter", alignment:"evil",    role:"warrior",  strength:76, leadership:58, durability:70, intelligence:84, agility:88, rivals:["Hermione Granger","Harry Potter"], allies:["Voldemort"], lore:"Most devoted and deranged of Voldemort’s servants" },
   { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:55, rivals:["Thor","King T’Challa"], allies:[], lore:"The Mad Titan who sought to halve all life" },
   { id:34, name:"Cersei Lannister",universe:"Game of Thrones",  alignment:"evil",    role:"leader",   strength:35, leadership:88, durability:50, intelligence:95, agility:40, rivals:[], allies:["Jaime Lannister"], lore:"Queen of the Seven Kingdoms, never forgets a debt" },
   { id:35, name:"Jaime Lannister",universe:"Game of Thrones",   alignment:"neutral", role:"warrior",  strength:88, leadership:60, durability:78, intelligence:72, agility:85, rivals:[], allies:["Cersei Lannister","Brienne of Tarth"], lore:"The Kingslayer, greatest swordsman in Westeros" },
@@ -1449,7 +1683,38 @@ const HEROES = [
   { id:37, name:"Hannibal Lecter",universe:"Silence of the Lambs", alignment:"evil", role:"support",  strength:50, leadership:72, durability:58, intelligence:99, agility:62, rivals:[], allies:[], lore:"Brilliant psychiatrist and cannibalistic killer" },
   { id:38, name:"Amy Dunne",      universe:"Gone Girl",          alignment:"evil",    role:"support",  strength:42, leadership:78, durability:55, intelligence:99, agility:65, rivals:[], allies:[], lore:"Cool Girl. The most calculating mind in any room" },
   { id:39, name:"Walter White",   universe:"Breaking Bad",       alignment:"evil",    role:"leader",   strength:45, leadership:85, durability:52, intelligence:98, agility:48, rivals:[], allies:[], lore:"Chemistry teacher turned drug lord — I am the danger" },
-  { id:40, name:"Gollum",         universe:"Lord of the Rings",  alignment:"neutral", role:"hero",     strength:40, leadership:20, durability:60, intelligence:65, agility:95, rivals:["Frodo Baggins","Samwise Gamgee","Sauron"], allies:[], lore:"Wretched creature bound to the Ring's corruption" },
+
+  // DC COMICS — new additions to make DC synergy viable after Marvel split
+  { id:41, name:"Batman",         universe:"DC Comics",          alignment:"good",    role:"defender", strength:78, leadership:82, durability:80, intelligence:97, agility:90, rivals:["Joker","Lex Luthor"], allies:["Superman","Wonder Woman"], lore:"The Dark Knight — Gotham's vigilante, peak human perfection" },
+  { id:42, name:"The Joker",      universe:"DC Comics",          alignment:"evil",    role:"warrior",  strength:72, leadership:55, durability:65, intelligence:88, agility:80, rivals:["Batman"], allies:[], lore:"Agent of chaos — the clown who wants to watch the world burn" },
+  { id:43, name:"Lex Luthor",     universe:"DC Comics",          alignment:"evil",    role:"leader",   strength:50, leadership:90, durability:58, intelligence:100,agility:45, rivals:["Superman","Batman"], allies:[], lore:"The most brilliant and dangerous man on Earth" },
+
+  // MARVEL COMICS — additional heroes to strengthen the synergy block
+  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin"], allies:["King T'Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
+  { id:45, name:"Black Widow",    universe:"Marvel Comics",      alignment:"neutral", role:"support",  strength:62, leadership:75, durability:65, intelligence:95, agility:96, rivals:[], allies:["Okoye","King T'Challa"], lore:"Master spy and assassin — the most dangerous woman alive" },
+
+  // THE WITCHER
+  { id:46, name:"Geralt of Rivia",universe:"The Witcher",        alignment:"neutral", role:"warrior",  strength:94, leadership:55, durability:88, intelligence:78, agility:90, rivals:["Eredin"], allies:[], lore:"White Wolf, professional monster hunter — evil is evil" },
+
+  // DUNE
+  { id:47, name:"Paul Atreides",  universe:"Dune",               alignment:"neutral", role:"leader",   strength:72, leadership:94, durability:68, intelligence:96, agility:82, rivals:["Baron Harkonnen"], allies:[], lore:"Muad'Dib — the sleeper must awaken" },
+
+  // THE MATRIX
+  { id:48, name:"Morpheus",       universe:"The Matrix",         alignment:"good",    role:"leader",   strength:70, leadership:92, durability:68, intelligence:90, agility:88, rivals:["Agent Smith"], allies:["Neo"], lore:"Captain of the Nebuchadnezzar — he believed before anyone else did" },
+  { id:49, name:"Neo",            universe:"The Matrix",         alignment:"good",    role:"hero",     strength:82, leadership:68, durability:78, intelligence:88, agility:97, rivals:["Agent Smith"], allies:["Morpheus"], lore:"The One — he doesn't dodge bullets, he doesn't have to" },
+
+  // SHERLOCK HOLMES
+  { id:50, name:"Sherlock Holmes",universe:"Baker Street",       alignment:"neutral", role:"support",  strength:52, leadership:65, durability:55, intelligence:100,agility:72, rivals:["Professor Moriarty"], allies:["Dr Watson"], lore:"The world's only consulting detective — the game is afoot" },
+
+  // ANCIENT GREECE — third member to make synergy viable
+  { id:51, name:"Odysseus",       universe:"Ancient Greece",     alignment:"neutral", role:"hero",     strength:72, leadership:78, durability:70, intelligence:98, agility:78, rivals:[], allies:["Achilles","Leonidas"], lore:"The craftiest of the Greeks — patient, brilliant, ruthless" },
+
+  // STAR TREK — one more for synergy
+  { id:52, name:"Spock",          universe:"Star Trek",          alignment:"good",    role:"support",  strength:68, leadership:72, durability:70, intelligence:99, agility:65, rivals:[], allies:["Jean-Luc Picard","Q"], lore:"Half-human, half-Vulcan — logic is the beginning of wisdom" },
+
+  // ARTHURIAN LEGEND — give Merlin a companion for synergy
+  { id:53, name:"King Arthur",    universe:"Arthurian Legend",   alignment:"good",    role:"leader",   strength:82, leadership:92, durability:78, intelligence:80, agility:72, rivals:["Mordred"], allies:["Merlin"], lore:"Once and future king — he who pulls the sword from the stone" },
+  { id:40, name:"Gollum",         universe:"Lord of the Rings",  alignment:"neutral", role:"hero",     strength:40, leadership:20, durability:60, intelligence:65, agility:95, rivals:["Frodo Baggins","Samwise Gamgee","Sauron"], allies:[], lore:"Wretched creature bound to the Ring’s corruption" },
 ];
 
 const ROSTER = HEROES;
@@ -1460,15 +1725,19 @@ const CPU_HEROES = [...ROSTER];
 // ══════════════════════════════════════════════════════
 const ARMIES = [
   { id:'a1', name:'Spartan 300',       universe:'Ancient Greece',   alignment:'good',    strength:82, durability:85, size:300, lore:'Hold any line, fear no foe',       affinityLeaders:['Leonidas','Achilles'] },
-  { id:'a2', name:'Wakandan Royal Guard',universe:'Marvel Comics',  alignment:'good',    strength:78, durability:80, size:500, lore:'Sworn to protect Wakanda forever',   affinityLeaders:["King T'Challa",'Okoye'] },
+  { id:'a2', name:'Wakandan Royal Guard',universe:'Marvel Comics',  alignment:'good',    strength:78, durability:80, size:500, lore:'Sworn to protect Wakanda forever',   affinityLeaders:["King T’Challa",'Okoye'] },
   { id:'a3', name:'Fellowship Scouts', universe:'Lord of the Rings',alignment:'good',    strength:65, durability:70, size:200, lore:'Eyes of Middle-earth, fleet of foot', affinityLeaders:['Aragorn','Gandalf','Legolas'] },
   { id:'a4', name:'Rebel Alliance Troops',universe:'Star Wars',     alignment:'good',    strength:70, durability:65, size:1000,lore:'Ordinary people fighting impossible odds',affinityLeaders:['Luke Skywalker','Obi-Wan Kenobi'] },
   { id:'a5', name:'Hogwarts Army',     universe:'Harry Potter',     alignment:'good',    strength:60, durability:62, size:400, lore:'Students who chose to fight back',    affinityLeaders:['Harry Potter','Hermione Granger'] },
-  { id:'a6', name:"Sauron's Orc Horde",universe:'Lord of the Rings',alignment:'evil',   strength:75, durability:72, size:10000,lore:'Numberless as shadow, relentless',    affinityLeaders:['Sauron','Saruman'] },
+  { id:'a6', name:"Sauron’s Orc Horde",universe:'Lord of the Rings',alignment:'evil',   strength:75, durability:72, size:10000,lore:'Numberless as shadow, relentless',    affinityLeaders:['Sauron','Saruman'] },
   { id:'a7', name:'Death Eaters',      universe:'Harry Potter',     alignment:'evil',    strength:72, durability:68, size:300, lore:'Fanatical servants of the Dark Lord',  affinityLeaders:['Voldemort','Bellatrix Lestrange'] },
   { id:'a8', name:"Thanos' Outriders", universe:'Marvel Comics',    alignment:'evil',    strength:80, durability:78, size:5000,lore:'The Black Order arrives without mercy',  affinityLeaders:['Thanos'] },
   { id:'a9', name:'Lannister Army',    universe:'Game of Thrones',  alignment:'neutral', strength:74, durability:76, size:2000,lore:'A Lannister always pays his debts',    affinityLeaders:['Cersei Lannister','Jaime Lannister'] },
-  { id:'a10',name:'Starfleet Security',universe:'Star Trek',        alignment:'good',    strength:58, durability:60, size:800, lore:'The last line of Federation defence',  affinityLeaders:['Jean-Luc Picard','Q'] },
+  { id:'a10',name:'Starfleet Security',universe:'Star Trek',        alignment:'good',    strength:58, durability:60, size:800, lore:'The last line of Federation defence',  affinityLeaders:['Jean-Luc Picard','Q','Spock'] },
+  { id:'a11', name:'Gotham City Police',        universe:'DC Comics',          alignment:'good',    strength:62, durability:68, size:300, lore:'The thin blue line between Gotham and chaos',           affinityLeaders:['Batman','Superman','Wonder Woman'] },
+  { id:'a12', name:'Fremen Warriors',           universe:'Dune',               alignment:'neutral', strength:80, durability:75, size:500, lore:'Desert fighters who ride sandworms and fear nothing',   affinityLeaders:['Paul Atreides'] },
+  { id:'a13', name:'Knights of the Round Table',universe:'Arthurian Legend',   alignment:'good',    strength:74, durability:80, size:150, lore:'The greatest knights of Camelot, sworn to the code',   affinityLeaders:['King Arthur','Merlin'] },
+  { id:'a14', name:'Resistance Fighters',       universe:'The Matrix',         alignment:'good',    strength:65, durability:62, size:200, lore:'Those who chose the red pill — humanity fighting back', affinityLeaders:['Morpheus','Neo'] },
 ];
 
 // ══════════════════════════════════════════════════════
@@ -1812,7 +2081,7 @@ function renderPool() {
     ...state.cpuTeam.map(h => h.id),
   ]);
 
-  // Is it the player's turn?
+  // Is it the player’s turn?
   const isPlayerTurn = !state.draftLocked && state.snakePick < 10 && state.snakeOrder[state.snakePick] === 'player';
 
   // What roles does the player still need?
@@ -2113,7 +2382,7 @@ function scoreMediumPick(hero) {
   score += state.cpuTeam.filter(h => h.universe === hero.universe).length * 15;
   // Light ally bond awareness
   score += hero.allies.filter(a => state.cpuTeam.some(h => h.name === a)).length * 10;
-  // Small random noise so it doesn't always pick the same team
+  // Small random noise so it doesn’t always pick the same team
   score += Math.random() * 40;
   return score;
 }
@@ -2127,7 +2396,7 @@ function scoreHardPick(hero) {
   score += state.cpuTeam.filter(h => h.universe === hero.universe).length * 20;
   // Named ally bond in own team
   score += hero.allies.filter(a => state.cpuTeam.some(h => h.name === a)).length * 25;
-  // Penalise picking internal rivals (don't build a team that fights itself)
+  // Penalise picking internal rivals (don’t build a team that fights itself)
   score -= hero.rivals.filter(r => state.cpuTeam.some(h => h.name === r)).length * 35;
   return score;
 }
@@ -2211,7 +2480,7 @@ function armyMaxHp(a) {
 }
 
 function initBattleState() {
-  // Clone debuff: gauntlet heroes matching this stage's opponents fight at −25% damage
+  // Clone debuff: gauntlet heroes matching this stage’s opponents fight at −25% damage
   const cloneNames = state.gauntletClones || new Set();
   const makeUnit = h => ({
     ...h,
@@ -2270,6 +2539,11 @@ function initBattleState() {
     winner: null,
   };
   state.round = 0;
+  // Clear battle log DOM and animation queue so previous battle doesn't bleed through
+  const logEl = document.getElementById('battle-log');
+  if (logEl) logEl.innerHTML = '';
+  killblowQueue = [];
+  killblowRunning = false;
 }
 
 // ── Narrative flavour lines per hero ──
@@ -2314,7 +2588,86 @@ const HERO_QUIPS = {
   'Tyrion Lannister': { support:['I drink and I know things — Tyrion identifies the weakness','Tyrion’s mind is the sharpest weapon on the field'] },
   'Maximus':          { attack:['Are you not entertained? Maximus fights for those who cannot','My name is Maximus Decimus Meridius — the enemy flinches'] },
   'Achilles':         { attack:['No mortal hand can stop Achilles today'] },
+
+  // New heroes
+  'Batman':           { defend:['I’m Batman. That’s reason enough.','Batman positions himself between the enemy and his allies'], attack:['The Dark Knight strikes from the shadows — they never hear him coming','Batman calculates the outcome before throwing a single punch'] },
+  'The Joker':        { attack:['Why so serious? The Joker carves through the opposition laughing','Madness is the emergency exit — Joker strikes without hesitation','The Joker has no plan. That’s what makes him so dangerous'] },
+  'Lex Luthor':       { inspire:['Luthor’s genius reorders the battlefield in seconds','The most brilliant man in the room makes everyone else feel it'] },
+  'Spider-Man':       { attack:['With great power — Spider-Man swings into the fray','Your friendly neighbourhood Spider-Man strikes precisely','Spider-Man’s spider-sense fires — he’s already countering'] },
+  'Black Widow':      { support:['Natasha identifies the pressure point and applies it','Black Widow has already read every person on this field','A spy’s greatest weapon is patience — Romanoff strikes the moment'] },
+  'Geralt of Rivia':  { attack:['Evil is evil. Lesser, greater, middling — Geralt’s blade doesn’t care','The White Wolf fights with brutal, practised efficiency','Geralt mutters a sign and advances without ceremony'] },
+  'Paul Atreides':    { inspire:['Muad’Dib speaks — the Fremen fight as one','The sleeper has awakened — Atreides leads with quiet certainty','Paul sees the path. He always sees the path.'] },
+  'Morpheus':         { inspire:['There is a difference between knowing the path and walking it — Morpheus walks it','Morpheus believed in his crew before they believed in themselves','Free your mind — Morpheus commands and the team responds'] },
+  'Neo':              { attack:['Neo moves like the rules don’t apply to him — because they don’t','There is no spoon. Neo bends the fight to his will','The One is not constrained by what others think is possible'] },
+  'Sherlock Holmes':  { support:['Holmes has identified every weakness before the fight began','You’ve been a considerable nuisance — Holmes dismantles the opposition methodically','Elementary, my dear — Sherlock applies exactly the right pressure'] },
+  'Odysseus':         { attack:['Odysseus never fights fair and always wins','The craft of Odysseus is worth ten thousand warriors','Even the greatest fall to the right trick at the right moment — Odysseus knows both'] },
+  'Spock':            { support:['Live long and prosper — Spock identifies the optimal outcome','The needs of the many outweigh the needs of the few — Spock acts accordingly','Logic dictates the most efficient course. Spock takes it.'] },
+  'King Arthur':      { inspire:['Camelot’s king lifts his sword — the Round Table answers','Arthur fights not for glory but for those who cannot fight themselves','The once and future king takes the field — hope rides with him'] },
 };
+
+// Killing blow quotes — short, iconic, in-character
+const KILL_QUOTES = {
+  'Aragorn':           ['For Frodo.', 'The king has returned.', 'It is not this day.'],
+  'Gandalf':           ['The battle is won.', 'I am a servant of the Secret Fire.', 'Even the smallest person can change the course of the future.'],
+  'Legolas':           ['That still only counts as one.', 'They are taking the hobbits to Isengard.'],
+  'Gimli':             ['Certainty of death. Small chance of success. What are we waiting for?', 'Nobody tosses a dwarf.'],
+  'Sauron':            ['There is no life in the void. Only death.', 'You cannot hide. I see you.'],
+  'Frodo Baggins':     ['Even the smallest person can change the course of the future.', 'I will take the Ring, though I do not know the way.'],
+  'Samwise Gamgee':    ['I may not be able to carry it for you — but I can carry you.', 'There’s some good in this world, and it’s worth fighting for.'],
+  'Superman':          ['I believe in truth. But I also believe in justice.', 'Up, up, and away.'],
+  'Wonder Woman':      ['I am Diana of Themyscira. And you will fall.', 'War is not just the province of men.'],
+  'Luke Skywalker':    ['I am a Jedi, like my father before me.', 'May the Force be with you.'],
+  'Obi-Wan Kenobi':    ['You were the chosen one.', 'Hello there.', 'These are not the droids you are looking for.'],
+  'Yoda':              ['Do or do not. There is no try.', 'Fear is the path to the dark side.', 'Wars not make one great.'],
+  'Darth Vader':       ['I am your father.', 'The Force is strong with this one.', 'All too easy.'],
+  'Voldemort':         ['There is no good and evil. There is only power.', 'Avada Kedavra.', 'I cannot be killed.'],
+  'Bellatrix Lestrange':['I killed Sirius Black!', 'You dare speak his name?'],
+  'Harry Potter':      ['Expelliarmus!', 'Not my daughter, you bitch.', 'I open at the close.'],
+  'Hermione Granger':  ['It’s LeviOsa, not LeviosA.', 'When in doubt, go to the library.'],
+  'Thanos':            ['I am inevitable.', 'The hardest choices require the strongest wills.', 'You could not live with your failure.'],
+  'Thor':              ['I’m still worthy.', 'Bring me Thanos.', 'You’re in my seat.'],
+  'Loki':              ['I am Loki of Asgard, and I am burdened with glorious purpose.', 'Satisfaction isn’t in my nature.'],
+  'Leonidas':          ['This is Sparta.', 'Come and get them.', 'Tonight we dine in hell.'],
+  'Achilles':          ['I’ll make you a deal. Kill me, and I’ll give you the glory.', 'My glory fades. But a dead man’s reputation lives forever.'],
+  'Maximus':           ['Are you not entertained?', 'What we do in life echoes in eternity.', 'My name is Maximus Decimus Meridius.'],
+  'Jaime Lannister':   ['There are no men like me. Only me.', 'The things I do for love.'],
+  'Cersei Lannister':  ['When you play the game of thrones, you win or you die.', 'Power is power.'],
+  'Tyrion Lannister':  ['I drink and I know things.', 'Never forget what you are. Wear it like armour and it can never be used against you.'],
+  'Brienne of Tarth':  ['A knight is supposed to be a protector of the weak.', 'I swore a vow.'],
+  'Voldemort':         ['I cannot be killed. Not by one such as you.', 'Avada Kedavra.'],
+  'Walter White':      ['I am the one who knocks.', 'Say my name.', 'I did it for me.'],
+  'Hannibal Lecter':   ['I’m having an old friend for dinner.', 'Rudeness is an epidemic.'],
+  'Amy Dunne':         ['I’m the cunt you married.', 'I’m so much better than you.'],
+  'Jean-Luc Picard':   ['Engage.', 'Make it so.', 'Things are only impossible until they’re not.'],
+  'Katniss Everdeen':  ['If we burn, you burn with us.', 'Fire is catching.'],
+  'Ellen Ripley':      ['Get away from her, you bitch.', 'Game over, man. Game over.'],
+  'King T’Challa':    ['Wakanda forever.', 'I am not the king of Wakanda. I am the Black Panther.'],
+  'Okoye':             ['For Wakanda. Without question.', 'Now we fight like Wakandans.'],
+  'Mulan':             ['I’ll make a man out of you.', 'The flower that blooms in adversity is the most rare.'],
+  'Gollum':            ['My precious.', 'We wants it. We needs it.'],
+  'Merlin':            ['The greatest teacher, failure is not — that’s the other one. I know things older than time.'],
+  'Q':                 ['Oh, very well. I suppose I must help you — again.', 'The trial never ends, Picard.'],
+  'Atticus Finch':     ['You never really understand a person until you climb into their skin.', 'Courage is not a man with a gun.'],
+  'Batman':           ['I’m Batman.', 'Justice.', 'The night is darkest just before the dawn.'],
+  'The Joker':        ['Why so serious?', 'Madness is the emergency exit.', 'I’m not a monster. I’m just ahead of the curve.'],
+  'Lex Luthor':       ['Genius always wins in the end.', 'I’m the most dangerous man on Earth — and now you know why.'],
+  'Spider-Man':       ['With great power comes great responsibility.', 'My spider-sense never lies.', 'Thwip.'],
+  'Black Widow':      ['I’ve got red in my ledger. I’d like to wipe it out.', 'You’re in my way.'],
+  'Geralt of Rivia':  ['Evil is evil.', 'I’m a witcher. I’ll live.', 'Toss a coin to your Witcher.'],
+  'Paul Atreides':    ['I am Paul Muad’Dib Atreides. Remember the name.', 'The sleeper has awakened.', 'Fear is the mind-killer.'],
+  'Morpheus':         ['There is no spoon.', 'Welcome to the real world.', 'I’m trying to free your mind.'],
+  'Neo':              ['I know kung fu.', 'There is no spoon.', 'My name is Neo.'],
+  'Sherlock Holmes':  ['Elementary.', 'The game is afoot.', 'When you have eliminated the impossible…'],
+  'Odysseus':         ['Even the greatest heroes fall to the right trick.', 'Ten years to get home. One moment to end this.'],
+  'Spock':            ['Live long and prosper.', 'I have been and always shall be your friend.', 'Logic is the beginning of wisdom.'],
+  'King Arthur':      ['For Camelot.', 'The once and future king does not fall here.', 'Excalibur is drawn.'],
+};
+
+function getKillQuote(killerName) {
+  const quotes = KILL_QUOTES[killerName];
+  if (quotes && quotes.length) return quotes[Math.floor(Math.random() * quotes.length)];
+  return null;
+}
 
 function getNarrative(h, type) {
   const lines = HERO_QUIPS[h.name]?.[type];
@@ -2361,7 +2714,7 @@ function getAlignmentResult(h, team, enemy) {
   if (uniAllies.length > 0) {
     const bonus = 0.10 * uniAllies.length;
     mod += bonus;
-    msgs.push({ type:'synergy', msg:`⚡ ${uniAllies.map(a=>a.name).join(' & ')} — universe bond fuels ${h.name} (+${Math.round(bonus*100)}%)` });
+    msgs.push({ type:'synergy', uniName: h.universe, msg:`⚡ ${uniAllies.map(a=>a.name).join(' & ')} — universe bond fuels ${h.name} (+${Math.round(bonus*100)}%)` });
   }
 
   const namedAlly = team.find(t => t.id !== h.id && h.allies && h.allies.includes(t.name) && t.alive);
@@ -2419,7 +2772,7 @@ function tryIntercept(target, targetTeam, logs) {
     h.alive && h.id !== target.id && h.role === 'defender'
   );
   if (!defender) return null;
-  // Intercept chance scales with defender's agility (faster = more able to jump in)
+  // Intercept chance scales with defender’s agility (faster = more able to jump in)
   const chance = 0.2 + (defender.agility / 100) * 0.4; // 20–60%
   if (Math.random() < chance) {
     logs.push({ type:'synergy', msg:`🛡 ${defender.name} throws themselves in front of ${target.name}!` });
@@ -2441,7 +2794,7 @@ function doWarrior(h, team, enemy, mod, logs) {
   const finalDmg = interceptor ? Math.round(dmg * 0.6) : dmg;
   applyDamage(actualTarget, finalDmg, logs);
   const narrative = getNarrative(h, 'attack');
-  logs.push({ type:'attack', msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
+  logs.push({ type:'attack', attackerId: h.id, targetId: actualTarget.id, msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
 }
 
 function doArmyAttack(army, team, enemy, mod, logs) {
@@ -2470,7 +2823,7 @@ function doHero(h, team, enemy, mod, logs) {
   const finalDmg = interceptor ? Math.round(dmg * 0.6) : dmg;
   applyDamage(actualTarget, finalDmg, logs);
   const narrative = getNarrative(h, 'attack');
-  logs.push({ type:'attack', msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
+  logs.push({ type:'attack', attackerId: h.id, targetId: actualTarget.id, msg:`${narrative} — ${finalDmg} damage to ${actualTarget.name}${actualTarget.hp > 0 ? ` (${actualTarget.hp} HP)` : ''}` });
 }
 
 function doDefender(h, team, enemy, mod, logs) {
@@ -2480,7 +2833,7 @@ function doDefender(h, team, enemy, mod, logs) {
     const dmg = Math.round(base * mod * (0.85 + Math.random() * 0.3));
     applyDamage(target, dmg, logs);
     const narrative = getNarrative(h, 'attack');
-    logs.push({ type:'attack', msg:`${narrative} — ${dmg} to ${target.name}${target.hp > 0 ? ` (${target.hp} HP)` : ''}` });
+    logs.push({ type:'attack', attackerId: h.id, targetId: target.id, msg:`${narrative} — ${dmg} to ${target.name}${target.hp > 0 ? ` (${target.hp} HP)` : ''}` });
   }
   const wounded = team.filter(t => t.id !== h.id && t.alive).sort((a,b) => (a.hp/a.maxHp) - (b.hp/b.maxHp));
   if (wounded.length > 0) {
@@ -2510,7 +2863,7 @@ function doLeader(h, team, enemy, mod, logs) {
 }
 
 function doSupport(h, team, enemy, mod, logs) {
-  const wounded = team.filter(t => t.alive).sort((a,b) => (a.hp/a.maxHp) - (b.hp/b.maxHp));
+  const wounded = team.filter(t => t.alive && t.id !== h.id).sort((a,b) => (a.hp/a.maxHp) - (b.hp/b.maxHp));
   if (wounded.length > 0) {
     const ally = wounded[0];
     const heal = Math.round((h.intelligence / 100) * 16 * (0.8 + Math.random() * 0.4));
@@ -2519,7 +2872,7 @@ function doSupport(h, team, enemy, mod, logs) {
     const actual = ally.hp - before;
     if (actual > 0) {
       const narrative = getNarrative(h, 'support');
-      logs.push({ type:'synergy', msg:`\u271a ${narrative} — ${ally.name} restored ${actual} HP (${ally.hp}/${ally.maxHp})` });
+      logs.push({ type:'synergy', healTargetId: ally.id, msg:`\u271a ${narrative} — ${ally.name} restored ${actual} HP (${ally.hp}/${ally.maxHp})` });
     }
   }
   const threats = enemy.filter(t => t.alive).sort((a,b) => (b.strength + b.agility) - (a.strength + a.agility));
@@ -2537,8 +2890,12 @@ function applyDamage(target, dmg, logs) {
   target.hp = Math.max(0, target.hp - dmg);
   if (target.hp === 0) {
     target.alive = false;
+    target.hp = 0; // ensure HP stays zero — support self-heal can't resurrect a zero-HP hero
     if (target.isArmy) {
       logs.push({ type:'rivalry', msg:'☠ ' + getArmyNarrative(target, 'fall') });
+      if (logs._killer) {
+        logs.push({ type:'killblow', killerId: logs._killer.id, killerName: logs._killer.name, victimName: target.name, isArmy: true, deathLine: getArmyNarrative(target, 'fall') });
+      }
     } else {
       const deathLines = {
         'Sauron':'The Dark Lord falls — the One Ring loses its master!',
@@ -2557,6 +2914,10 @@ function applyDamage(target, dmg, logs) {
       };
       const line = deathLines[target.name] || ('☠ ' + target.name + ' has fallen!');
       logs.push({ type:'rivalry', msg:line });
+      // Tag for killing blow animation — killer set by caller
+      if (logs._killer) {
+        logs.push({ type:'killblow', killerId: logs._killer.id, killerName: logs._killer.name, victimName: target.name, deathLine: line });
+      }
     }
   }
 }
@@ -2584,6 +2945,9 @@ function resolveRound() {
 
   allCombatants.forEach(({ h, team, enemy }) => {
     if (!h.alive) return;
+
+    // Tag logs with current attacker so applyDamage can credit the kill
+    roundLogs._killer = h;
 
     // Alignment check
     const { mod: alignMod, msgs: alignMsgs, betrayTarget } = getAlignmentResult(h, team, enemy);
@@ -2645,7 +3009,8 @@ function hpColor(pct) {
 }
 
 function makeBattleHeroEl(h, isEnemy) {
-  const pct = Math.max(0, Math.round((h.hp / h.maxHp) * 100));
+  const displayHp = h.alive ? h.hp : 0;
+  const pct = Math.max(0, Math.round((displayHp / h.maxHp) * 100));
   const circ = 57; // stroke-dasharray = 2π×r where r≈9
   const offset = circ - (circ * pct / 100);
   const color = hpColor(pct);
@@ -2661,17 +3026,96 @@ function makeBattleHeroEl(h, isEnemy) {
     </svg>
     <div class="bh-info">
       <div class="bh-name">${h.name}</div>
-      <div class="bh-role-tag">${roleAbbr} · ${h.hp}HP</div>
+      <div class="bh-role-tag">${roleAbbr} · ${displayHp}HP</div>
     </div>
   `;
   return div;
+}
+
+let killblowQueue = [];
+let killblowRunning = false;
+
+const ARMY_KILL_LINES = [
+  'The last soldier falls. The field belongs to us now.',
+  'They broke. They always break.',
+  'An army is only as strong as its will. Theirs is gone.',
+  'The regiment is shattered — not one will rise again.',
+  'Their banner falls. The battle turns.',
+];
+
+function showKillblow(entry, onDone) {
+  const overlay = document.getElementById('killblow-overlay');
+
+  let killerLine, quote, victimLine;
+  if (entry.isArmy) {
+    // Army was destroyed — show a battlefield line, credit the killer
+    killerLine = entry.killerName.toUpperCase() + ' DESTROYS THE ' + entry.victimName.toUpperCase();
+    quote = ARMY_KILL_LINES[Math.floor(Math.random() * ARMY_KILL_LINES.length)];
+    victimLine = '☠ ' + entry.victimName + ' wiped out';
+  } else {
+    killerLine = entry.killerName.toUpperCase();
+    quote = getKillQuote(entry.killerName) || entry.killerName + ' delivers the killing blow.';
+    victimLine = '☠ ' + entry.victimName + ' has fallen';
+  }
+
+  document.getElementById('killblow-killer').textContent = killerLine;
+  document.getElementById('killblow-quote').textContent = quote;
+  document.getElementById('killblow-victim').textContent = victimLine;
+
+  overlay.className = 'kb-showing';
+
+  // Hold for 3s then fade out
+  setTimeout(() => {
+    overlay.className = 'kb-hiding';
+    setTimeout(() => {
+      overlay.className = '';
+      overlay.style.display = 'none';
+      onDone();
+    }, 300);
+  }, 3000);
+}
+
+function processKillblowQueue() {
+  if (killblowQueue.length === 0) { killblowRunning = false; return; }
+  killblowRunning = true;
+  const next = killblowQueue.shift();
+  showKillblow(next, processKillblowQueue);
+}
+
+function queueKillblow(entry) {
+  killblowQueue.push(entry);
+  if (!killblowRunning) processKillblowQueue();
+}
+
+function flashEl(id, cls, duration) {
+  const el = document.getElementById(`bh-${id}`);
+  if (!el) return;
+  el.classList.add(cls);
+  setTimeout(() => el.classList.remove(cls), duration);
 }
 
 function updateBattleScreen(newLogs) {
   const bs = state.battleState;
   document.getElementById('round-badge').textContent = `Round ${state.round}`;
 
-  // Update hero cards
+  // Collect animation events from logs before updating HP display
+  const hits = [];      // { attackerId, targetId }
+  const heals = [];     // { targetId }
+  const deaths = [];    // { targetId }
+  const kills = [];     // killblow entries
+
+  newLogs.forEach(entry => {
+    if (entry.type === 'killblow') kills.push(entry);
+    else if (entry.attackerId && entry.targetId) hits.push(entry);
+    if (entry.healTargetId) heals.push({ targetId: entry.healTargetId });
+  });
+
+  // Queue killing blow overlays — they show after the hit animations settle
+  kills.forEach(k => {
+    setTimeout(() => queueKillblow(k), hits.length * 60 + 300);
+  });
+
+  // Update hero cards (HP, circle, alive state)
   [...bs.player, ...bs.cpu].forEach(h => {
     const el = document.getElementById(`bh-${h.id}`);
     if (!el) return;
@@ -2679,12 +3123,42 @@ function updateBattleScreen(newLogs) {
     const circ = 57;
     const offset = circ - (circ * pct / 100);
     const color = hpColor(pct);
-    el.className = `battle-hero ${!h.alive ? 'defeated' : ''}`;
+    const wasDead = el.classList.contains('defeated');
+    el.className = `battle-hero${!h.alive ? ' defeated' : ''}`;
     const circleFill = el.querySelector('.bh-circle-fill');
     if (circleFill) { circleFill.style.stroke = color; circleFill.style.strokeDashoffset = offset; }
     const roleTag = el.querySelector('.bh-role-tag');
     const roleAbbr = { leader:'LDR', hero:'HERO', defender:'DEF', warrior:'WAR', support:'SUP' }[h.role] || h.role;
-    if (roleTag) roleTag.textContent = `${roleAbbr} · ${h.hp}HP`;
+    if (roleTag) roleTag.textContent = `${roleAbbr} · ${!h.alive ? 0 : h.hp}HP`;
+    // Death animation — only trigger once
+    if (!h.alive && !wasDead) deaths.push({ targetId: h.id });
+  });
+
+  // Fire animations with stagger so they don’t all fire at once
+  hits.forEach((hit, i) => {
+    const delay = i * 60;
+    setTimeout(() => flashEl(hit.attackerId, 'bh-hitting', 300), delay);
+    setTimeout(() => {
+      flashEl(hit.targetId, 'bh-hit', 400);
+      // Also pulse the circle
+      const el = document.getElementById(`bh-${hit.targetId}`);
+      const fill = el?.querySelector('.bh-circle-fill');
+      if (fill) {
+        fill.classList.add('circle-hit');
+        setTimeout(() => fill.classList.remove('circle-hit'), 350);
+      }
+    }, delay + 80);
+  });
+
+  heals.forEach((heal, i) => {
+    setTimeout(() => flashEl(heal.targetId, 'bh-healing', 500), i * 80 + hits.length * 60);
+  });
+
+  deaths.forEach((d, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(`bh-${d.targetId}`);
+      if (el) el.classList.add('bh-dying');
+    }, i * 100 + 200);
   });
 
   // Append new logs
@@ -2699,7 +3173,7 @@ function updateBattleScreen(newLogs) {
 
   if (bs.finished) {
     document.getElementById('btn-next-round').disabled = true;
-    setTimeout(showResult, 1200);
+    setTimeout(showSummary, 1200);
   }
 }
 
@@ -2738,7 +3212,139 @@ function autoResolve() {
   renderBattleScreen();
   document.getElementById('btn-next-round').disabled = true;
 
-  setTimeout(showResult, 800);
+  setTimeout(showSummary, 400);
+}
+
+
+// ══════════════════════════════════════════════════════
+// BATTLE SUMMARY (shown after auto-resolve)
+// ══════════════════════════════════════════════════════
+function showSummary() {
+  const bs = state.battleState;
+  const winner = bs.winner;
+  const log = bs.log;
+
+  // ── Outcome header ──
+  const outcomeEl = document.getElementById('summary-outcome');
+  const taglineEl = document.getElementById('summary-tagline');
+  if (winner === 'player') {
+    outcomeEl.textContent = 'Victory';
+    outcomeEl.className = 'summary-outcome victory';
+    taglineEl.textContent = `Your champions triumphed in ${state.round} rounds.`;
+  } else if (winner === 'cpu') {
+    outcomeEl.textContent = 'Defeat';
+    outcomeEl.className = 'summary-outcome defeat';
+    taglineEl.textContent = `The enemy prevailed after ${state.round} rounds of fierce combat.`;
+  } else {
+    outcomeEl.textContent = 'Draw';
+    outcomeEl.className = 'summary-outcome draw';
+    taglineEl.textContent = `All champions fell. The field belongs to none.`;
+  }
+
+  // ── Stats ──
+  const playerAlive = bs.player.filter(h => h.alive && !h.isArmy).length;
+  const cpuAlive    = bs.cpu.filter(h => h.alive && !h.isArmy).length;
+  const totalFallen = bs.player.concat(bs.cpu).filter(h => !h.alive && !h.isArmy).length;
+  const kills = log.filter(e => e.type === 'killblow' && !e.isArmy).length;
+  document.getElementById('summary-stats').innerHTML = [
+    { val: state.round, label: 'Rounds' },
+    { val: kills,       label: 'Heroes Fallen' },
+    { val: `${playerAlive}v${cpuAlive}`, label: 'Survivors' },
+  ].map(s => `
+    <div class="summary-stat">
+      <div class="summary-stat-val">${s.val}</div>
+      <div class="summary-stat-label">${s.label}</div>
+    </div>
+  `).join('');
+
+  // ── Roster cards ──
+  function rosterHtml(heroes) {
+    return heroes.filter(h => !h.isArmy).map(h => {
+      const pct = h.alive ? Math.round(h.hp / h.maxHp * 100) : 0;
+      const dot = h.alive
+        ? (pct > 60 ? 'var(--good)' : pct > 30 ? 'var(--gold)' : 'var(--evil)')
+        : 'var(--dim)';
+      const hp = h.alive ? `${h.hp}HP` : '✝';
+      return `<div class="summary-hero-row ${h.alive?'':'dead'}">
+        <div class="shr-dot" style="background:${dot}"></div>
+        <span class="shr-name">${h.name}</span>
+        <span class="shr-hp">${hp}</span>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('summary-roster-player').innerHTML = rosterHtml(bs.player);
+  document.getElementById('summary-roster-cpu').innerHTML    = rosterHtml(bs.cpu);
+
+  // ── Key moments — mine log for interesting events ──
+  const highlights = [];
+
+  // Killing blows (hero kills only, pick most dramatic)
+  const heroKills = log.filter(e => e.type === 'killblow' && !e.isArmy);
+  // Group by killer — find top killer
+  const killerCount = {};
+  heroKills.forEach(k => { killerCount[k.killerName] = (killerCount[k.killerName] || 0) + 1; });
+  const topKiller = Object.entries(killerCount).sort((a,b) => b[1]-a[1])[0];
+  if (topKiller) {
+    const [name, count] = topKiller;
+    highlights.push({ cls:'hl-kill', msg:`☠ ${name} claimed ${count} kill${count>1?'s':''} — the most decisive blade on the field` });
+  }
+
+  // Last hero standing (if one side was wiped)
+  const playerWipe = bs.cpu.filter(h => !h.isArmy).every(h => !h.alive);
+  const cpuWipe    = bs.player.filter(h => !h.isArmy).every(h => !h.alive);
+  if (playerWipe) {
+    const survivors = bs.player.filter(h => h.alive && !h.isArmy);
+    if (survivors.length === 1) {
+      highlights.push({ cls:'hl-moment', msg:`⚔ ${survivors[0].name} was the last hero standing — the enemy was swept aside` });
+    } else if (survivors.length > 1) {
+      highlights.push({ cls:'hl-moment', msg:`⚔ ${survivors.length} of your heroes survived — a decisive victory` });
+    }
+  }
+
+  // Betrayals
+  const betrayals = log.filter(e => e.type === 'rivalry' && e.msg && e.msg.includes('blind rage'));
+  if (betrayals.length > 0) {
+    const names = [...new Set(betrayals.map(e => e.msg.match(/^☠ (.+?) lashes/)?.[1]).filter(Boolean))];
+    if (names.length) highlights.push({ cls:'hl-betray', msg:`⚠ ${names.join(', ')} betrayed ${betrayals.length === 1 ? 'a teammate' : 'teammates'} mid-battle — rivalries tore their ranks apart` });
+  }
+
+  // Universe synergies firing (count and mention the universes)
+  const synergies = log.filter(e => e.type === 'synergy' && e.uniName);
+  if (synergies.length >= 4) {
+    const uniCounts = {};
+    synergies.forEach(e => { uniCounts[e.uniName] = (uniCounts[e.uniName] || 0) + 1; });
+    const topUnis = Object.entries(uniCounts).sort((a,b) => b[1]-a[1]).slice(0,2).map(([u]) => u);
+    highlights.push({ cls:'hl-synergy', msg:`✦ Universe bonds fired ${synergies.length} times — ${topUnis.join(' & ')} synergies drove the battle` });
+  }
+
+  // Army destruction
+  const armyKills = log.filter(e => e.type === 'killblow' && e.isArmy);
+  armyKills.forEach(k => {
+    highlights.push({ cls:'hl-moment', msg:`⚔ ${k.killerName} destroyed the ${k.victimName}` });
+  });
+
+  // Closest moment — find the round where total HP was most even (if we can infer)
+  // Fallback: if no highlights, add a generic one
+  if (highlights.length === 0) {
+    highlights.push({ cls:'hl-moment', msg:`A closely fought battle over ${state.round} rounds.` });
+  }
+
+  const hlEl = document.getElementById('summary-highlights');
+  hlEl.innerHTML = highlights.map(h => `<div class="summary-highlight ${h.cls}">${h.msg}</div>`).join('');
+
+  // Update continue button label for gauntlet
+  const continueBtn = document.getElementById('summary-continue-btn');
+  if (continueBtn) {
+    if (gauntlet.active && bs.winner === 'player' && gauntlet.stage < GAUNTLET_STAGES.length - 1) {
+      continueBtn.textContent = `Next: Stage ${gauntlet.stage + 2} ▶`;
+    } else if (gauntlet.active) {
+      continueBtn.textContent = 'See Gauntlet Result';
+    } else {
+      continueBtn.textContent = 'See Final Result';
+    }
+  }
+
+  showScreen('screen-summary');
 }
 
 // ══════════════════════════════════════════════════════
@@ -2753,7 +3359,7 @@ function showResult() {
   const titleEl = document.getElementById('result-title');
   const subEl = document.getElementById('result-subtitle');
 
-  // Fallback: decide by HP if winner wasn't set
+  // Fallback: decide by HP if winner wasn’t set
   if (!bs.winner) {
     const playerHp = bs.player.reduce((sum, h) => sum + (h.alive ? h.hp : 0), 0);
     const cpuHp = bs.cpu.reduce((sum, h) => sum + (h.alive ? h.hp : 0), 0);
@@ -2844,9 +3450,9 @@ const GAUNTLET_STAGES = [
     team: ['Voldemort','Gollum','Gandalf','Sauron','Hannibal Lecter'],
   },
   {
-    name: "Marvel's Finest",
+    name: "Marvel’s Finest",
     lore: 'Gods, kings, and conquerors assembled. Power without cohesion.',
-    team: ["King T'Challa",'Superman','Thor','Thanos','Yoda'],
+    team: ["King T’Challa",'Superman','Thor','Thanos','Yoda'],
   },
   {
     name: 'The Shattered Council',
@@ -3016,17 +3622,14 @@ function gauntletOnBattleEnd(winner) {
   gauntlet.results.push(winner === 'player' ? 'win' : 'loss');
 
   if (winner !== 'player' || gauntlet.stage >= GAUNTLET_STAGES.length - 1) {
-    // Either lost, or cleared all stages
+    // Either lost, or cleared all stages — summary already shown, result button leads here
     showGauntletResult();
     return true;
   }
 
-  // Won — advance to next stage
+  // Won — advance to next stage (called from showResult via the summary button)
   gauntlet.stage++;
-  // Brief pause then next stage
-  setTimeout(() => {
-    launchGauntletStage();
-  }, 1200);
+  launchGauntletStage();
   return true;
 }
 
