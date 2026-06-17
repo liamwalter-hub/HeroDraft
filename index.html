@@ -2229,6 +2229,8 @@ function startRestrictedDraft() {
   rdGenerateOffers('cpu');
 
   state.lastMode = 'restricted';
+  // Lock if CPU goes first so player cards don't flash before CPU picks
+  if (state.snakeOrder[0] === 'cpu') state.draftLocked = true;
   renderRestrictedDraft();
   showScreen('screen-restricted');
 
