@@ -4355,12 +4355,6 @@ function showSummary() {
   document.getElementById('summary-roster-player').innerHTML = rosterHtml(bs.player);
   document.getElementById('summary-roster-cpu').innerHTML    = rosterHtml(bs.cpu);
 
-  // ── Play-again button label ──
-  const playAgainBtn = document.getElementById('summary-play-again-btn');
-  if (playAgainBtn) {
-    playAgainBtn.textContent = state.lastMode === 'restricted' ? 'Restricted Again' : 'Draft Again';
-  }
-
   // ── Streak badge ──
   const badgeWrap = document.getElementById('summary-streak-badge');
   if (badgeWrap) {
@@ -4453,15 +4447,21 @@ function showSummary() {
   const hlEl = document.getElementById('summary-highlights');
   hlEl.innerHTML = highlights.map(h => `<div class="summary-highlight ${h.cls}">${h.msg}</div>`).join('');
 
-  // Update continue button label for gauntlet
-  const continueBtn = document.getElementById('summary-continue-btn');
-  if (continueBtn) {
+  // Update play-again button for gauntlet vs standard modes
+  const playAgainBtn2 = document.getElementById('summary-play-again-btn');
+  if (playAgainBtn2) {
     if (gauntlet.active && bs.winner === 'player' && gauntlet.stage < GAUNTLET_STAGES.length - 1) {
-      continueBtn.textContent = `Next: Stage ${gauntlet.stage + 2} ▶`;
+      playAgainBtn2.textContent = `Stage ${gauntlet.stage + 2} ▶`;
+      playAgainBtn2.onclick = () => { gauntlet.stage++; launchGauntletStage(); };
     } else if (gauntlet.active) {
-      continueBtn.textContent = 'See Gauntlet Result';
+      // Lost, or cleared final stage — go to gauntlet result
+      playAgainBtn2.textContent = gauntlet.results[gauntlet.results.length-1] === 'win' ? 'See Results' : 'Try Again';
+      playAgainBtn2.onclick = gauntlet.results[gauntlet.results.length-1] === 'win'
+        ? () => showGauntletResult()
+        : () => showGauntlet();
     } else {
-      continueBtn.textContent = 'See Final Result';
+      playAgainBtn2.textContent = state.lastMode === 'restricted' ? 'Restricted Again' : 'Draft Again';
+      playAgainBtn2.onclick = () => playAgain();
     }
   }
 
@@ -4473,18 +4473,26 @@ function showSummary() {
 // ══════════════════════════════════════════════════════
 function showResult() {
   const bs = state.battleState;
-  if (gauntlet.active) {
-    if (gauntletOnBattleEnd(bs.winner)) return;
-  }
+
+  // Fallback: decide by HP if winner wasn't set
   if (!bs.winner) {
     const playerHp = bs.player.reduce((sum, h) => sum + (h.alive ? h.hp : 0), 0);
     const cpuHp = bs.cpu.reduce((sum, h) => sum + (h.alive ? h.hp : 0), 0);
     bs.winner = playerHp > cpuHp ? 'player' : cpuHp > playerHp ? 'cpu' : 'draw';
   }
+
+  // Gauntlet: record result then show summary — the summary button handles next stage / retry
+  if (gauntlet.active) {
+    gauntlet.results.push(bs.winner === 'player' ? 'win' : 'loss');
+    showSummary();
+    return;
+  }
+
+  // ── Streak tracking (standard modes only) ──
   if (bs.winner === 'player') {
     streak.current++;
     if (streak.current > streak.best) streak.best = streak.current;
-  } else if (!gauntlet.active) {
+  } else {
     if (streak.current >= 2) {
       const broken = streak.current;
       streak.current = 0;
@@ -4806,24 +4814,6 @@ function injectGauntletHeader(stageIdx, stage, cloneNames) {
     </div>
   `;
   arena.insertBefore(header, arena.firstChild);
-}
-
-// Called by the normal battle end flow — intercept if gauntlet is active
-function gauntletOnBattleEnd(winner) {
-  if (!gauntlet.active) return false; // not gauntlet, let normal flow handle it
-
-  gauntlet.results.push(winner === 'player' ? 'win' : 'loss');
-
-  if (winner !== 'player' || gauntlet.stage >= GAUNTLET_STAGES.length - 1) {
-    // Either lost, or cleared all stages — summary already shown, result button leads here
-    showGauntletResult();
-    return true;
-  }
-
-  // Won — advance to next stage (called from showResult via the summary button)
-  gauntlet.stage++;
-  launchGauntletStage();
-  return true;
 }
 
 function showGauntletResult() {
