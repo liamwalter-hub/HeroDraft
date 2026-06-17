@@ -3437,6 +3437,7 @@ function beginBattle() {
     state.cpuArmy = (affArmy.length ? affArmy : ARMIES)[Math.floor(Math.random() * (affArmy.length || ARMIES.length))];
   }
   initBattleState();
+  document.getElementById('btn-next-round').disabled = false;
   renderBattleScreen();
   showScreen('screen-battle');
 }
@@ -4615,26 +4616,31 @@ const GAUNTLET_STAGES = [
     name: 'The Dark Fellowship',
     lore: 'Villains who can barely stand each other. Their rivalries are your opening.',
     team: ['Voldemort','Gollum','Gandalf','Sauron','Hannibal Lecter'],
+    army: 'Death Eaters',
   },
   {
-    name: "Marvel’s Finest",
+    name: "Marvel's Finest",
     lore: 'Gods, kings, and conquerors assembled. Power without cohesion.',
-    team: ["King T’Challa",'Superman','Thor','Thanos','Yoda'],
+    team: ["King T'Challa",'Superman','Thor','Thanos','Yoda'],
+    army: 'Wakandan Royal Guard',
   },
   {
     name: 'The Shattered Council',
     lore: 'Legends from across the ages, powerful alone — but they share no common cause.',
     team: ['Aragorn','Wonder Woman','Gandalf','Sauron','Merlin'],
+    army: 'Fellowship Scouts',
   },
   {
     name: 'House Lannister',
     lore: 'A dynasty united by blood and hunger. Four lions, one crown, zero mercy.',
     team: ['Cersei Lannister','Wonder Woman','Brienne of Tarth','Jaime Lannister','Tyrion Lannister'],
+    army: 'Lannister Army',
   },
   {
     name: 'The Spartan-Jedi Alliance',
     lore: 'The apex predator. Ancient discipline and Force mastery in perfect unison. Your final test.',
     team: ['Leonidas','Luke Skywalker','Obi-Wan Kenobi','Achilles','Yoda'],
+    army: 'Spartan 300',
   },
 ];
 
@@ -4642,6 +4648,7 @@ const gauntlet = {
   playerTeam: [],     // hero objects, one per role
   playerArmy: null,
   picks: {},          // role -> hero
+  armyPick: null,     // chosen army object
   stage: 0,
   results: [],        // 'win'|'loss' per stage
   active: false,
@@ -4659,6 +4666,7 @@ function armyForLeader(leader) {
 
 function showGauntlet() {
   gauntlet.picks = {};
+  gauntlet.armyPick = null;
   gauntlet.stage = 0;
   gauntlet.results = [];
   renderGauntletPick();
@@ -4673,6 +4681,7 @@ function renderGauntletPick() {
       <div class="gec-num">Stage ${i+1}</div>
       <div class="gec-name">${s.name}</div>
       <div class="gec-members">${s.team.join(' · ')}</div>
+      <div style="font-size:0.55rem;color:var(--evil);margin-top:3px;letter-spacing:0.05em">⚔ ${s.army}</div>
     </div>
   `).join('');
 
@@ -4699,6 +4708,27 @@ function renderGauntletPick() {
     grid.appendChild(col);
   });
 
+  // Army picker
+  const armySection = document.createElement('div');
+  armySection.style.cssText = 'width:100%;max-width:700px;margin-top:0.75rem;';
+  armySection.innerHTML = `<div style="font-size:0.7rem;color:var(--muted);text-align:center;margin-bottom:0.5rem;letter-spacing:0.1em;text-transform:uppercase;">Choose your army</div>`;
+  const armyGrid = document.createElement('div');
+  armyGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0.4rem;';
+  ARMIES.forEach(a => {
+    const leader = gauntlet.picks.leader;
+    const isAffinity = leader && a.affinityLeaders && a.affinityLeaders.includes(leader.name);
+    const isSelected = gauntlet.armyPick && gauntlet.armyPick.id === a.id;
+    const btn = document.createElement('button');
+    btn.style.cssText = `background:${isSelected ? 'var(--surface2)' : 'var(--surface)'};border:1px solid ${isSelected ? 'var(--gold)' : isAffinity ? 'rgba(212,168,67,0.4)' : 'var(--border)'};border-radius:6px;padding:0.4rem 0.5rem;cursor:pointer;text-align:left;color:${isSelected ? 'var(--gold)' : 'var(--text)'};font-family:var(--ui);transition:all 0.15s;`;
+    btn.innerHTML = `<div style="font-size:0.68rem;font-weight:600">${a.name}${isAffinity ? ' ⚡' : ''}</div><div style="font-size:0.58rem;color:var(--muted)">${a.universe}</div>`;
+    btn.onclick = () => { gauntlet.armyPick = isSelected ? null : a; renderGauntletPick(); };
+    armyGrid.appendChild(btn);
+  });
+  armySection.appendChild(armyGrid);
+  // Insert before the clone warning
+  const cloneWarn = document.getElementById('gauntlet-clone-warning');
+  cloneWarn.parentNode.insertBefore(armySection, cloneWarn);
+
   updateGauntletCloneWarning();
 }
 
@@ -4723,7 +4753,7 @@ function updateGauntletCloneWarning() {
 
 function startGauntlet() {
   gauntlet.playerTeam = REQUIRED_ROLES.map(r => gauntlet.picks[r]);
-  gauntlet.playerArmy = armyForLeader(gauntlet.picks.leader);
+  gauntlet.playerArmy = gauntlet.armyPick || armyForLeader(gauntlet.picks.leader);
   gauntlet.stage = 0;
   gauntlet.results = [];
   gauntlet.active = true;
@@ -4734,7 +4764,8 @@ function launchGauntletStage() {
   const stage = GAUNTLET_STAGES[gauntlet.stage];
   const cpuTeam = stage.team.map(heroByName).filter(Boolean);
   const cpuLeader = cpuTeam.find(h => h.role === 'leader');
-  const cpuArmy = armyForLeader(cpuLeader);
+  const stageArmyName = stage.army;
+  const cpuArmy = stageArmyName ? ARMIES.find(a => a.name === stageArmyName) || armyForLeader(cpuLeader) : armyForLeader(cpuLeader);
 
   // Determine clone names for this stage
   const stageNames = new Set(stage.team);
@@ -4749,6 +4780,8 @@ function launchGauntletStage() {
 
   initBattleState();
   injectGauntletHeader(gauntlet.stage, stage, cloneNames);
+  document.getElementById('btn-next-round').disabled = false;
+  document.getElementById('btn-next-round').disabled = false;
   renderBattleScreen();
   showScreen('screen-battle');
 }
