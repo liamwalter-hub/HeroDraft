@@ -2385,17 +2385,19 @@ function rdDoCpuPick() {
   state.cpuTeam.push(bestHero);
   rdClearOffer('cpu', bestRole);
   state.snakePick++;
-  state.draftLocked = false;
+  // Keep draftLocked = true so the render shows CPU pick, not player cards
 
-  // Generate new offers for CPU’s next pick
+  // Generate new offers for CPU's next pick (in case CPU goes again)
   rdGenerateOffers('cpu');
 
+  // Render to show the CPU pick landing, then advance after delay
+  // draftLocked stays true throughout so no player cards flash prematurely
   renderRestrictedDraft();
-  if (isMobile()) {
-    setTimeout(() => rdAdvanceSnake(), 1800);
-  } else {
+  const advDelay = isMobile() ? 1800 : 600;
+  setTimeout(() => {
+    state.draftLocked = false;
     rdAdvanceSnake();
-  }
+  }, advDelay);
 }
 
 // ── Render ──
