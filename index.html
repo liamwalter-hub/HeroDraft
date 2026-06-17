@@ -4709,7 +4709,10 @@ function renderGauntletPick() {
   });
 
   // Army picker
+  // Remove any existing army section to prevent duplication on re-render
+  document.querySelectorAll('.gauntlet-army-picker').forEach(el => el.remove());
   const armySection = document.createElement('div');
+  armySection.className = 'gauntlet-army-picker';
   armySection.style.cssText = 'width:100%;max-width:700px;margin-top:0.75rem;';
   armySection.innerHTML = `<div style="font-size:0.7rem;color:var(--muted);text-align:center;margin-bottom:0.5rem;letter-spacing:0.1em;text-transform:uppercase;">Choose your army</div>`;
   const armyGrid = document.createElement('div');
