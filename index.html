@@ -719,6 +719,7 @@
     transform: rotate(-90deg); transform-origin: 50% 50%; }
 
   .bh-info { flex: 1; min-width: 0; }
+  .bh-role-label { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.2; }
   .bh-name { font-size: 0.75rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .bh-role-tag { font-size: 0.58rem; color: var(--muted); }
 
@@ -4138,15 +4139,22 @@ function renderBattleScreen() {
   const bs = state.battleState;
   document.getElementById('round-badge').textContent = `Round ${state.round}`;
 
+  const ROLE_ORDER = ['leader','hero','defender','warrior','support'];
+  const sortByRole = units => [...units].sort((a, b) => {
+    if (a.isArmy) return 1;
+    if (b.isArmy) return -1;
+    return ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role);
+  });
+
   // Player team
   const pEl = document.getElementById('battle-team-player');
   pEl.innerHTML = '<div class="team-label">Your Forces</div>';
-  bs.player.forEach(h => pEl.appendChild(makeBattleHeroEl(h, false)));
+  sortByRole(bs.player).forEach(h => pEl.appendChild(makeBattleHeroEl(h, false)));
 
   // CPU team
   const cEl = document.getElementById('battle-team-cpu');
   cEl.innerHTML = '<div class="team-label" style="text-align:right;">Enemy Forces</div>';
-  bs.cpu.forEach(h => cEl.appendChild(makeBattleHeroEl(h, true)));
+  sortByRole(bs.cpu).forEach(h => cEl.appendChild(makeBattleHeroEl(h, true)));
 }
 
 function hpColor(pct) {
@@ -4156,10 +4164,11 @@ function hpColor(pct) {
 function makeBattleHeroEl(h, isEnemy) {
   const displayHp = h.alive ? h.hp : 0;
   const pct = Math.max(0, Math.round((displayHp / h.maxHp) * 100));
-  const circ = 57; // stroke-dasharray = 2π×r where r≈9
+  const circ = 57;
   const offset = circ - (circ * pct / 100);
   const color = hpColor(pct);
-  const roleAbbr = { leader:'LDR', hero:'HERO', defender:'DEF', warrior:'WAR', support:'SUP' }[h.role] || h.role;
+  const roleAbbr = h.isArmy ? 'ARMY' : ({ leader:'LDR', hero:'HERO', defender:'DEF', warrior:'WAR', support:'SUP' }[h.role] || h.role.toUpperCase());
+  const roleColor = h.isArmy ? 'var(--good)' : ({ leader:'var(--leader)', hero:'var(--hero)', defender:'var(--defender)', warrior:'var(--warrior)', support:'var(--support)' }[h.role] || 'var(--muted)');
   const div = document.createElement('div');
   div.className = `battle-hero ${!h.alive ? 'defeated' : ''}`;
   div.id = `bh-${h.id}`;
@@ -4170,8 +4179,9 @@ function makeBattleHeroEl(h, isEnemy) {
         style="stroke:${color}; stroke-dashoffset:${offset}"/>
     </svg>
     <div class="bh-info">
+      <div class="bh-role-label" style="color:${roleColor}">${roleAbbr}</div>
       <div class="bh-name">${h.name}</div>
-      <div class="bh-role-tag">${roleAbbr} · ${displayHp}HP</div>
+      <div class="bh-role-tag">${displayHp}HP</div>
     </div>
   `;
   return div;
@@ -4279,8 +4289,7 @@ function updateBattleScreen(newLogs) {
     const circleFill = el.querySelector('.bh-circle-fill');
     if (circleFill) { circleFill.style.stroke = color; circleFill.style.strokeDashoffset = offset; }
     const roleTag = el.querySelector('.bh-role-tag');
-    const roleAbbr = { leader:'LDR', hero:'HERO', defender:'DEF', warrior:'WAR', support:'SUP' }[h.role] || h.role;
-    if (roleTag) roleTag.textContent = `${roleAbbr} · ${!h.alive ? 0 : h.hp}HP`;
+    if (roleTag) roleTag.textContent = `${!h.alive ? 0 : h.hp}HP`;
     // Death animation — only trigger once
     if (!h.alive && !wasDead) deaths.push({ targetId: h.id });
   });
