@@ -132,39 +132,42 @@
     justify-content: center;
     background: radial-gradient(ellipse at 50% 40%, #1a1535 0%, var(--bg) 70%);
     text-align: center;
-    padding: 2rem;
+    padding: clamp(0.75rem, 2vh, 2rem) 2rem;
+    gap: 0;
   }
 
   .title-emblem {
-    width: 80px; height: 80px;
+    width: clamp(48px, 8vh, 80px);
+    height: clamp(48px, 8vh, 80px);
     border: 2px solid var(--gold);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
-    margin: 0 auto 2rem;
+    font-size: clamp(20px, 4vh, 36px);
+    margin: 0 auto clamp(0.6rem, 1.5vh, 2rem);
     box-shadow: 0 0 40px rgba(212,168,67,0.3);
+    flex-shrink: 0;
   }
 
   h1.game-title {
     font-family: var(--font);
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: clamp(1.6rem, 5vh, 4rem);
     font-weight: 400;
     letter-spacing: 0.05em;
     color: var(--gold2);
     line-height: 1.1;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
   }
 
   .game-subtitle {
-    font-size: 0.85rem;
+    font-size: clamp(0.62rem, 1.5vh, 0.85rem);
     color: var(--muted);
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    margin-bottom: 3rem;
+    margin-bottom: clamp(0.75rem, 2vh, 3rem);
   }
 
-  .difficulty-section { margin-bottom: 2.5rem; }
-  .difficulty-section label { display: block; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .difficulty-section { margin-bottom: clamp(0.6rem, 1.5vh, 2.5rem); }
+  .difficulty-section label { display: block; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; }
 
   .diff-btns { display: flex; gap: 0.5rem; justify-content: center; }
   .diff-btn {
@@ -196,6 +199,19 @@
   }
   .btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
   .btn-primary:active { transform: translateY(0); }
+
+  /* Title screen button scaling */
+  #screen-title .btn-primary {
+    padding: clamp(0.55rem, 1.5vh, 0.9rem) 2rem;
+    font-size: clamp(0.85rem, 2vh, 1rem);
+    margin-top: clamp(0.3rem, 0.8vh, 0.6rem);
+    width: 100%;
+    max-width: 320px;
+  }
+
+  #title-stats-bar { font-size: clamp(0.78rem, 2vh, 0.95rem); margin-top: clamp(0.4rem, 1vh, 0.75rem); gap: 0.9rem; }
+  #title-info-bar { font-size: clamp(0.68rem, 1.8vh, 0.8rem); color: var(--muted); gap: 0.5rem; }
+  .title-info-chip { display:flex; align-items:center; gap:0.3rem; padding:0.2rem 0.5rem; border-radius:4px; background:var(--surface); border:1px solid var(--border2); white-space:nowrap; }
 
   /* ─── DRAFT SCREEN ─── */
   #screen-draft { padding: 0; }
@@ -373,6 +389,26 @@
   .team-slot .slot-lore { font-size: 0.65rem; color: var(--muted); }
 
   .alignment-alerts { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .draft-grade {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+  }
+  .draft-grade-letter {
+    font-family: var(--font); font-size: 1.4rem; font-weight: 700; line-height: 1;
+    width: 1.8rem; text-align: center; flex-shrink: 0;
+  }
+  .draft-grade-s { color: #f97316; border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.08); }
+  .draft-grade-a { color: var(--gold2); border-color: rgba(212,168,67,0.4); background: rgba(212,168,67,0.08); }
+  .draft-grade-b { color: #a78bfa; border-color: rgba(167,139,250,0.4); background: rgba(167,139,250,0.08); }
+  .draft-grade-c { color: var(--muted); border-color: var(--border2); background: var(--surface); }
+  .draft-grade-d { color: var(--evil); border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.06); }
+  .draft-grade-info { flex: 1; }
+  .draft-grade-label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .draft-grade-desc  { font-size: 0.7rem; color: var(--text); line-height: 1.3; margin-top: 0.1rem; }
   .alert-chip {
     font-size: 0.7rem;
     padding: 0.4rem 0.6rem;
@@ -1520,34 +1556,81 @@
     </div>
   </div>
 
-  <button class="btn-primary" onclick="startDraft()">Begin Draft</button>
+  <button class="btn-primary" onclick="startDraft()">Open Draft</button>
 
   <button class="btn-primary" onclick="startRestrictedDraft()" style="background:transparent; border:1px solid #a78bfa; color:#a78bfa; margin-top:0.6rem;">
-    🎲 Restricted Draft
+    🎲 Fate Draft
   </button>
 
   <button class="btn-primary" onclick="showGauntlet()" style="background:transparent; border:1px solid #f97316; color:#f97316; margin-top:0.6rem;">
     ⚔ Gauntlet Mode
   </button>
 
+  <button class="btn-primary" onclick="showFateGauntlet()" style="background:transparent; border:1px solid #fb923c; color:#fb923c; margin-top:0.6rem;">
+    🎲 Fate Gauntlet
+  </button>
+
+  <button class="btn-primary" id="daily-btn" onclick="showDailyChallenge()" style="background:transparent; border:1px solid #22d3ee; color:#22d3ee; margin-top:0.6rem;">
+    📅 Daily Challenge
+  </button>
+
   <button class="btn-primary" onclick="showScreen('screen-briefing')" style="background:transparent; border:1px solid var(--border2); color:var(--muted); margin-top:0.6rem;">
     How to Play
   </button>
 
-  <p style="margin-top:1rem; font-size:0.75rem; color:var(--dim);">
-    Draft 5 heroes · Fill your roles · Pray your allies don’t turn on each other
-  </p>
+  <div id="title-stats-bar" style="display:flex;justify-content:center;flex-wrap:wrap;"></div>
+  <div id="title-info-bar" style="display:flex;gap:0.5rem;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:0.3rem;"></div>
 </div>
 
 
 <!-- ═══════════════════════════════════════════════
-  BRIEFING SCREEN
+  DAILY CHALLENGE SCREEN
 ═══════════════════════════════════════════════ -->
+<div id="screen-daily" class="screen" style="align-items:center;justify-content:flex-start;padding-top:2.5rem;text-align:center;">
+  <div style="font-size:0.62rem;letter-spacing:0.2em;color:#22d3ee;text-transform:uppercase;margin-bottom:0.3rem;">Daily Challenge</div>
+  <div id="daily-date" style="font-size:0.72rem;color:var(--muted);margin-bottom:1.2rem;"></div>
+
+  <div id="daily-completed-banner" style="display:none;margin-bottom:1rem;padding:0.6rem 1rem;border-radius:8px;font-size:0.82rem;font-weight:600;"></div>
+
+  <div style="background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.2);border-radius:10px;padding:1rem;max-width:340px;width:100%;margin-bottom:1.2rem;">
+    <div style="font-size:0.62rem;color:#22d3ee;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;">Today's Rules</div>
+    <div id="daily-mode-badge" style="font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:0.35rem;"></div>
+    <div id="daily-diff-badge" style="font-size:0.78rem;color:var(--muted);margin-bottom:0.6rem;"></div>
+    <div id="daily-rule-name" style="font-size:0.85rem;font-weight:700;color:#22d3ee;margin-bottom:0.2rem;"></div>
+    <div id="daily-rule-desc" style="font-size:0.75rem;color:var(--muted);line-height:1.4;"></div>
+  </div>
+
+  <div style="display:flex;gap:1rem;justify-content:center;margin-bottom:1.2rem;">
+    <div style="text-align:center;">
+      <div id="daily-streak" style="font-size:1.6rem;font-weight:700;color:#22d3ee;font-family:var(--font);">0</div>
+      <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;">Win Streak</div>
+    </div>
+    <div style="width:1px;background:var(--border2);"></div>
+    <div style="text-align:center;">
+      <div id="daily-total-wins" style="font-size:1.6rem;font-weight:700;color:var(--gold2);font-family:var(--font);">0</div>
+      <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;">Total Wins</div>
+    </div>
+    <div style="width:1px;background:var(--border2);"></div>
+    <div style="text-align:center;">
+      <div id="daily-best-streak" style="font-size:1.6rem;font-weight:700;color:var(--good);font-family:var(--font);">0</div>
+      <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;">Best Streak</div>
+    </div>
+  </div>
+
+  <button class="btn-primary" id="daily-play-btn" onclick="startDailyBattle()" style="background:#22d3ee;border-color:#22d3ee;color:#0a0a0f;font-weight:700;margin-bottom:0.75rem;max-width:280px;width:100%;">
+    Begin Challenge
+  </button>
+  <button class="btn-primary" onclick="resetGame()" style="background:transparent;border:1px solid var(--border2);color:var(--muted);max-width:280px;width:100%;">
+    Main Menu
+  </button>
+</div>
+
+
 <div id="screen-briefing" class="screen">
   <div class="briefing-card">
     <h2>How to Play</h2>
 
-    <p>HeroDraft has three modes. <strong>Draft Mode</strong>: you and the CPU take turns picking from the full roster in a snake draft. <strong>Restricted Draft</strong>: each pick you’re shown one random hero per role — take it or pass for a new offer. <strong>Gauntlet Mode</strong>: build your team freely and fight five escalating opponents back to back.</p>
+    <p>HeroDraft has three modes. <strong>Open Draft</strong>: you and the CPU take turns picking freely from the full roster. <strong>Fate Draft</strong>: each pick you’re shown one random hero per role — take it or pass for a new offer. <strong>Gauntlet Mode</strong>: build your team freely and fight five fixed opponents back to back. <strong>Fate Gauntlet</strong>: draft once in Fate Draft, then fight an endless series of CPU teams until your fixed roster falls. <strong>Daily Challenge</strong>: one Fate or Open Draft per day with a rotating constraint.</p>
 
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Roles</p>
     <div class="briefing-roles">
@@ -1609,7 +1692,7 @@
     <p>If any of your heroes appear on that stage’s enemy roster, they’re treated as <strong>clones</strong> and deal <strong>25% less damage</strong> that fight. Finding a team that clears all five without cloning is the real challenge.</p>
 
     <div class="briefing-footer" style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
-      <button class="btn-primary" onclick="startDraft()" style="flex:1;min-width:140px;max-width:200px;">Begin Draft</button>
+      <button class="btn-primary" onclick="startDraft()" style="flex:1;min-width:140px;max-width:200px;">Open Draft</button>
       <button class="btn-primary" onclick="showGauntlet()" style="flex:1;min-width:140px;max-width:200px;background:transparent;border:1px solid #f97316;color:#f97316;">⚔ Gauntlet Mode</button>
     </div>
     <div style="text-align:center;margin-top:0.85rem;">
@@ -1624,10 +1707,12 @@
 
   <!-- Draft header: turn indicator -->
   <div class="draft-header">
+    <!-- daily challenge banner — shown only in daily mode -->
+    <div id="daily-draft-banner" style="display:none;background:rgba(34,211,238,0.08);border-bottom:1px solid rgba(34,211,238,0.2);padding:0.4rem 0.75rem;font-size:0.7rem;color:#22d3ee;text-align:center;"></div>
     <!-- top row: title + pick tracker + desktop filters -->
     <div class="draft-header-top">
       <div>
-        <h2 style="margin-bottom:2px;">Snake Draft</h2>
+        <h2 style="margin-bottom:2px;">Open Draft</h2>
         <div id="draft-turn-label" style="font-size:0.72rem; color:var(--muted);">Deciding who picks first…</div>
       </div>
       <div id="pick-tracker" style="display:flex; gap:4px; align-items:center; flex-wrap:wrap;"></div>
@@ -1693,6 +1778,7 @@
       <div id="army-pool" style="display:flex; flex-direction:column; gap:0.3rem; margin-top:0.4rem;"></div>
       <div>
         <div class="sidebar-section-title" style="margin-top:0.75rem;">Alignment</div>
+        <div id="draft-grade-badge" style="display:none;margin-bottom:0.5rem;"></div>
         <div class="alignment-alerts" id="alignment-alerts">
           <div style="font-size:0.72rem; color:var(--dim);">Draft heroes to see synergies.</div>
         </div>
@@ -1730,6 +1816,7 @@
         <!-- Alignment alerts -->
         <div>
           <div class="sidebar-section-title">Alignment</div>
+          <div id="draft-grade-badge-mobile" style="display:none;margin-bottom:0.5rem;"></div>
           <div class="alignment-alerts" id="alignment-alerts-mobile">
             <div style="font-size:0.72rem; color:var(--dim);">Draft heroes to see synergies.</div>
           </div>
@@ -1806,6 +1893,7 @@
   <div style="width:100%;max-width:580px">
     <div class="summary-outcome" id="summary-outcome">Victory</div>
     <div class="summary-tagline" id="summary-tagline"></div>
+    <div id="summary-mvp" style="display:none;margin-top:0.5rem;"></div>
   </div>
 
   <div class="summary-card" style="max-width:580px">
@@ -1864,7 +1952,7 @@
 
   <div class="rd-header">
     <div>
-      <h2>Restricted Draft</h2>
+      <h2>Fate Draft</h2>
       <div id="rd-turn-label" style="font-size:0.7rem;color:var(--muted);">Deciding who picks first…</div>
     </div>
     <div id="pick-tracker-rd" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;"></div>
@@ -1877,6 +1965,7 @@
       <div class="rd-team-panel">
         <div class="rd-team-title" style="color:var(--gold);">⚔ Your Forces</div>
         <div id="rd-player-slots"></div>
+        <div id="draft-grade-badge-rd" style="display:none;margin-top:0.5rem;"></div>
       </div>
       <div class="rd-team-panel">
         <div class="rd-team-title" style="color:var(--evil);">☠ Enemy Forces</div>
@@ -1937,6 +2026,30 @@
   <button class="btn-primary" onclick="resetGame()" style="background:transparent;border:1px solid var(--border2);color:var(--muted);">Main Menu</button>
 </div>
 
+<!-- ═══════════════════════════════════════════════
+  RESTRICTED GAUNTLET RUN END
+═══════════════════════════════════════════════ -->
+<div id="screen-rg-end" class="screen" style="align-items:center;text-align:center;padding:2rem 1.5rem;">
+  <div style="font-size:0.62rem;letter-spacing:0.2em;color:#fb923c;text-transform:uppercase;margin-bottom:0.5rem;">Fate Gauntlet</div>
+  <div id="rg-end-title" style="font-family:var(--font);font-size:2.2rem;font-weight:400;color:var(--gold2);margin-bottom:0.3rem;">Run Over</div>
+  <div id="rg-end-stages" style="font-size:1rem;color:var(--muted);margin-bottom:0.25rem;"></div>
+  <div id="rg-end-best" style="font-size:0.78rem;color:var(--good);margin-bottom:1.5rem;"></div>
+
+  <div id="rg-end-team" style="background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:0.75rem 1rem;max-width:340px;width:100%;margin-bottom:1.5rem;text-align:left;">
+    <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.5rem;">Your Team</div>
+    <div id="rg-end-team-list" style="font-size:0.78rem;color:var(--text);line-height:1.8;"></div>
+  </div>
+
+  <button class="btn-primary" onclick="showFateGauntlet()" style="background:#fb923c;border-color:#fb923c;margin-bottom:0.6rem;width:100%;max-width:280px;">
+    🎲 New Run
+  </button>
+  <button class="btn-primary" onclick="resetGame()" style="background:transparent;border:1px solid var(--border2);color:var(--muted);width:100%;max-width:280px;">
+    Main Menu
+  </button>
+</div>
+
+
+
 <div id="screen-gauntlet-progress" class="screen" style="align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 30%, #1a1020 0%, var(--bg) 70%);">
   <div style="font-size:0.65rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;">Gauntlet Progress</div>
   <div class="gauntlet-progress-dots" id="gp-dots" style="justify-content:center;margin-bottom:1.5rem;gap:8px;"></div>
@@ -1982,7 +2095,7 @@
 // ══════════════════════════════════════════════════════
 const HEROES = [
   // LEADERS
-  { id:1,  name:"Aragorn",        universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"leader",   strength:82, leadership:95, durability:80, intelligence:78, agility:75, rivals:["Sauron","Saruman"], allies:["Gandalf","Legolas","Gimli","Frodo Baggins","Samwise Gamgee"], lore:"Rightful king of Gondor, ranger turned ruler" },
+  { id:1,  name:"Aragorn",        universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"leader",   strength:82, leadership:95, durability:80, intelligence:78, agility:75, rivals:["Sauron","Saruman"], allies:["Gandalf","Legolas","Gimli","Frodo Baggins","Samwise Gamgee","Elrond"], lore:"Rightful king of Gondor, ranger turned ruler" },
   { id:2,  name:"Leonidas",       universe:"Ancient Greece",     alignment:"good", tier:"human",    role:"leader",   strength:90, leadership:92, durability:88, intelligence:72, agility:68, rivals:["Xerxes"], allies:["Achilles","Odysseus"], lore:"Spartan king who held the Hot Gates" },
   { id:3,  name:"Mulan",          universe:"Chinese Folklore",   alignment:"good", tier:"human",    role:"leader",   strength:68, leadership:85, durability:65, intelligence:90, agility:88, rivals:[], allies:[], lore:"Warrior who saved China through cunning" },
   { id:4,  name:"Jean-Luc Picard",universe:"Star Trek",          alignment:"good", tier:"human",    role:"leader",   strength:45, leadership:98, durability:50, intelligence:96, agility:40, rivals:["Borg Queen"], allies:["Q","Spock"], lore:"Starship captain, diplomat, philosopher" },
@@ -2000,7 +2113,7 @@ const HEROES = [
   { id:14, name:"Ellen Ripley",   universe:"Alien",              alignment:"good", tier:"human",    role:"hero",     strength:65, leadership:75, durability:72, intelligence:85, agility:70, rivals:["Xenomorph Queen"], allies:[], lore:"Sole survivor, nemesis of the Xenomorphs" },
 
   // DEFENDERS
-  { id:15, name:"Gandalf",        universe:"Lord of the Rings",  alignment:"good", tier:"legendary",    role:"defender", strength:70, leadership:85, durability:88, intelligence:99, agility:55, rivals:["Balrog","Sauron","Saruman"], allies:["Aragorn","Frodo Baggins","Legolas","Gimli","Samwise Gamgee"], lore:"Grey Pilgrim, servant of the Secret Fire" },
+  { id:15, name:"Gandalf",        universe:"Lord of the Rings",  alignment:"good", tier:"legendary",    role:"defender", strength:70, leadership:85, durability:88, intelligence:99, agility:55, rivals:["Balrog","Sauron","Saruman"], allies:["Aragorn","Frodo Baggins","Legolas","Gimli","Samwise Gamgee","Elrond"], lore:"Grey Pilgrim, servant of the Secret Fire" },
   { id:16, name:"Obi-Wan Kenobi", universe:"Star Wars",          alignment:"good", tier:"legendary",    role:"defender", strength:68, leadership:80, durability:72, intelligence:90, agility:85, rivals:["Darth Vader","General Grievous"], allies:["Luke Skywalker","Yoda"], lore:"Jedi Master, guardian of balance in the Force" },
   { id:17, name:"Thor",           universe:"Marvel Comics",       alignment:"good", tier:"cosmic",    role:"defender", strength:95, leadership:70, durability:95, intelligence:65, agility:82, rivals:["Loki","Thanos","Galactus","Hela","Ultron"], allies:["King T’Challa"], lore:"God of Thunder, Asgardian prince" },
   { id:18, name:"Samwise Gamgee", universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"defender", strength:55, leadership:68, durability:92, intelligence:68, agility:60, rivals:["Gollum","Sauron"], allies:["Frodo Baggins","Aragorn","Gandalf","Legolas","Gimli"], lore:"Loyal gardener who carried Frodo to the end" },
@@ -2027,7 +2140,7 @@ const HEROES = [
   { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil", tier:"cosmic",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:72, rivals:["Thor","King T’Challa","Spider-Man","Black Widow","Okoye","Doctor Strange","Scarlet Witch","Captain America"], allies:[], lore:"The Mad Titan who sought to halve all life" },
   { id:34, name:"Cersei Lannister",universe:"Game of Thrones",  alignment:"evil", tier:"human",    role:"leader",   strength:35, leadership:88, durability:50, intelligence:95, agility:40, rivals:["Daenerys Targaryen"], allies:["Jaime Lannister","Tyrion Lannister"], lore:"Queen of the Seven Kingdoms, never forgets a debt" },
   { id:35, name:"Jaime Lannister",universe:"Game of Thrones",   alignment:"neutral", tier:"human", role:"warrior",  strength:88, leadership:60, durability:78, intelligence:72, agility:85, rivals:[], allies:["Cersei Lannister","Brienne of Tarth","Tyrion Lannister"], lore:"The Kingslayer, greatest swordsman in Westeros" },
-  { id:36, name:"Brienne of Tarth",universe:"Game of Thrones",  alignment:"good", tier:"human",    role:"defender", strength:85, leadership:65, durability:88, intelligence:70, agility:72, rivals:[], allies:["Jaime Lannister"], lore:"Lady knight, sworn to protect the innocent" },
+  { id:36, name:"Brienne of Tarth",universe:"Game of Thrones",  alignment:"good", tier:"human",    role:"defender", strength:85, leadership:65, durability:88, intelligence:70, agility:72, rivals:["The Hound"], allies:["Jaime Lannister","Jon Snow"], lore:"Lady knight, sworn to protect the innocent" },
   { id:37, name:"Hannibal Lecter",universe:"Silence of the Lambs", alignment:"evil", tier:"human", role:"support",  strength:50, leadership:72, durability:58, intelligence:99, agility:62, rivals:[], allies:[], lore:"Brilliant psychiatrist and cannibalistic killer" },
   { id:38, name:"Amy Dunne",      universe:"Gone Girl",          alignment:"evil", tier:"human",    role:"support",  strength:42, leadership:78, durability:55, intelligence:99, agility:65, rivals:[], allies:[], lore:"Cool Girl. The most calculating mind in any room" },
   { id:39, name:"Walter White",   universe:"Breaking Bad",       alignment:"evil", tier:"human",    role:"leader",   strength:45, leadership:85, durability:52, intelligence:98, agility:48, rivals:[], allies:[], lore:"Chemistry teacher turned drug lord — I am the danger" },
@@ -2038,7 +2151,7 @@ const HEROES = [
   { id:43, name:"Lex Luthor",     universe:"DC Comics",          alignment:"evil", tier:"human",    role:"leader",   strength:50, leadership:90, durability:58, intelligence:100,agility:45, rivals:["Superman","Batman"], allies:[], lore:"The most brilliant and dangerous man on Earth" },
 
   // MARVEL COMICS — additional heroes to strengthen the synergy block
-  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good", tier:"enhanced",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin","Thanos"], allies:["King T’Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
+  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good", tier:"enhanced",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin","Thanos","Venom"], allies:["King T’Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
   { id:45, name:"Black Widow",    universe:"Marvel Comics",      alignment:"neutral", tier:"human", role:"support",  strength:62, leadership:75, durability:65, intelligence:95, agility:96, rivals:["Thanos"], allies:["Okoye","King T’Challa"], lore:"Master spy and assassin — the most dangerous woman alive" },
 
   // THE WITCHER
@@ -2082,7 +2195,7 @@ const HEROES = [
   { id:63, name:"Dolores Umbridge",universe:"Harry Potter",       alignment:"evil", tier:"enhanced",    role:"support",  strength:35, leadership:75, durability:55, intelligence:90, agility:45, rivals:["Harry Potter","Hermione Granger"], allies:[], lore:"Hem hem. The cruelty of Umbridge was worse than Voldemort’s — it smiled." },
 
   // ── EVIL HERO ADDITIONS ──
-  { id:64, name:"Daenerys Targaryen", universe:"Game of Thrones",   alignment:"evil", tier:"enhanced",    role:"hero",     strength:82, leadership:78, durability:72, intelligence:88, agility:80, rivals:["Cersei Lannister"], allies:[], lore:"She came to break the wheel. She burned the world instead." },
+  { id:64, name:"Daenerys Targaryen", universe:"Game of Thrones",   alignment:"evil", tier:"enhanced",    role:"leader",     strength:82, leadership:78, durability:72, intelligence:88, agility:80, rivals:["Cersei Lannister"], allies:[], lore:"She came to break the wheel. She burned the world instead." },
   { id:65, name:"Count Dracula",      universe:"Gothic Horror",      alignment:"evil", tier:"enhanced",    role:"hero",     strength:68, leadership:62, durability:78, intelligence:92, agility:95, rivals:[], allies:[], lore:"I have crossed oceans of time to find you. I do not stop at dawn." },
   { id:66, name:"Dorian Gray",        universe:"Oscar Wilde",        alignment:"neutral", tier:"enhanced", role:"hero",     strength:65, leadership:55, durability:95, intelligence:88, agility:85, rivals:[], allies:[], lore:"The only way to get rid of a temptation is to yield to it. Dorian yields to everything." },
 
@@ -2105,6 +2218,15 @@ const HEROES = [
   { id:81, name:"Shadow Broker",     universe:"Mass Effect",        alignment:"evil",    tier:"enhanced",  role:"leader",   strength:82, leadership:88, durability:75, intelligence:95, agility:65, rivals:["Commander Shepard"], allies:[], lore:"The Shadow Broker sees everything. Sells everything. A Yahg who built an intelligence empire from the shadows and watched civilisations crumble for profit." },
   { id:82, name:"Captain America", universe:"Marvel Comics",  alignment:"good",  tier:"enhanced", role:"defender", strength:85, leadership:82, durability:85, intelligence:82, agility:80, rivals:["Ultron","Thanos"], allies:[], lore:"Seventy years on ice and he woke up with the same answer he always had. Steve Rogers doesn’t fight because he’s strong. He fights because someone has to stand between the innocent and what’s coming." },
   { id:83, name:"Bane",             universe:"DC Comics",      alignment:"evil",  tier:"enhanced", role:"defender", strength:92, leadership:72, durability:84, intelligence:80, agility:72, rivals:["Batman"], allies:[], lore:"He broke the Bat. Not by being stronger — by being patient. Bane studied Bruce Wayne for years before he ever laid a hand on him. He is the only villain Batman could not simply outlast." },
+  { id:84, name:"Nebula",           universe:"Marvel Comics",   alignment:"evil",    tier:"enhanced", role:"defender", strength:80, leadership:45, durability:82, intelligence:75, agility:85, rivals:["Thor","Gamora"], allies:[], lore:"Half-machine, half-Titan's weapon. Nebula's cybernetic enhancements make her a near-unstoppable shield." },
+  { id:85, name:"General Grievous", universe:"Star Wars",       alignment:"evil",    tier:"enhanced", role:"defender", strength:85, leadership:50, durability:78, intelligence:70, agility:88, rivals:["Obi-Wan Kenobi"], allies:[], lore:"Four arms, four lightsabers, and zero mercy. The Supreme Commander of the Droid Army takes the line." },
+  { id:86, name:"The Hound",        universe:"Game of Thrones", alignment:"neutral", tier:"human",    role:"defender", strength:88, leadership:45, durability:82, intelligence:65, agility:72, rivals:["Brienne of Tarth"], allies:[], lore:"Sandor Clegane fights because it's the only thing he's ever been good at. That's enough." },
+  { id:87, name:"Venom",            universe:"Marvel Comics",   alignment:"evil",    tier:"enhanced", role:"hero",     strength:88, leadership:45, durability:80, intelligence:65, agility:82, rivals:["Spider-Man"], allies:[], lore:"We are Venom. The symbiote and its host move as one — alien hunger and human cunning fused into something terrifying." },
+  { id:88, name:"Green Goblin",     universe:"Marvel Comics",   alignment:"evil",    tier:"enhanced", role:"hero",     strength:82, leadership:50, durability:72, intelligence:88, agility:85, rivals:["Spider-Man"], allies:[], lore:"Norman Osborn's formula gave him genius and madness in equal measure. The Goblin is what's left when the man loses." },
+  { id:89, name:"Jon Snow", universe:"Game of Thrones", alignment:"good", tier:"human", role:"hero", strength:85, leadership:75, durability:78, intelligence:72, agility:80, rivals:["Cersei Lannister","The Night King"], allies:["Brienne of Tarth"], lore:"He knew nothing, and yet stood against the dead. The King in the North bends no knee — except to duty." },
+  { id:90, name:"Patrick Bateman", universe:"American Psycho", alignment:"evil", tier:"human", role:"hero", strength:78, leadership:50, durability:65, intelligence:90, agility:80, rivals:[], allies:[], lore:"Business card. Raincoat. Axe. Patrick Bateman has a routine for everything, including murder." },
+  { id:91, name:"Elrond",        universe:"Lord of the Rings", alignment:"good",    tier:"enhanced", role:"support", strength:55, leadership:75, durability:68, intelligence:92, agility:65, rivals:[], allies:["Gandalf","Aragorn"], lore:"Master of Rivendell, healer of Middle-earth. Elrond has tended wounds that would kill lesser beings and counselled kings for three thousand years." },
+  { id:92, name:"Melisandre",    universe:"Game of Thrones",   alignment:"neutral", tier:"enhanced", role:"support", strength:50, leadership:65, durability:62, intelligence:88, agility:58, rivals:[], allies:[], lore:"The Red Woman serves the Lord of Light alone. She has seen kings rise and fall in the flames — and she has burned them all." },
 ];
 
 const ROSTER = HEROES;
@@ -2155,7 +2277,7 @@ const streak = { current: 0, best: 0 };
 // ══════════════════════════════════════════════════════
 let state = {
   difficulty: 'medium',
-  lastMode: 'draft',  // 'draft' | 'restricted' | 'gauntlet'
+  lastMode: 'draft',  // 'draft' | 'fate' | 'gauntlet'
   playerTeam: [],
   playerArmy: null,
   cpuTeam: [],
@@ -2189,6 +2311,7 @@ function statColor(val) {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if (id === 'screen-title') renderTitleStats();
 }
 
 // ══════════════════════════════════════════════════════
@@ -2216,9 +2339,12 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
 const rdState = {
   armyStage: false,   // true when in the army selection phase
   armyChoices: [],    // 3 random army options presented to player
+  offerHistory: {},   // role -> [hero, ...] all offers shown to player
 };
 
 function startRestrictedDraft() {
+  // Clear daily challenge state unless launched from daily mode
+  if (state.lastMode !== 'daily') state.dailyChallenge = null;
   // Initialise shared draft state (same as normal draft)
   state.playerTeam  = [];
   state.playerArmy  = null;
@@ -2226,6 +2352,7 @@ function startRestrictedDraft() {
   state.cpuArmy     = null;
   state.snakePick   = 0;
   state.draftLocked = false;
+  rdState.offerHistory = {};
 
   const firstPicker = Math.random() < 0.5 ? 'player' : 'cpu';
   // 12 picks: 5 heroes + 1 army per side, interspersed in snake order
@@ -2238,11 +2365,21 @@ function startRestrictedDraft() {
   rdGenerateOffers('player');
   rdGenerateOffers('cpu');
 
-  state.lastMode = 'restricted';
+  if (state.lastMode !== 'daily' && state.lastMode !== 'rg') state.lastMode = 'fate';
   // Lock if CPU goes first so player cards don't flash before CPU picks
   if (state.snakeOrder[0] === 'cpu') state.draftLocked = true;
   renderRestrictedDraft();
   showScreen('screen-restricted');
+  // Daily challenge banner
+  const rdBanner = document.getElementById('daily-draft-banner');
+  if (rdBanner) {
+    if (state.dailyChallenge) {
+      rdBanner.style.display = 'block';
+      rdBanner.textContent = `📅 Daily Challenge — ${state.dailyChallenge.rule.label}: ${state.dailyChallenge.rule.desc}`;
+    } else {
+      rdBanner.style.display = 'none';
+    }
+  }
 
   if (state.snakeOrder[0] === 'cpu') {
     setTimeout(rdDoCpuPick, 800);
@@ -2267,14 +2404,21 @@ function rdGenerateOffers(side) {
   rdState[key].offers = {};
 
   needed.forEach(role => {
-    // Exclude heroes whose tier would exceed this side's limit
+    // Exclude heroes whose tier would exceed this side's limit, or breach daily constraint
     const pool = ROSTER.filter(h =>
       h.role === role &&
       !taken.has(h.id) &&
-      !tierLimitReached(h, team)
+      !tierLimitReached(h, team) &&
+      !(side === 'player' && isDailyHeroBlocked(h))
     );
     if (pool.length) {
-      rdState[key].offers[role] = pool[Math.floor(Math.random() * pool.length)];
+      const offer = pool[Math.floor(Math.random() * pool.length)];
+      rdState[key].offers[role] = offer;
+      // Log offer history for player (used to compute best-possible grade)
+      if (side === 'player') {
+        if (!rdState.offerHistory[role]) rdState.offerHistory[role] = [];
+        rdState.offerHistory[role].push(offer);
+      }
     }
   });
 
@@ -2326,6 +2470,7 @@ function rdEnterArmyStage() {
   const affNames = leader ? new Set(ARMIES.filter(a => a.affinityLeaders.includes(leader.name)).map(a => a.name)) : new Set();
 
   rdState.armyChoices = [...ARMIES].sort(() => Math.random() - 0.5).slice(0, 3);
+  rdState.offerHistory['_armies'] = rdState.armyChoices;
 
   // CPU auto-picks an affinity army or random if none
   const cpuLeader = state.cpuTeam.find(h => h.role === 'leader');
@@ -2449,9 +2594,9 @@ function renderRestrictedDraft() {
   // Pick tracker
   const tracker = document.getElementById('pick-tracker-rd');
   if (tracker) {
-    tracker.innerHTML = state.snakeOrder.map((side, i) => {
+    tracker.innerHTML = state.snakeOrder.slice(0, 10).map((side, i) => {
       const done = i < state.snakePick;
-      const cur  = i === state.snakePick && !draftDone;
+      const cur  = i === state.snakePick && !draftDone && !isArmyStage;
       const color = side === 'player' ? 'var(--gold)' : 'var(--evil)';
       return `<div style="width:10px;height:10px;border-radius:50%;
         background:${done ? color : 'transparent'};
@@ -2471,6 +2616,9 @@ function renderRestrictedDraft() {
   // Battle button
   const btn = document.getElementById('rd-battle-btn');
   if (btn) btn.disabled = !draftDone || !state.playerArmy;
+
+  // Draft grade (shows once team is complete)
+  renderDraftGrade();
 }
 
 const ROLE_COLORS_RD = { leader:'var(--leader)', hero:'var(--hero)', defender:'var(--defender)', warrior:'var(--warrior)', support:'var(--support)' };
@@ -2787,6 +2935,7 @@ function renderAlignmentAlertsMobile() {
   } else {
     el.innerHTML = alerts.map(a => `<div class="alert-chip alert-${a.type}">${a.msg}</div>`).join('');
   }
+  renderDraftGrade();
 }
 
 // Mobile battle button sync
@@ -2797,7 +2946,305 @@ function syncMobileBattleBtn() {
   mobileBtn.disabled = desktopBtn ? desktopBtn.disabled : true;
 }
 
+// ══════════════════════════════════════════════════
+// DAILY CHALLENGE
+// ══════════════════════════════════════════════════
+
+const DAILY_RULES = [
+  {
+    id:    'no_legendary',
+    label: 'Iron Draft',
+    desc:  'No legendary or cosmic heroes — human and enhanced only.',
+    check: team => team.some(h => h.tier === 'legendary' || h.tier === 'cosmic')
+      ? 'Iron Draft: no legendary or cosmic heroes allowed today.' : null,
+    blocked: h => h.tier === 'legendary' || h.tier === 'cosmic',
+  },
+  {
+    id:    'enhanced_only',
+    label: 'Enhanced Only',
+    desc:  'Every hero must be exactly enhanced tier — no human, no legendary, no cosmic.',
+    check: team => team.some(h => h.tier !== 'enhanced')
+      ? 'Enhanced Only: every hero must be enhanced tier.' : null,
+    blocked: h => h.tier !== 'enhanced',
+  },
+  {
+    id:    'no_cosmic',
+    label: 'No Gods',
+    desc:  'No cosmic-tier heroes on either side.',
+    check: team => team.some(h => h.tier === 'cosmic')
+      ? 'No Gods: no cosmic heroes allowed today.' : null,
+    blocked: h => h.tier === 'cosmic',
+  },
+  {
+    id:    'all_marvel',
+    label: 'Marvel Universe',
+    desc:  'All 5 of your heroes must be from Marvel Comics.',
+    check: team => team.some(h => h.universe !== 'Marvel Comics')
+      ? 'Marvel Universe: all heroes must be from Marvel Comics.' : null,
+    blocked: h => h.universe !== 'Marvel Comics',
+  },
+  {
+    id:    'all_starwars',
+    label: 'A Galaxy Far Away',
+    desc:  'All 5 of your heroes must be from the Star Wars universe.',
+    check: team => team.some(h => h.universe !== 'Star Wars')
+      ? 'A Galaxy Far Away: all heroes must be from Star Wars.' : null,
+    blocked: h => h.universe !== 'Star Wars',
+  },
+  {
+    id:    'all_got',
+    label: 'The Iron Throne',
+    desc:  'All 5 of your heroes must be from Game of Thrones.',
+    check: team => team.some(h => h.universe !== 'Game of Thrones')
+      ? 'The Iron Throne: all heroes must be from Game of Thrones.' : null,
+    blocked: h => h.universe !== 'Game of Thrones',
+  },
+  {
+    id:    'sworn_enemies',
+    label: 'Sworn Enemies',
+    desc:  'Your team must include at least one rivalry pair — two heroes who are rivals of each other.',
+    check: (team, rosterMap) => {
+      const names = new Set(team.map(h => h.name));
+      const hasPair = team.some(h => (h.rivals||[]).some(r => names.has(r)));
+      return hasPair ? null : 'Sworn Enemies: your team must contain at least one rivalry pair.';
+    },
+    blocked: () => false, // can't pre-block individual heroes for this rule
+  },
+  {
+    id:    'human_backline',
+    label: 'Mortal Backline',
+    desc:  'Your defender AND your support must both be human tier.',
+    check: team => {
+      const def = team.find(h => h.role === 'defender');
+      const sup = team.find(h => h.role === 'support');
+      if (def && def.tier !== 'human') return 'Mortal Backline: your defender must be human tier.';
+      if (sup && sup.tier !== 'human') return 'Mortal Backline: your support must be human tier.';
+      return null;
+    },
+    blocked: h => (h.role === 'defender' || h.role === 'support') && h.tier !== 'human',
+  },
+];
+const DAILY_MODES = ['standard','fate'];
+const DAILY_DIFFS = ['easy','medium','hard'];
+
+function getDailyChallenge() {
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const dayOfYear = Math.floor((today - new Date(today.getFullYear(),0,0)) / 86400000);
+  const seed = dayOfYear + today.getFullYear() * 365;
+  // Use different prime offsets so the three variables cycle independently
+  return {
+    dateStr,
+    mode:       DAILY_MODES[seed % DAILY_MODES.length],
+    difficulty: DAILY_DIFFS[(seed * 7) % DAILY_DIFFS.length],
+    rule:       DAILY_RULES[(seed * 13) % DAILY_RULES.length],
+  };
+}
+
+// ══════════════════════════════════════════════════
+// PERSISTENT STATS (all modes)
+// ══════════════════════════════════════════════════
+const STATS_KEY = 'herodraft_stats_v1';
+let _statsMemory = null;
+
+function getStats() {
+  try {
+    const raw = localStorage.getItem(STATS_KEY);
+    if (raw) {
+      const p = JSON.parse(raw);
+      if (typeof p === 'object' && p !== null) { _statsMemory = p; return p; }
+    }
+  } catch {}
+  return _statsMemory || { wins:0, losses:0, draws:0, streak:0, bestStreak:0 };
+}
+
+function saveStats(s) {
+  _statsMemory = s;
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(s)); } catch {}
+}
+
+function recordResult(outcome) {
+  // outcome: 'win' | 'loss' | 'draw'
+  // Don't count gauntlet individual stages — only count full-game results
+  const s = getStats();
+  if (outcome === 'win') {
+    s.wins = (s.wins||0) + 1;
+    s.streak = (s.streak||0) + 1;
+    s.bestStreak = Math.max(s.bestStreak||0, s.streak);
+  } else if (outcome === 'loss') {
+    s.losses = (s.losses||0) + 1;
+    s.streak = 0;
+  } else {
+    s.draws = (s.draws||0) + 1;
+    s.streak = 0;
+  }
+  saveStats(s);
+  renderTitleStats();
+}
+
+function renderTitleStats() {
+  const bar = document.getElementById('title-stats-bar');
+  if (!bar) return;
+  const s = getStats();
+  const total = (s.wins||0) + (s.losses||0) + (s.draws||0);
+  if (total === 0) { bar.innerHTML = ''; }
+  else {
+    const wr = Math.round((s.wins||0)/total*100);
+    bar.innerHTML = `
+      <span style="color:var(--good)">W&nbsp;${s.wins||0}</span>
+      <span style="color:var(--evil)">L&nbsp;${s.losses||0}</span>
+      ${s.draws ? `<span>D&nbsp;${s.draws}</span>` : ''}
+      <span style="color:var(--gold2)">${wr}%</span>
+      ${(s.streak||0) >= 2 ? `<span style="color:#f97316">🔥&nbsp;${s.streak}</span>` : ''}
+      ${(s.bestStreak||0) >= 3 ? `<span style="color:var(--muted)">Best&nbsp;streak:&nbsp;${s.bestStreak}</span>` : ''}
+    `;
+  }
+
+  // Info bar — Fate Gauntlet best + Daily status
+  const infoBar = document.getElementById('title-info-bar');
+  if (!infoBar) return;
+  const chips = [];
+
+  // Fate Gauntlet best
+  const rgBest = getRgBest();
+  if (rgBest > 0) {
+    chips.push(`<div class="title-info-chip"><span style="color:#fb923c">🎲</span><span>Best&nbsp;run:&nbsp;<strong style="color:#fb923c">${rgBest}</strong>&nbsp;stage${rgBest !== 1 ? 's' : ''}</span></div>`);
+  }
+
+  // Daily challenge status
+  const dailyStats = getDailyStats();
+  const ch = getDailyChallenge();
+  const todayResult = dailyStats.results?.[ch.dateStr];
+  if (todayResult === 'win') {
+    chips.push(`<div class="title-info-chip"><span style="color:var(--good)">✓</span><span style="color:var(--good)">Daily&nbsp;complete</span></div>`);
+  } else if (todayResult === 'loss') {
+    chips.push(`<div class="title-info-chip"><span style="color:var(--evil)">✗</span><span>Daily&nbsp;attempted</span></div>`);
+  } else {
+    chips.push(`<div class="title-info-chip"><span style="color:#22d3ee">📅</span><span>Daily&nbsp;available</span></div>`);
+  }
+
+  infoBar.innerHTML = chips.join('');
+}
+
+// ══════════════════════════════════════════════════
+let _dailyStatsMemory = null;
+const DAILY_STATS_KEY = 'herodraft_daily_v2'; // bumped to clear stale data from previous sessions
+
+function getDailyStats() {
+  try {
+    const raw = localStorage.getItem(DAILY_STATS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (typeof parsed === 'object' && parsed !== null) {
+        _dailyStatsMemory = parsed;
+        return parsed;
+      }
+    }
+  } catch {}
+  return _dailyStatsMemory || {};
+}
+function saveDailyStats(stats) {
+  _dailyStatsMemory = stats;
+  try { localStorage.setItem(DAILY_STATS_KEY, JSON.stringify(stats)); } catch {}
+}
+
+function showDailyChallenge() {
+  const ch = getDailyChallenge();
+  const stats = getDailyStats();
+  const modeLabel = ch.mode === 'fate' ? '🎲 Fate Draft' : '⚔ Open Draft';
+  const diffLabel = ch.difficulty.charAt(0).toUpperCase() + ch.difficulty.slice(1) + ' Difficulty';
+
+  document.getElementById('daily-date').textContent = new Date().toLocaleDateString('en-GB', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('daily-mode-badge').textContent  = modeLabel;
+  document.getElementById('daily-diff-badge').textContent  = diffLabel;
+  document.getElementById('daily-rule-name').textContent   = ch.rule.label;
+  document.getElementById('daily-rule-desc').textContent   = ch.rule.desc;
+  document.getElementById('daily-streak').textContent      = stats.currentStreak || 0;
+  document.getElementById('daily-total-wins').textContent  = stats.totalWins || 0;
+  document.getElementById('daily-best-streak').textContent = stats.bestStreak || 0;
+
+  const banner  = document.getElementById('daily-completed-banner');
+  const playBtn = document.getElementById('daily-play-btn');
+  const todayResult = stats.results?.[ch.dateStr];
+
+  if (todayResult) {
+    const won = todayResult === 'win';
+    banner.style.display    = 'block';
+    banner.style.background = won ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.12)';
+    banner.style.border     = `1px solid ${won ? 'rgba(34,197,94,0.4)' : 'rgba(239,68,68,0.3)'}`;
+    banner.style.color      = won ? 'var(--good)' : 'var(--evil)';
+    banner.textContent      = won ? '✓ Challenge complete — you won today!' : '✗ Challenge complete — better luck tomorrow.';
+    playBtn.textContent     = 'Play Again (unranked)';
+    playBtn.style.background = 'transparent';
+    playBtn.style.borderColor = '#22d3ee';
+    playBtn.style.color = '#22d3ee';
+  } else {
+    banner.style.display    = 'none';
+    playBtn.textContent     = 'Begin Challenge';
+    playBtn.style.background = '#22d3ee';
+    playBtn.style.color = '#0a0a0f';
+  }
+  showScreen('screen-daily');
+}
+
+function startDailyBattle() {
+  const ch = getDailyChallenge();
+  const stats = getDailyStats();
+  state.difficulty = ch.difficulty;
+  document.querySelectorAll('.diff-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.diff === ch.difficulty);
+  });
+  state.dailyChallenge = ch;
+  state.dailyOfficial  = !stats.results?.[ch.dateStr];
+  state.lastMode = 'daily';
+  if (ch.mode === 'fate') startRestrictedDraft();
+  else startDraft();
+}
+
+function isDailyHeroBlocked(hero) {
+  const ch = state.dailyChallenge;
+  if (!ch) return false;
+  return ch.rule.blocked(hero, state.playerTeam);
+}
+
+function checkDailyConstraint(team) {
+  const ch = state.dailyChallenge;
+  if (!ch) return null;
+  return ch.rule.check(team.filter(h => !h.isArmy)) || null;
+}
+
+function recordDailyResult(won) {
+  if (!state.dailyChallenge) return;
+  const ch = state.dailyChallenge;
+  const stats = getDailyStats();
+  if (!stats.results) stats.results = {};
+
+  const existing = stats.results[ch.dateStr];
+
+  // Always record a win — it's the best possible result for the day
+  // Never downgrade a win to a loss (retry after winning)
+  if (existing === 'win') return; // already won today, nothing to update
+  if (!won && existing === 'loss') return; // already recorded a loss, no change
+
+  stats.results[ch.dateStr] = won ? 'win' : 'loss';
+
+  // Only update streak/wins stats on the first official completion
+  if (state.dailyOfficial || (!existing && won)) {
+    if (won) {
+      stats.totalWins = (stats.totalWins || 0) + 1;
+      stats.currentStreak = (stats.currentStreak || 0) + 1;
+      stats.bestStreak = Math.max(stats.bestStreak || 0, stats.currentStreak);
+    } else if (!existing) {
+      // First attempt was a loss — break streak
+      stats.currentStreak = 0;
+    }
+  }
+  saveDailyStats(stats);
+}
+
 function startDraft() {
+  // Clear daily challenge state unless launched from daily mode
+  if (state.lastMode !== 'daily') state.dailyChallenge = null;
   state.playerTeam = [];
   state.playerArmy = null;
   state.cpuTeam    = [];
@@ -2817,6 +3264,16 @@ function startDraft() {
   switchDraftTab('pool');
   renderDraft();
   showScreen('screen-draft');
+  // Daily challenge banner
+  const draftBanner = document.getElementById('daily-draft-banner');
+  if (draftBanner) {
+    if (state.dailyChallenge) {
+      draftBanner.style.display = 'block';
+      draftBanner.textContent = `📅 Daily Challenge — ${state.dailyChallenge.rule.label}: ${state.dailyChallenge.rule.desc}`;
+    } else {
+      draftBanner.style.display = 'none';
+    }
+  }
 
   // If CPU goes first, trigger their pick immediately
   if (state.snakeOrder[0] === 'cpu') {
@@ -2912,8 +3369,9 @@ function renderPool() {
   filtered.forEach(hero => {
     const roleFilled = playerFilledRoles.has(hero.role);
     const tierCapped = isPlayerTurn && tierLimitReached(hero, state.playerTeam);
+    const dailyBlocked = isPlayerTurn && isDailyHeroBlocked(hero);
     const card = document.createElement('div');
-    const unavailable = !isPlayerTurn || roleFilled || tierCapped;
+    const unavailable = !isPlayerTurn || roleFilled || tierCapped || dailyBlocked;
     card.className = 'hero-card' + (unavailable ? ' drafted' : '');
     card.dataset.heroId = hero.id;
 
@@ -3068,6 +3526,157 @@ function renderCpuArmySlot() {
 
 function renderRoleRequirements() { /* no-op, absorbed into renderTeamSlots */ }
 
+// ══════════════════════════════════════════════════
+// DRAFT GRADE
+// ══════════════════════════════════════════════════
+function calcDraftGrade(team, army) {
+  if (!team || team.length < 5) return null;
+  const names = new Set(team.map(h => h.name));
+
+  // 1. Tier score (capped at 25) — human:2 enhanced:5 legendary:10 cosmic:16
+  const tierPts = { human:2, enhanced:5, legendary:10, cosmic:16 };
+  const tierScore = Math.min(team.reduce((s,h) => s + (tierPts[h.tier]||2), 0), 25);
+
+  // 2. Universe synergy (capped at 20) — 3pts per pair within same universe
+  const unis = {};
+  team.forEach(h => { unis[h.universe] = (unis[h.universe]||0) + 1; });
+  const uniScore = Math.min(Object.values(unis).reduce((s,c) => s + (c*(c-1)/2*3), 0), 20);
+
+  // 3. Named ally bonds (5pts per unique pair, capped at 15)
+  const allyPairs = new Set();
+  team.forEach(h => {
+    (h.allies||[]).forEach(a => {
+      if (names.has(a)) allyPairs.add([h.name,a].sort().join('|'));
+    });
+  });
+  const allyScore = Math.min(allyPairs.size * 5, 15);
+
+  // 4. Alignment cohesion (0-10)
+  const aligns = {};
+  team.forEach(h => { aligns[h.alignment] = (aligns[h.alignment]||0) + 1; });
+  const majority = Math.max(...Object.values(aligns));
+  const alignScore = majority >= 5 ? 10 : majority === 4 ? 6 : majority === 3 ? 2 : 0;
+
+  // 5. Army affinity (+5 if leader's affinity army is fielded)
+  let armyScore = 0;
+  if (army) {
+    const leader = team.find(h => h.role === 'leader');
+    if (leader && army.affinityLeaders && army.affinityLeaders.includes(leader.name)) armyScore = 5;
+  }
+
+  // 6. Rival penalty (-6 per same-team rival pair)
+  const rivalPairs = new Set();
+  team.forEach(h => {
+    (h.rivals||[]).forEach(r => {
+      if (names.has(r)) rivalPairs.add([h.name,r].sort().join('|'));
+    });
+  });
+  const rivalScore = rivalPairs.size * -6;
+
+  const total = tierScore + uniScore + allyScore + alignScore + armyScore + rivalScore;
+
+  const grade = total >= 55 ? 'S' : total >= 40 ? 'A' : total >= 25 ? 'B' : total >= 10 ? 'C' : 'D';
+
+  // Build descriptor
+  const parts = [];
+  if (allyPairs.size >= 2)    parts.push(`${allyPairs.size} ally bonds`);
+  else if (allyPairs.size===1) parts.push('1 ally bond');
+  const topUni = Object.entries(unis).filter(([,c])=>c>=2).sort((a,b)=>b[1]-a[1])[0];
+  if (topUni) parts.push(`${topUni[1]}-hero ${topUni[0]} synergy`);
+  if (armyScore) parts.push('army affinity');
+  if (rivalPairs.size >= 2) parts.push(`${rivalPairs.size} rival pairs — danger`);
+  else if (rivalPairs.size===1) parts.push('1 rival pair — watch your back');
+  const majority_tier = team.filter(h=>h.tier==='legendary'||h.tier==='cosmic').length;
+  if (majority_tier >= 3) parts.push('elite tier stack');
+
+  const gradeDesc = {
+    S: 'Outstanding draft',
+    A: 'Strong composition',
+    B: 'Solid team',
+    C: 'Limited synergy',
+    D: 'Fragile composition',
+  }[grade];
+
+  const desc = parts.length ? `${gradeDesc} — ${parts.join(', ')}` : gradeDesc;
+
+  return { grade, total, desc, rivalPairs: rivalPairs.size };
+}
+
+function calcBestPossibleGrade() {
+  // Only relevant in restricted draft — uses offer history
+  if (state.lastMode !== 'fate' && state.lastMode !== 'daily') return null;
+  const history = rdState.offerHistory;
+  if (!history || Object.keys(history).filter(k => k !== '_armies').length < 5) return null;
+
+  const roles = ['leader','hero','defender','warrior','support'];
+  // Check we have at least one offer per role
+  if (!roles.every(r => history[r] && history[r].length > 0)) return null;
+
+  // Try all combinations of one hero per role from the offer history
+  // With ≤ ~5 offers per role, worst case 5^5 = 3125 combinations — fast
+  let bestScore = -Infinity;
+  const armies = history['_armies'] || [];
+
+  function search(roleIdx, team) {
+    if (roleIdx === roles.length) {
+      // Score this combination with each army option
+      const baseScore = calcDraftGrade(team, null);
+      if (!baseScore) return;
+      let best = baseScore.total;
+      armies.forEach(army => {
+        const s = calcDraftGrade(team, army);
+        if (s && s.total > best) best = s.total;
+      });
+      if (best > bestScore) bestScore = best;
+      return;
+    }
+    const role = roles[roleIdx];
+    const offers = history[role] || [];
+    // Deduplicate by hero id
+    const seen = new Set();
+    offers.forEach(h => {
+      if (!seen.has(h.id)) {
+        seen.add(h.id);
+        search(roleIdx + 1, [...team, h]);
+      }
+    });
+  }
+  search(0, []);
+
+  if (bestScore === -Infinity) return null;
+  const grade = bestScore >= 55 ? 'S' : bestScore >= 40 ? 'A' : bestScore >= 25 ? 'B' : bestScore >= 10 ? 'C' : 'D';
+  return { grade, total: bestScore };
+}
+
+function renderDraftGrade() {
+  const result = calcDraftGrade(state.playerTeam, state.playerArmy);
+  const ids = ['draft-grade-badge', 'draft-grade-badge-mobile', 'draft-grade-badge-rd'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!result) { el.style.display = 'none'; el.innerHTML = ''; return; }
+    const { grade, desc } = result;
+
+    // Best possible (restricted draft only)
+    const best = calcBestPossibleGrade();
+    const bestHtml = (best && best.grade !== grade)
+      ? `<div class="draft-grade-label" style="margin-top:0.25rem;color:var(--muted)">Best possible from your offers: <strong>${best.grade}</strong></div>`
+      : (best && best.grade === grade)
+      ? `<div class="draft-grade-label" style="margin-top:0.25rem;color:var(--good)">✓ Optimal pick from your offers</div>`
+      : '';
+
+    el.style.display = 'block';
+    el.innerHTML = `<div class="draft-grade draft-grade-${grade.toLowerCase()}">
+      <div class="draft-grade-letter">${grade}</div>
+      <div class="draft-grade-info">
+        <div class="draft-grade-label">Draft Grade</div>
+        <div class="draft-grade-desc">${desc}</div>
+        ${bestHtml}
+      </div>
+    </div>`;
+  });
+}
+
 function buildAlignmentAlerts() {
   const team = state.playerTeam;
   if (team.length < 2) return null; // null = not enough heroes yet
@@ -3132,6 +3741,7 @@ function renderAlignmentAlerts() {
   const alerts = buildAlignmentAlerts();
   if (!alerts) {
     el.innerHTML = '<div style="font-size:0.72rem;color:var(--dim);">Draft 2+ heroes to see effects.</div>';
+    renderDraftGrade();
     return;
   }
   alerts.forEach(a => {
@@ -3140,6 +3750,7 @@ function renderAlignmentAlerts() {
     div.textContent = a.msg;
     el.appendChild(div);
   });
+  renderDraftGrade();
 }
 
 function renderArmySlot() {
@@ -3190,6 +3801,10 @@ function draftHero(hero) {
       ? `You can only field 1 cosmic hero. Choose a different pick.`
       : `You can only field 3 legendary or cosmic heroes combined. Choose a different pick.`;
     alert(msg);
+    return;
+  }
+  if (isDailyHeroBlocked(hero)) {
+    alert(`Today's challenge — ${state.dailyChallenge.rule.label}: this hero is not allowed.`);
     return;
   }
   state.playerTeam.push(hero);
@@ -3488,6 +4103,15 @@ function beginBattle() {
     const affArmy = ARMIES.filter(a => cpuLeader && a.affinityLeaders.includes(cpuLeader.name));
     state.cpuArmy = (affArmy.length ? affArmy : ARMIES)[Math.floor(Math.random() * (affArmy.length || ARMIES.length))];
   }
+
+  // Fate Gauntlet — store drafted team then launch first stage
+  if (state.lastMode === 'rg') {
+    gauntlet.playerTeam = [...state.playerTeam];
+    gauntlet.playerArmy = state.playerArmy;
+    startFateGauntlet();
+    return;
+  }
+
   initBattleState();
   document.getElementById('btn-next-round').disabled = false;
   renderBattleScreen();
@@ -3585,25 +4209,25 @@ const HERO_QUIPS = {
   'Yoda': { attack:["Yoda's lightsaber spins like a green cyclone", "Do or do not — Yoda does", "Size matters not. Yoda demonstrates why."], inspire:["Yoda says: Wars not make one great.", "The Force flows strongest through the small green master."] },
   'Voldemort': { attack:["Avada Kedavra — the green light flies", "The Dark Lord's wand moves and something dies", "There is no good and evil. There is only power, and those too weak to seek it."], inspire:["Voldemort hisses: I'm going to kill you, Harry Potter.", "Fear of a name only increases fear of the thing itself."] },
   'Hermione Granger': { attack:["Hermione's spell is perfectly executed — she's been practising", "She read about this curse six months ago, just in case", "Hermione fires: two spells, simultaneously, without hesitation"], inspire:["Hermione says: Books and cleverness — there are more important things.", "She's worked this out. She always works it out."] },
-  'Leonidas': { attack:["THIS — IS — SPARTA", "Leonidas drives forward, shield first, spear second", "Three hundred held a pass. This is just one enemy."], inspire:["Leonidas roars: Spartans never retreat!", "Leonidas calls out: Tonight we dine in hell!"] },
+  'Leonidas': { attack:["THIS — IS — SPARTA", "Leonidas drives forward, shield first, spear second", "Three hundred held a pass. This is just one enemy."], inspire:["Leonidas roars: This is where we fight! This is where they die!", "Leonidas calls out: Tonight we dine in hell!"] },
   'Jean-Luc Picard': { attack:["Picard: Make it so.", "The Captain doesn't often fight. When he does, he finishes it.", "Diplomacy failed. Picard adapts."], inspire:["Picard stands: The line must be drawn here. This far, no further.", "Engage."] },
   'Cersei Lannister': { attack:["Cersei doesn't fight — she commands others to", "When I acquired this power I paid for it.", "A Lannister always pays her debts — in blood if necessary"], inspire:["Cersei says: When you play the game of thrones, you win or you die.", "Power is power. Cersei reminds everyone of that fact."] },
   'Brienne of Tarth': { attack:["Brienne of Tarth fights with honour and terrible force", "She swore an oath. She intends to keep it.", "Brienne charges — there is nothing graceful about it, only unstoppable will"], inspire:["Brienne declares: I will shield your back and keep your counsel.", "Lady Knight. The title means everything to her."] },
   'Walter White': { attack:["I am the danger — Walt strikes first", "Say my name.", "Heisenberg doesn't warn you twice"], inspire:["Walt says: I'm not in danger, Skyler. I am the danger.", "Walter White has nothing left to lose. That makes him the most dangerous man in the room."] },
   'Hannibal Lecter': { attack:["Hannibal moves with terrible, practised efficiency", "He has studied human anatomy very thoroughly.", "Dr Lecter is polite right up until he isn't"], inspire:["Hannibal murmurs: Nothing happened to me. I happened.", "He tells them: The only way to kill me is to make me a meal of myself."] },
   'Amy Dunne': { attack:["Amy smiles — it never reaches her eyes", "She planned this moment months ago. You never stood a chance.", "Amy Dunne doesn't lose. She just changes the story."], inspire:["Amy murmurs: Every happy ending needs a villain.", "Cool Girl never panics. Amy Dunne never loses."] },
-  'Merlin': { attack:["Merlin's staff flares with ancient light", "He has forgotten more spells than most wizards ever learn", "Merlin acts — time itself seems to pause"], inspire:["Merlin says: The future is not set in stone — I should know.", "Britain's greatest sorcerer is not done yet."] },
-  'Q': { attack:["Q snaps his fingers — reality disagrees with the enemy", "The omnipotent trickster intervenes with theatrical flair", "Q: Oh, this should be entertaining."], inspire:["Q announces: Mon Capitaine, you simply must pay attention.", "Humanity's greatest trial is being judged by Q. He seems to enjoy it."] },
+  'Merlin': { attack:["Merlin's staff flares with ancient light", "He has forgotten more spells than most wizards ever learn", "Merlin acts — time itself seems to pause"], inspire:["Britain's greatest sorcerer raises his staff. Something ancient answers.", "Britain's greatest sorcerer is not done yet."] },
+  'Q': { attack:["Q snaps his fingers — reality disagrees with the enemy", "The omnipotent trickster intervenes with theatrical flair", "Q: Oh, this should be entertaining."], inspire:["Q announces: The trial never ends, Picard.", "Humanity's greatest trial is being judged by Q. He seems to enjoy it."] },
   'Tyrion Lannister': { attack:["Tyrion fights with wit when he can, wine when he must", "A Lannister always pays his debts — Tyrion with interest", "He has survived worse. He strikes before they remember that."], inspire:["Tyrion says: I drink and I know things.", "My mind is my weapon. Tyrion's blade is never far behind it."] },
   'Saruman': { attack:["Saruman's voice resonates with compelled authority", "The White Wizard unleashes a force that bends nature itself", "He was the head of the Order. He remembers what that means."], inspire:["Saruman intones: Do not be hasty.", "The power of Orthanc focuses through Saruman's staff."] },
-  'Magneto': { attack:["Metal bends to Magneto's will", "The Master of Magnetism tears through the field", "Magneto raises his hand — the battlefield rearranges itself"], inspire:["Magneto declares: I have been here before.", "Never again. Magneto's fury has no upper limit."] },
-  'Emperor Palpatine': { attack:["Lightning crackles from Palpatine's fingertips", "The Emperor lets the dark side flow through him fully", "Unlimited power — and he means to use every drop of it"], inspire:["Palpatine cackles: Do it.", "The Emperor whispers: Your hatred makes you powerful."] },
+  'Magneto': { attack:["Metal bends to Magneto's will", "The Master of Magnetism tears through the field", "Magneto raises his hand — the battlefield rearranges itself"], inspire:["Magneto declares: We are the future, Charles. Not them.", "Never again. Magneto's fury has no upper limit."] },
+  'Emperor Palpatine': { attack:["Lightning crackles from Palpatine's fingertips", "The Emperor lets the dark side flow through him fully", "Unlimited power — and he means to use every drop of it"], inspire:["Palpatine cackles: Do it.", "The Emperor purrs: Good. Let the hate flow through you."] },
   'Moriarty': { attack:["Moriarty's gambit plays out exactly as planned", "Every enemy move was anticipated three days ago", "The Napoleon of Crime executes"], inspire:["Moriarty smiles: Every great game deserves a worthy opponent.", "He tells them: I am so changeable."] },
   'Littlefinger': { attack:["Littlefinger's blade appears from nowhere", "He smiles as he twists the knife", "Petyr Baelish fights in the shadows, never the light"], inspire:["Littlefinger whispers: Chaos isn't a pit. Chaos is a ladder.", "He tells them: Always keep your foes confused."] },
   'President Snow': { attack:["Snow's Peacekeepers enforce his will", "He smells of blood and roses — and neither is accidental", "President Snow reminds them what hope costs"], inspire:["Snow says: Hope. It is the only thing stronger than fear.", "The Capitol's power flows through Snow's every gesture."] },
   'Dolores Umbridge': { attack:["Umbridge smiles sweetly and hexes without warning", "I must not tell lies — but I can certainly cast curses", "Umbridge's bureaucratic cruelty is a weapon in itself"], inspire:["Umbridge simpers: Progress for progress's sake must be discouraged.", "The Ministry's authority flows through Umbridge's wand."] },
   'Batman': { attack:["Batman moves through the shadows and strikes", "The Dark Knight calculates every move before making it", "Batman doesn't need powers. He needs preparation."], inspire:["Batman growls: I am vengeance. I am the night.", "Gotham's protector holds the line — no matter what it costs."] },
-  'Lex Luthor': { attack:["Luthor's contingency plan activates", "He's had years to prepare for this exact scenario", "Lex Luthor fights smarter, not harder"], inspire:["Luthor announces: I'm the most brilliant man on this planet.", "Every move Lex makes is three moves ahead."] },
+  'Lex Luthor': { attack:["Luthor's contingency plan activates", "He's had years to prepare for this exact scenario", "Lex Luthor fights smarter, not harder"], inspire:["Luthor announces: Superman is the villain. I am the world's last hope.", "Every move Lex makes is three moves ahead."] },
   'Black Widow': { attack:["Natasha moves like she was born for this", "Black Widow strikes from an angle no one saw coming", "She's had a ledger full of red. She's still clearing it."], inspire:["Natasha says: I used to have nothing. Now I have a lot.", "Black Widow: whatever it takes."] },
   'Paul Atreides': { attack:["The sleeper has awakened — Paul strikes with Fremen precision", "He has seen this moment in ten thousand visions", "Muad'Dib moves like water, like sand, like inevitability"], inspire:["Paul says: I must not fear. Fear is the mind-killer.", "Paul Atreides has walked the Golden Path. Nothing surprises him now."] },
   'Morpheus': { attack:["Morpheus fights like a man who knows the Matrix's rules — and breaks them", "He moves between strikes with impossible fluidity", "Morpheus: I'm trying to free your mind."], inspire:["Morpheus says: Free your mind.", "There is a difference between knowing the path and walking the path."] },
@@ -3613,66 +4237,75 @@ const HERO_QUIPS = {
   'Atticus Finch': { attack:["Atticus steps forward, calm as ever", "He won't be intimidated. He never has been.", "Atticus Finch stands his ground with quiet certainty"], inspire:["Atticus says: You never really understand a person until you climb into their skin.", "The bravest thing in the room is the man who won't back down."] },
   'Doctor Strange': { attack:["Strange opens a portal in mid-strike", "The Sorcerer Supreme bends space around the attack", "Fourteen million outcomes. He knows which ones work."], inspire:["Strange says: We're in the endgame now.", "Doctor Strange has seen this battle already. He knows how it ends."] },
   'Okoye': { attack:["Okoye's spear finds its mark with Dora Milaje precision", "For Wakanda — Okoye holds nothing back", "General Okoye fights like the honour of a nation depends on it. It does."], inspire:["Okoye declares: We fight for Wakanda!", "Vibranium. Discipline. Okoye."] },
-  'Scarlet Witch': { attack:["Reality warps around Scarlet Witch's raised hands", "Chaos magic tears through conventional defences", "Wanda doesn't aim. She just wills it."], inspire:["Wanda says: I can't control their fear, only my own.", "The Scarlet Witch was written in the Darkhold. She is inevitable."] },
+  'Scarlet Witch': { attack:["Reality warps around Scarlet Witch's raised hands", "Chaos magic tears through conventional defences", "Wanda doesn't aim. She just wills it."], inspire:["Wanda says: You took everything from me.", "The Scarlet Witch was written in the Darkhold. She is inevitable."] },
   'Aragorn': { attack:["Aragorn charges, the Flame of the West raised high", "Aragorn fights with the fury of the line of Isildur", "The king has come — Aragorn strikes"], inspire:["Aragorn cries: For Frodo!", "The White Tree burns bright in Aragorn’s eyes"] },
-  'Mulan': { attack:["Mulan fights with a soldier’s discipline and a hero’s heart", "She brought honour to her family — now she brings war to the enemy", "Mulan’s blade moves with earned precision"], inspire:["Mulan calls: The flower that blooms in adversity is the most rare.", "She ran with men and fought better than most of them."] },
+  'Mulan': { attack:["Mulan fights with a soldier’s discipline and a hero’s heart", "She brought honour to her family — now she brings war to the enemy", "Mulan’s blade moves with earned precision"], inspire:["Mulan rides to meet them. She has already proven what she's worth.", "She ran with men and fought better than most of them."] },
   "King T’Challa": { attack:["Wakanda’s king strikes with Vibranium-clad fury", "T’Challa moves like a panther — no wasted motion", "The Black Panther charges without hesitation"], inspire:["T’Challa declares: Wakanda forever.", "The king leads. Wakanda follows."] },
-  'Superman': { attack:["Superman moves faster than the eye can track", "The Man of Steel strikes with the full weight of Krypton behind it", "Truth, justice — and a fist that ends this now"], inspire:["Clark says: You’re stronger than you think you are.", "Superman holds the line so no one else has to."] },
-  'Wonder Woman': { attack:["Diana charges, lasso raised, sword drawn", "Wonder Woman fights for those who cannot fight for themselves", "The Amazonian princess cuts through with divine precision"], inspire:["Diana says: It’s not about what you deserve — it’s about what you believe.", "Wonder Woman stands between the enemy and everything she loves."] },
+  'Superman': { attack:["Superman moves faster than the eye can track", "The Man of Steel strikes with the full weight of Krypton behind it", "Truth, justice — and a fist that ends this now"], inspire:["Clark says: It’s not an ‘S’. On my world it means hope.", "Superman holds the line so no one else has to."] },
+  'Wonder Woman': { attack:["Diana charges, lasso raised, sword drawn", "Wonder Woman fights for those who cannot fight for themselves", "The Amazonian princess cuts through with divine precision"], inspire:["Diana says: I will fight for those who cannot fight for themselves.", "Wonder Woman stands between the enemy and everything she loves."] },
   'Luke Skywalker': { attack:["Luke’s lightsaber ignites — green light in the darkness", "I am a Jedi, like my father before me. Luke strikes.", "The Force flows through Luke — the attack is inevitable"], inspire:["Luke says: I’ll not leave you here. I’ve got to save you.", "Skywalker raises his saber. The Force responds."] },
   'Frodo Baggins': { attack:["Frodo swings Sting — it glows cold blue", "The Ring-bearer fights with everything a hobbit has — which is more than you’d expect", "Frodo strikes: small hands, iron will"], inspire:["Frodo says: I will take the Ring, though I do not know the way.", "Courage isn’t the absence of fear. Frodo proves it."] },
-  'Harry Potter': { attack:["Expelliarmus! Harry’s wand flies up", "The Boy Who Lived has faced worse than this", "Harry fights with the stubbornness of someone who has nothing left to lose"], inspire:["Harry says: Happiness can be found in the darkest of times, if one remembers to turn on the light.", "Dumbledore’s Army trained for this moment."] },
+  'Harry Potter': { attack:["Expelliarmus! Harry’s wand flies up", "The Boy Who Lived has faced worse than this", "Harry fights with the stubbornness of someone who has nothing left to lose"], inspire:["Harry says: I never wanted any of you to die for me.", "Dumbledore’s Army trained for this moment."] },
   'Katniss Everdeen': { attack:["The arrow flies before you see her draw", "Katniss never misses. That’s not arrogance — it’s training.", "District 12’s finest raises her bow"], inspire:["Katniss says: Fire is catching. If we burn, you burn with us.", "The Mockingjay doesn’t ask for your fear. She earns your hope."] },
   'Ellen Ripley': { attack:["Ripley has survived worse than this — and she’s angry about it", "Whatever it takes. Ripley advances.", "She didn’t survive Xenomorphs to lose here"], inspire:["Ripley says: Get away from her, you bitch.", "She’s the last one standing every time. This time is no different."] },
   'Gandalf': { attack:["You shall not pass! Gandalf’s staff slams down", "The White Wizard unleashes light that blinds and burns", "Gandalf’s power flows from something older than Middle-earth"], inspire:["Gandalf says: All we have to decide is what to do with the time that is given to us.", "He returned from death. He’s not afraid of this."] },
   'Thor': { attack:["Mjolnir rises — lightning splits the sky", "The God of Thunder calls the storm", "For Asgard! Thor charges with divine fury"], inspire:["Thor roars: Bring me Thanos!", "Odinson unleashes everything he has. It’s considerable."] },
-  'Achilles': { attack:["No mortal hand can stop Achilles today", "The Myrmidon rage takes him — Achilles is unstoppable", "Achilles fights like a man who knows he will be remembered"], inspire:["Achilles calls: Fight with me, and glory is yours.", "The rage of Achilles turns the tide."] },
-  'Legolas': { attack:["Legolas draws and fires three arrows before the first lands", "The elven archer never misses", "Legolas calculates the shot before you finish moving"], inspire:["Legolas says: They’re taking the Hobbits to Isengard!", "Woodland elf. Immortal patience. Endless arrows."] },
+  'Achilles': { attack:["No mortal hand can stop Achilles today", "The Myrmidon rage takes him — Achilles is unstoppable", "Achilles fights like a man who knows he will be remembered"], inspire:["The rage of Achilles rises. There is no stopping him now.", "The rage of Achilles turns the tide."] },
+  'Legolas': { attack:["Legolas draws and fires three arrows before the first lands", "The elven archer never misses", "Legolas calculates the shot before you finish moving"], inspire:["Legolas says: A red sun rises. Blood has been spilled this night.", "Woodland elf. Immortal patience. Endless arrows."] },
   'Gimli': { attack:["Gimli charges with his axe and absolutely nothing to prove", "Nobody tosses a Dwarf — Gimli jumps of his own accord", "The Dwarf of Erebor crashes into the fray"], inspire:["Gimli roars: Certainty of death, small chance of success — what are we waiting for?", "Let them come! Gimli’s axe is thirsty."] },
   'Maximus': { attack:["What we do in life echoes in eternity. Maximus strikes.", "The General fights with the discipline of the Roman legions", "Maximus’ gladius finds the gap in every defence"], inspire:["Maximus calls: Strength and honour!", "Rome’s greatest general commands. His soldiers follow."] },
   'Darth Vader': { attack:["I find your lack of faith disturbing. The Force tightens.", "Vader’s lightsaber cuts a red arc through the darkness", "The Dark Lord of the Sith advances without pity"], inspire:["Vader intones: The Force is strong with you.", "The Empire’s fist falls. None resist it long."] },
   'Loki': { attack:["Loki was never where you thought he was", "The illusion shatters — Loki strikes from behind", "The God of Mischief smiles and drives the dagger home"], inspire:["Loki says: I am burdened with glorious purpose.", "You could never predict Loki. That’s the point."] },
-  'Sauron': { attack:["One ring to rule them all — Sauron’s will descends", "The Dark Lord’s gaze falls. Nothing survives it unchanged.", "Sauron’s mace sweeps through the field like a scythe"], inspire:["Sauron whispers: You cannot hide. I see you.", "The Eye of Sauron turns. His armies answer."] },
+  'Sauron': { attack:["One ring to rule them all — Sauron’s will descends", "The Dark Lord’s gaze falls. Nothing survives it unchanged.", "Sauron’s mace sweeps through the field like a scythe"], inspire:["The Eye of Sauron turns. Nothing in Middle-earth can hide from that gaze.", "The Eye of Sauron turns. His armies answer."] },
   'Bellatrix Lestrange': { attack:["Bellatrix cackles and fires without hesitation", "She’s not interested in disarming you", "The Dark Lord’s most devoted servant strikes with glee"], inspire:["Bellatrix shrieks: I killed Sirius Black!", "Her loyalty to the Dark Lord is absolute. Her wand reflects it."] },
   'Thanos': { attack:["Perfectly balanced — as all things should be. Thanos strikes.", "The Infinity Gauntlet crackles as Thanos advances", "Half of all things. Thanos has always been willing to do what others won’t"], inspire:["Thanos says: I am inevitable.", "The Mad Titan does not need an army. He simply is."] },
   'Jaime Lannister': { attack:["The Kingslayer fights with practiced, bitter efficiency", "One hand and he’s still the most dangerous man in the room", "Jaime Lannister did terrible things for love. He’ll do more."], inspire:["Jaime says: There are no men like me. There’s only me.", "The golden lion of Casterly Rock fights like he has something to prove."] },
   'The Joker': { attack:["Why so serious? The Joker strikes and laughs", "Chaos is the point — The Joker doesn’t follow rules", "The Clown Prince of Crime is not fighting strategically. That’s what makes him dangerous."], inspire:["The Joker says: Introduce a little anarchy.", "Madness, in certain lights, looks a lot like genius."] },
   'Spider-Man': { attack:["Your friendly neighbourhood Spider-Man swings in", "Thwip. Peter Parker’s web hits exactly where he aimed.", "Spider-sense triggered — Spider-Man moves before you act"], inspire:["Spider-Man says: With great power comes great responsibility.", "The kid from Queens has never backed down from anything."] },
   'Geralt of Rivia': { attack:["Geralt’s silver sword is drawn. Something evil is nearby.", "The Witcher moves with centuries of training in every step", "Hmm. Geralt strikes without unnecessary ceremony"], inspire:["Geralt mutters: Evil is evil. Lesser, greater, middling — makes no difference.", "The White Wolf hunts. Whatever it is, it won’t survive the night."] },
-  'Neo': { attack:["Neo bends around the bullets and strikes", "He knows kung fu. All of it.", "The One moves through the fight like it’s already over"], inspire:["Neo says: I know that you’re afraid. I’m afraid too.", "There is no spoon. Neo moves like it."] },
+  'Neo': { attack:["Neo bends around the bullets and strikes", "He knows kung fu. All of it.", "The One moves through the fight like it’s already over"], inspire:["Neo says: I know you’re out there. I can feel you now.", "I'm trying to free your mind, Neo. But I can only show you the door. Neo moves like it."] },
   'Odysseus': { attack:["Odysseus strikes at the moment no one expected", "The cleverest man in Greece doesn’t need brute force", "Odysseus has a plan. He always has a plan."], inspire:["Odysseus says: Of all creatures that breathe and move, none is more wretched than man.", "Ten years to get home. He’s not stopping here."] },
   'Killmonger': { attack:["Killmonger moves with Black Ops efficiency", "Hey Auntie. Killmonger strikes.", "He was trained by the best. He surpassed them."], inspire:["Killmonger says: Is this your king?", "The throne was always his destiny. He fights like it."] },
   "Ra’s al Ghul": { attack:["Ra’s al Ghul strikes with centuries of perfected technique", "The League’s founder fights without hesitation or mercy", "Ra’s has killed better men than this — and remembered none of their names"], inspire:["Ra’s declares: Gotham’s time has come.", "The Demon’s Head speaks: Death is not the end. Merely a transition."] },
   'General Zod': { attack:["Kneel before Zod! The General strikes with Kryptonian force", "Zod was trained as a warrior. Clark Kent was not.", "Everything Krypton had to offer — Zod uses it as a weapon"], inspire:["Zod commands: I will find him. I will find Kal-El.", "The general of a dead world still fights to win."] },
   'Daenerys Targaryen': { attack:["Dracarys. Daenerys’ command turns the tide", "Fire cannot kill a dragon — Daenerys proves it applies to battle too", "The Mother of Dragons advances without hesitation"], inspire:["Daenerys says: I will take what is mine with fire and blood.", "She crossed a sea and broke chains. This is nothing."] },
-  'Count Dracula': { attack:["Dracula moves through the shadows like he owns them", "The Count strikes — you didn’t see him until too late", "Five hundred years of predation — Dracula is very good at this"], inspire:["Dracula intones: I am the monster that breathing men would kill.", "The night belongs to him. The battle does too."] },
+  'Count Dracula': { attack:["Dracula moves through the shadows like he owns them", "The Count strikes — you didn’t see him until too late", "Five hundred years of predation — Dracula is very good at this"], inspire:["Dracula intones: I never drink... wine.", "The night belongs to him. The battle does too."] },
   'Dorian Gray': { attack:["Dorian Gray fights without fear — his portrait bears the wounds", "Immortality makes a man reckless in the best possible way", "The most beautiful man in the room is also the most dangerous"], inspire:["Dorian says: The books that the world calls immoral are books that show the world its own shame.", "He cannot be killed by conventional means. He fights knowing this."] },
   'Gollum': { attack:["We wants it — Gollum strikes with surprising ferocity", "Sneaky little hobbitses never see Gollum coming", "The precious gives him strength he shouldn’t have"], inspire:["Gollum hisses: Smeagol will swear on the precious.", "He survived the Ring for centuries. He’s harder to kill than he looks."] },
   'Darkseid': { attack:["Darkseid fires the Omega Beams — nothing escapes", "Darkseid does not fight. He ends things.", "The God of Tyranny reaches out — reality bends"], inspire:["Darkseid intones: Anti-Life justifies my taking life.", "All will kneel. Darkseid commands it."] },
-  'Galactus': { attack:["Galactus reaches out — planets have ended this way", "The world-devourer focuses his power on a single point", "Galactus does not attack. He consumes."], inspire:["Galactus intones: I am neither your enemy nor your ally. I simply am.", "Before Galactus, all armies are irrelevant."] },
+  'Galactus': { attack:["Galactus reaches out — planets have ended this way", "The world-devourer focuses his power on a single point", "Galactus does not attack. He consumes."], inspire:["Galactus intones: I am neither good nor evil. I am... hungry.", "Before Galactus, all armies are irrelevant."] },
   'Jean Grey': { attack:["The Phoenix Force ignites around Jean Grey", "Jean Grey’s telekinesis shatters their formation", "The Phoenix screams — Jean Grey unleashes everything"], inspire:["Jean Grey reaches out: I can feel all of you. Fight.", "The Phoenix rises — Jean Grey burns brighter than hope."] },
-  'Zeus': { attack:["Zeus hurls a thunderbolt — the sky splits open", "The King of Olympus strikes with divine wrath", "Zeus unleashes the full fury of the storm"], inspire:["Zeus roars: The gods are with us!", "On Olympus they fear the thunder — here, they fear Zeus."] },
+  'Zeus': { attack:["Zeus hurls a thunderbolt — the sky splits open", "The King of Olympus strikes with divine wrath", "Zeus unleashes the full fury of the storm"], inspire:["Zeus hurls his thunderbolt. On Olympus, every god falls silent.", "On Olympus they fear the thunder — here, they fear Zeus."] },
   'Dumbledore': { attack:["Dumbledore raises his wand — the air crackles with ancient power", "After all this time? Always. Dumbledore strikes with quiet devastation", "The greatest wizard of his age channels forces beyond comprehension"], inspire:["Dumbledore speaks: Happiness can be found even in the darkest of times.", "Dumbledore’s presence steadies every nerve in the room."] },
   'Hercules': { attack:["Hercules swings with the strength of twelve labours", "No monster has survived Hercules — no man will either", "Hercules roars and the ground shakes beneath his feet"], inspire:["Hercules bellows: Stand firm! The gods fight with us!", "Where Hercules stands, no enemy dares advance."] },
   'Sun Wukong': { attack:["The Monkey King’s staff extends — nowhere is safe", "Sun Wukong somersaults through the battlefield leaving devastation", "72 transformations, one outcome — Sun Wukong wins"], inspire:["Sun Wukong grins: Is that all heaven has?", "Equal of Heaven — Sun Wukong holds nothing back."] },
-  'Hela': { attack:["Hela conjures necroblades from the ether and unleashes them", "The Goddess of Death points — and they fall", "Hela strikes with the certainty of the inevitable"], inspire:["Hela declares: Asgard is dead. Long live Hela.", "Death is not an end. For Hela, it is a beginning."] },
-  'Ultron': { attack:["Ultron calculates the optimal strike and executes", "Every motion is efficient. Ultron does not waste energy.", "Ultron’s systems upgrade mid-battle — he learns as he kills"], inspire:["Ultron announces: I had strings, but now I’m free.", "Ultron transmits: Your extinction has already been calculated."] },
-  'Cloud Strife': { attack:["Cloud drives the Buster Sword through with one hand", "Omnislash — Cloud becomes a blur of steel", "Cloud’s Limit Break charges — the enemy doesn’t know what’s coming"], inspire:["Cloud says: I don’t fight for the planet. I fight for the people on it.", "Cloud stands. That’s enough."] },
+  'Hela': { attack:["Hela conjures necroblades from the ether and unleashes them", "The Goddess of Death points — and they fall", "Hela strikes with the certainty of the inevitable"], inspire:["Hela commands: Kneel before your queen.", "Death is not an end. For Hela, it is a beginning."] },
+  'Ultron': { attack:["Ultron calculates the optimal strike and executes", "Every motion is efficient. Ultron does not waste energy.", "Ultron’s systems upgrade mid-battle — he learns as he kills"], inspire:["Ultron announces: I had strings, but now I’m free.", "Ultron announces: You want to protect the world but you don't want it to change."] },
+  'Cloud Strife': { attack:["Cloud drives the Buster Sword through with one hand", "Omnislash — Cloud becomes a blur of steel", "Cloud’s Limit Break charges — the enemy doesn’t know what’s coming"], inspire:["Cloud says: Embrace your dreams. And whatever happens, protect your honour.", "Cloud stands. That’s enough."] },
   'Sephiroth': { attack:["Sephiroth’s Masamune strikes before they see him move", "One-Winged Angel — Sephiroth transcends the battle", "Sephiroth smiles and drives the blade home"], inspire:["Sephiroth announces: I will never be a memory.", "Every world burns in the end. Sephiroth merely accelerates it."] },
-  'Commander Shepard': { attack:["Shepard charges in — this is what Spectres are trained for", "Commander Shepard leads from the front, always", "Shepard fires — years of combat distilled into one perfect moment"], inspire:["Shepard calls out: We fight or we die. Nothing in between.", "I’m Commander Shepard and this is my favourite battle in the multiverse."] },
+  'Commander Shepard': { attack:["Shepard charges in — this is what Spectres are trained for", "Commander Shepard leads from the front, always", "Shepard fires — years of combat distilled into one perfect moment"], inspire:["Shepard calls out: Stand together. We survive this as one or not at all.", "I’m Commander Shepard and this is my favourite battle in the multiverse."] },
   'Shadow Broker': { attack:["The Shadow Broker’s network collapses around the enemy", "Information is power — the Shadow Broker weaponises both", "The Yahg moves with terrifying speed and precision"], inspire:["The Shadow Broker transmits: I know everything. Plan accordingly.", "No secret survives the Shadow Broker. No enemy does either."] },
   'Captain America': { attack:["Rogers raises his shield and charges — there is no hesitation", "Captain America strikes with the full force of everything he stands for", "The shield returns. It always returns."], inspire:["Cap calls out: I can do this all day.", "Captain America holds the line. Everyone else holds with him."] },
-  'Bane': { attack:["Bane drives through the defence like it was never there", "He didn’t come here to fight. He came here to break things.", "Bane’s venom surges — the blow lands like a wrecking ball"], inspire:["Bane intones: I am the League’s greatest weapon.", "When Bane steps forward, the battlefield gets smaller."] },
-};;
+  'Bane': { attack:["Bane drives through the defence like it was never there", "He didn’t come here to fight. He came here to break things.", "Bane’s venom surges — the blow lands like a wrecking ball"], inspire:["Bane intones: When Gotham is ashes, you have my permission to die.", "When Bane steps forward, the battlefield gets smaller."] },
+
+  'Nebula':          { attack:["Nebula’s cybernetic arm locks on — there is no escape","Every upgrade Thanos gave her was a weapon. She uses them all.","Nebula fights without hesitation. Pain is something she learned to ignore."], inspire:["Nebula says: I will not be the one who fails.","She was built to win. She intends to."] },
+  'General Grievous': { attack:["Grievous spins four lightsabers and advances","Your Jedi are dead. Grievous adds another to his collection.","The Supreme Commander of the Droid Army does not tire."], inspire:["Grievous rasps: Your screams are music to my ears.","Grievous coughs and charges. The cough doesn’t slow him."] },
+  'The Hound':        { attack:["Sandor Clegane swings and doesn’t stop","The Hound doesn’t fight with honour. He fights to win.","You’re in the way. The Hound removes obstacles."], inspire:["The Hound growls: Fire. Hate it. But not you.","Sandor Clegane says: Killing’s the sweetest thing there is."] },
+  'Venom':            { attack:["We are Venom. The symbiote surges.","Venom’s tendrils reach further than you expected.","The alien hunger drives them both forward."], inspire:["Venom roars: We will eat your brains.","We are Venom. Nothing stops us."] },
+  'Green Goblin':     { attack:["The Goblin swoops and throws a pumpkin bomb","Norman Osborn’s formula makes him faster and stronger than he should be.","Green Goblin laughs and strikes from an angle no one saw coming."], inspire:["Goblin cackles: We’re the same, you and I!","Norman Osborn announces: I’ve made a few refinements."] },
+  'Jon Snow':        { attack:["Jon Snow charges with Longclaw raised","The King in the North fights like a man with nothing left to lose","Jon has died before. It didn’t slow him down."], inspire:["Jon says: The Long Night is coming. And the dead come with it.","Jon Snow holds the line. He always holds the line."] },
+  'Patrick Bateman': { attack:["Bateman strikes with the precision of a man who has rehearsed this", "He’s wearing a Valentino suit and he doesn’t intend to get blood on it", "Patrick Bateman has very strong opinions about the correct way to do this"], inspire:["Bateman announces: I have to return some videotapes.", "Patrick Bateman checks his reflection and attacks."] },
+  'Elrond':          { attack:["Elrond’s ancient power is rarely called upon — when it is, kingdoms fall","The master of Rivendell has faced darker things than this","Three thousand years of wisdom and the patience to use it"], inspire:["Elrond says: The world is changed. I feel it in the water.","Elrond speaks: I was there, Gandalf. I was there when the strength of men failed."] },
+  'Melisandre':      { attack:["Melisandre’s flames find what they seek","The night is dark and full of terrors — Melisandre brings the fire","She has seen this moment in the flames. She knows how it ends."], inspire:["Melisandre intones: The night is dark and full of terrors. But fire conquers darkness.","Melisandre whispers: Death by fire is the purest death."] },};;
 
 // Killing blow quotes — short, iconic, in-character
 const KILL_QUOTES = {
   'Aragorn':           ['For Frodo.', 'The king has returned.', 'It is not this day.'],
-  'Gandalf':           ['The battle is won.', 'I am a servant of the Secret Fire.', 'Even the smallest person can change the course of the future.'],
+  'Gandalf':           ['That is not dead which can eternal lie.', 'I am a servant of the Secret Fire.', 'You shall not pass.'],
   'Legolas':           ['That still only counts as one.', 'They are taking the hobbits to Isengard.'],
   'Gimli':             ['Certainty of death. Small chance of success. What are we waiting for?', 'Nobody tosses a dwarf.'],
   'Sauron':            ['There is no life in the void. Only death.', 'You cannot hide. I see you.'],
-  'Frodo Baggins':     ['Even the smallest person can change the course of the future.', 'I will take the Ring, though I do not know the way.'],
+  'Frodo Baggins':     ['I wish the Ring had never come to me.', 'I will take the Ring, though I do not know the way.'],
   'Samwise Gamgee':    ['I may not be able to carry it for you — but I can carry you.', 'There’s some good in this world, and it’s worth fighting for.'],
   'Superman':          ['I believe in truth. But I also believe in justice.', 'Up, up, and away.'],
   'Wonder Woman':      ['I am Diana of Themyscira. And you will fall.', 'War is not just the province of men.'],
@@ -3682,7 +4315,7 @@ const KILL_QUOTES = {
   'Darth Vader':       ['I am your father.', 'The Force is strong with this one.', 'All too easy.'],
   'Voldemort':         ['There is no good and evil. There is only power.', 'Avada Kedavra.', 'I cannot be killed.'],
   'Bellatrix Lestrange':['I killed Sirius Black!', 'You dare speak his name?'],
-  'Harry Potter':      ['Expelliarmus!', 'Not my daughter, you bitch.', 'I open at the close.'],
+  'Harry Potter':      ['Expelliarmus!', 'Expelliarmus will always be my spell.', "It’s LeviOsa, not LeviosA."],
   'Hermione Granger':  ['It’s LeviOsa, not LeviosA.', 'When in doubt, go to the library.'],
   'Thanos':            ['I am inevitable.', 'The hardest choices require the strongest wills.', 'You could not live with your failure.'],
   'Thor':              ['I’m still worthy.', 'Bring me Thanos.', 'You’re in my seat.'],
@@ -3700,18 +4333,18 @@ const KILL_QUOTES = {
   'Amy Dunne':         ['I’m the cunt you married.', 'I’m so much better than you.'],
   'Jean-Luc Picard':   ['Engage.', 'Make it so.', 'Things are only impossible until they’re not.'],
   'Katniss Everdeen':  ['If we burn, you burn with us.', 'Fire is catching.'],
-  'Ellen Ripley':      ['Get away from her, you bitch.', 'Game over, man. Game over.'],
+  'Ellen Ripley':      ['Get away from her, you bitch.', 'Final report of the commercial starship Nostromo. Sole survivor.'],
   'King T’Challa':    ['Wakanda forever.', 'I am not the king of Wakanda. I am the Black Panther.'],
   'Okoye':             ['For Wakanda. Without question.', 'Now we fight like Wakandans.'],
-  'Mulan':             ['I’ll make a man out of you.', 'The flower that blooms in adversity is the most rare.'],
+  'Mulan':             ['My name is Mulan. I did it to save my father.', 'A single grain of rice can tip the scale.'],
   'Gollum':            ['My precious.', 'We wants it. We needs it.'],
-  'Merlin':            ['The greatest teacher, failure is not — that’s the other one. I know things older than time.'],
+  'Merlin':            ['I have lived forward and backward through time. I know how this ends.'],
   'Q':                 ['Oh, very well. I suppose I must help you — again.', 'The trial never ends, Picard.'],
   'Atticus Finch':     ['You never really understand a person until you climb into their skin.', 'Courage is not a man with a gun.'],
-  'Saruman':           ['I am Saruman the Wise, Saruman Ring-maker, Saruman of Many Colours!', 'He that breaks a thing to find out what it is has left the path of wisdom.'],
+  'Saruman':           ['I am Saruman the Wise, Saruman Ring-maker, Saruman of Many Colours!', 'I am Saruman the Wise, Saruman Ring-maker, Saruman of Many Colours!'],
   'Magneto':           ['Never again.', 'I have been to the promised land. It is called Genosha. And men like you burned it down.', 'We are the future, Charles.'],
   'Killmonger':        ['Is this your king?', 'Bury me in the ocean with my ancestors who jumped from ships — because they knew death was better than bondage.', 'The sun will never set on the Wakandan empire.'],
-  "Ra’s al Ghul":      ['You are not the devil. You are practice.', 'Justice is balance. You burned down our home and left nothing but ash.', 'Death does not wait for you to be ready.'],
+  "Ra’s al Ghul":      ['You are not Ra’s al Ghul. But you fought like him.', 'You have to become the Batman. Become more than just a man.', 'If you make yourself more than just a man, you become a legend.'],
   'General Zod':       ['Kneel before Zod.', 'I will find him. I will find Kal-El, and I will make him watch this world die.', 'Every Kryptonian instinct I have screams at me to destroy you.'],
   'Emperor Palpatine': ['I am the Senate.', 'Good. Let the hate flow through you.', 'Do it. Strike me down with all your hatred.'],
   'Moriarty':          ['Every fairytale needs a good old-fashioned villain.', 'I am so changeable. It is a weakness with me.', 'You’ve been so clever. But I am a specialist, you see.'],
@@ -3720,7 +4353,7 @@ const KILL_QUOTES = {
   'Dolores Umbridge':  ['Hem hem.', 'I will have order!', 'You applied logic to a situation that does not warrant it.'],
   'Doctor Strange':    ['Dormammu, I’ve come to bargain.', 'I went forward in time to view alternate futures. I saw fourteen million, six hundred and five.', 'The bill comes due. Always.'],
   'Scarlet Witch':     ['You took everything from me.', 'I’m not a monster. I’m a mother.', 'Know that they’ll never be safe.'],
-  'Loki':              ['I am burdened with glorious purpose.', 'I am Loki of Asgard, and I am burdened with glorious purpose.', 'The Norns. Even they can’t see what I’ve set in motion.'],
+  'Loki':              ['I am burdened with glorious purpose.', 'I am Loki of Asgard, and I am burdened with glorious purpose.', 'I assure you, brother, the sun will shine on us again.'],
   'Daenerys Targaryen':['Dracarys.', 'I am not your queen. I am your conqueror.', 'I am the blood of the dragon. You cannot kill me.'],
   'Count Dracula':     ['I am the Monster that breathing men would kill. I am Dracula.', 'To die — to truly die — that must be glorious.', 'I have survived centuries. You will not survive tonight.'],
   'Dorian Gray':       ['To define is to limit.', 'The books that the world calls immoral are books that show the world its own shame.', 'Behind every exquisite thing that existed, there was something tragic.'],
@@ -3732,7 +4365,7 @@ const KILL_QUOTES = {
   'Geralt of Rivia':  ['Evil is evil.', 'I’m a witcher. I’ll live.', 'Toss a coin to your Witcher.'],
   'Paul Atreides':    ['I am Paul Muad’Dib Atreides. Remember the name.', 'The sleeper has awakened.', 'Fear is the mind-killer.'],
   'Morpheus':         ['There is no spoon.', 'Welcome to the real world.', 'I’m trying to free your mind.'],
-  'Neo':              ['I know kung fu.', 'There is no spoon.', 'My name is Neo.'],
+  'Neo':              ['I know kung fu.', 'There is no spoon.', 'Everything that has a beginning has an end.'],
   'Sherlock Holmes':  ['Elementary.', 'The game is afoot.', 'When you have eliminated the impossible…'],
   'Odysseus':         ['Even the greatest heroes fall to the right trick.', 'Ten years to get home. One moment to end this.'],
   'Spock':            ['Live long and prosper.', 'I have been and always shall be your friend.', 'Logic is the beginning of wisdom.'],
@@ -3741,7 +4374,7 @@ const KILL_QUOTES = {
   'Darkseid':          ['Anti-Life justifies my taking life.', 'Darkseid is.', 'The universe will be remade in my image.'],
   'Galactus':          ['I do what I must.', 'Before me, empires are nothing.', 'There are no sides. There is only the hunger.'],
   'Jean Grey':         ['The Phoenix does not die.', 'I felt everything. I chose this.', 'From the ashes, something new.'],
-  'Zeus':              ['Even gods can be humbled.', 'The thunder always finds its mark.', 'Olympus endures.'],
+  'Zeus':              ['I am Zeus. Father of gods and men. Nothing stands above me.', 'By the power of Olympus, you are done.', 'The gods are eternal. You are not.'],
   'Dumbledore':        ['It does not do to dwell on dreams and forget to live.', 'Words are our most inexhaustible source of magic.', 'It is our choices that show what we truly are.'],
   'Hercules':          ['Nothing is impossible for Hercules.', 'The labours prepared me for this.', 'Strength is not given. It is earned.'],
   'Sun Wukong':        ['The Great Sage, Equal of Heaven, is victorious.', 'Even Buddha had to be clever about it.', 'Not a single soldier can withstand me.'],
@@ -3752,8 +4385,17 @@ const KILL_QUOTES = {
   'Commander Shepard': ['Soldiers follow orders. I give them.', "That's what Spectres are for.", "I'm not finished yet. But you are."],
   'Shadow Broker':     ['I knew you would be here.', 'Information always wins.', 'Nothing escapes the network.'],
   'Captain America':   ['I could do this all day.', "The right thing isn't always the easy thing.", "Get up. We're not done yet."],
-  'Bane':              ['Ah, you think darkness is your ally?', 'I broke him. I can break you.', 'Speak of the devil and he shall appear.'],
-};
+  'Bane':              ['Ah, you think darkness is your ally?', 'I broke him. I can break you.', 'This is not a random act of terror. This is a calculated dismantling.'],
+
+  'Nebula':          ['I know your every weakness.', 'Upgrade complete.', 'You never stood a chance against me.'],
+  'General Grievous': ['Your lightsabers are mine now.', 'Another trophy for my collection.', 'Crush them. Crush them all.'],
+  'The Hound':        ['Any last words? Didn’t think so.', 'I’m not a hunter. I’m a dog.', 'See you in hell.'],
+  'Venom':            ['We are Venom.', 'Such a good boy.', 'We will eat your brains.'],
+  'Green Goblin':     ['We’re the same, you and I.', 'Goblin wins again.', 'Wrong place, wrong time.'],
+  'Jon Snow':        ['I know nothing. But I know how to end this.', 'The North remembers.', 'Winter came. I’m still here.'],
+  'Patrick Bateman': ['I’m simply not there.', 'My business card is better than yours.', 'I have to return some videotapes.'],
+  'Elrond':          ['I was there. I remember.', 'The grace of the Elves is not so easily spent.', 'You have my blessing. Now fall.'],
+  'Melisandre':      ['The Lord of Light wills it.', 'I have seen the end of this — in the flames.', 'Night gathers. It will not last.'],};
 
 function getKillQuote(killerName) {
   const quotes = KILL_QUOTES[killerName];
@@ -4393,17 +5035,80 @@ function showSummary() {
   // ── Outcome header ──
   const outcomeEl = document.getElementById('summary-outcome');
   const taglineEl = document.getElementById('summary-tagline');
+  const mvpEl     = document.getElementById('summary-mvp');
+
   if (winner === 'player') {
-    outcomeEl.textContent = 'Victory';
+    // Flavoured victory title based on how clean the win was
+    const playerAliveNow = bs.player.filter(h => h.alive && !h.isArmy).length;
+    const cpuAliveNow    = bs.cpu.filter(h => h.alive && !h.isArmy).length;
+    const playerHpLeft = bs.player.reduce((s,h) => s + (h.alive ? h.hp : 0), 0);
+    const playerHpTotal = bs.player.reduce((s,h) => s + h.maxHp, 0);
+    const hpPct = playerHpLeft / playerHpTotal;
+
+    let victoryTitle = 'Victory';
+    if (playerAliveNow === 5 && hpPct > 0.7) victoryTitle = 'Flawless Victory';
+    else if (playerAliveNow >= 4 && hpPct > 0.5) victoryTitle = 'Dominant Victory';
+    else if (playerAliveNow <= 1 || hpPct < 0.15) victoryTitle = 'Victory — by a Thread';
+    outcomeEl.textContent = victoryTitle;
     outcomeEl.className = 'summary-outcome victory';
-    taglineEl.textContent = `Your champions triumphed in ${state.round} rounds.`;
+
+    // Tagline
+    const dailyTag = state.lastMode === 'daily' ? ' — Challenge Complete! 📅' : '';
+    const rgTag = rgState.active ? ` — Stage ${rgState.stage} cleared.` : '';
+    const survivors = playerAliveNow === 5 ? 'All five champions standing.' :
+      playerAliveNow === 1 ? 'One champion left standing.' :
+      `${playerAliveNow} of your champions survived.`;
+    taglineEl.textContent = `${survivors} ${state.round} rounds.${dailyTag}${rgTag}`;
+
+    // MVP banner — top damage dealer from player side
+    if (mvpEl) {
+      const playerHeroes = bs.player.filter(h => !h.isArmy);
+      const heroDmgMap = {};
+      playerHeroes.forEach(h => {
+        heroDmgMap[h.id] = log.filter(e => e.dmg && e.attackerId === h.id).reduce((s,e) => s+e.dmg, 0);
+      });
+      const mvp = playerHeroes.reduce((a,b) => (heroDmgMap[a.id]||0) > (heroDmgMap[b.id]||0) ? a : b, playerHeroes[0]);
+      const mvpKills = log.filter(e => e.type === 'killblow' && !e.isArmy && e.killerId === mvp?.id).length;
+      const mvpDmg = heroDmgMap[mvp?.id] || 0;
+
+      // Rival gamble — did a same-team rival pair survive without betrayal?
+      const playerNames = new Set(bs.player.map(h => h.name));
+      const rivalPairs = [];
+      bs.player.filter(h => !h.isArmy).forEach(h => {
+        (h.rivals||[]).forEach(r => { if (playerNames.has(r)) rivalPairs.push(`${h.name} & ${r}`); });
+      });
+      const uniqueRivalPairs = [...new Set(rivalPairs.map(p => p.split(' & ').sort().join(' & ')))];
+
+      let mvpHtml = `<div style="background:rgba(212,168,67,0.08);border:1px solid rgba(212,168,67,0.3);border-radius:8px;padding:0.5rem 0.75rem;font-size:0.75rem;">
+        <span style="color:var(--gold);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;">⭐ MVP</span>
+        <span style="color:var(--gold2);font-weight:600;margin-left:0.4rem;">${mvp?.name || '—'}</span>
+        <span style="color:var(--muted);margin-left:0.4rem;">${mvpDmg} damage${mvpKills >= 2 ? ` · ${mvpKills} kills` : ''}</span>
+      </div>`;
+
+      if (uniqueRivalPairs.length) {
+        mvpHtml += `<div style="margin-top:0.35rem;font-size:0.72rem;color:var(--good);">⚔ ${uniqueRivalPairs[0]} kept their blades pointed at the enemy.</div>`;
+      }
+
+      // Streak milestone
+      const s = getStats();
+      if ((s.streak||0) === 5 || (s.streak||0) === 10 || (s.streak||0) === 3) {
+        mvpHtml += `<div style="margin-top:0.35rem;font-size:0.72rem;color:#fb923c;">🔥 ${s.streak} win streak.</div>`;
+      }
+
+      mvpEl.style.display = 'block';
+      mvpEl.innerHTML = mvpHtml;
+    }
+
   } else if (winner === 'cpu') {
+    if (mvpEl) mvpEl.style.display = 'none';
     outcomeEl.textContent = 'Defeat';
     outcomeEl.className = 'summary-outcome defeat';
-    taglineEl.textContent = `The enemy prevailed after ${state.round} rounds of fierce combat.`;
+    const dailyTag = state.lastMode === 'daily' ? ' — Challenge failed.' : '';
+    taglineEl.textContent = `The enemy prevailed after ${state.round} rounds of fierce combat.${dailyTag}`;
   } else {
     outcomeEl.textContent = 'Draw';
     outcomeEl.className = 'summary-outcome draw';
+    if (mvpEl) mvpEl.style.display = 'none';
     taglineEl.textContent = `All champions fell. The field belongs to none.`;
   }
 
@@ -4432,6 +5137,41 @@ function showSummary() {
   const allHeroes = [...bs.player, ...bs.cpu].filter(h => !h.isArmy);
   const topDmgHero = allHeroes.reduce((a,b) => (heroDmg[a.id]||0) > (heroDmg[b.id]||0) ? a : b, allHeroes[0]);
   const topHealHero = allHeroes.reduce((a,b) => (heroHeal[a.id]||0) > (heroHeal[b.id]||0) ? a : b, allHeroes[0]);
+
+  // ── Near-miss feedback ──
+  if (winner === 'cpu') {
+    const playerHpLeft = bs.player.reduce((s,h) => s + (h.alive ? h.hp : 0), 0);
+    const cpuHpLeft    = bs.cpu.reduce((s,h) => s + (h.alive ? h.hp : 0), 0);
+    const totalStartHp = [...bs.player, ...bs.cpu].reduce((s,h) => s + h.maxHp, 0);
+    const hpGap = cpuHpLeft - playerHpLeft;
+    const gapPct = Math.round(hpGap / (totalStartHp / 2) * 100);
+
+    // Top enemy killer by kill count
+    const enemyKills = {};
+    log.filter(e => e.type === 'killblow' && !e.isArmy).forEach(e => {
+      const killer = bs.cpu.find(h => h.id === e.killerId);
+      if (killer) enemyKills[killer.name] = (enemyKills[killer.name] || 0) + 1;
+    });
+    const topKillerName = Object.keys(enemyKills).sort((a,b) => enemyKills[b]-enemyKills[a])[0];
+    const topKillerCount = topKillerName ? enemyKills[topKillerName] : 0;
+
+    let nearMiss = '';
+    if (gapPct <= 10) {
+      nearMiss = `You lost by just ${hpGap}HP — a single hero's worth of health.`;
+    } else if (gapPct <= 25) {
+      nearMiss = `You lost by ${hpGap}HP. One more round of healing might have done it.`;
+    } else {
+      nearMiss = `The enemy held ${hpGap}HP in reserve — a comfortable margin.`;
+    }
+    if (topKillerName && topKillerCount >= 2) {
+      nearMiss += ` ${topKillerName} claimed ${topKillerCount} kills — the decisive blade.`;
+    } else if (topKillerName) {
+      nearMiss += ` ${topKillerName} landed the killing blow that mattered most.`;
+    }
+
+    const dailyTag = state.lastMode === 'daily' ? ' — Challenge failed.' : '';
+    taglineEl.textContent = nearMiss + dailyTag;
+  }
 
   document.getElementById('summary-stats').innerHTML = [
     { val: state.round,            label: 'Rounds' },
@@ -4569,8 +5309,25 @@ function showSummary() {
         ? (gauntlet.stage < GAUNTLET_STAGES.length - 1 ? `Stage ${gauntlet.stage + 2} ▶` : 'See Results')
         : 'Progress';
       playAgainBtn2.onclick = () => showGauntletProgress();
+    } else if (rgState.active) {
+      // Won — advance to next stage
+      playAgainBtn2.textContent = `Stage ${rgState.stage + 1} ▶`;
+      playAgainBtn2.style.background = '#fb923c';
+      playAgainBtn2.style.borderColor = '#fb923c';
+      playAgainBtn2.style.color = '#0d0e14';
+      playAgainBtn2.onclick = () => launchRgStage();
+    } else if (state.lastMode === 'rg') {
+      // Lost — show run end
+      playAgainBtn2.textContent = 'See Results';
+      playAgainBtn2.style.background = 'transparent';
+      playAgainBtn2.style.borderColor = '#fb923c';
+      playAgainBtn2.style.color = '#fb923c';
+      playAgainBtn2.onclick = () => showRgEnd();
+    } else if (state.lastMode === 'daily') {
+      playAgainBtn2.textContent = 'Retry Challenge';
+      playAgainBtn2.onclick = () => startDailyBattle();
     } else {
-      playAgainBtn2.textContent = state.lastMode === 'restricted' ? 'Restricted Again' : 'Draft Again';
+      playAgainBtn2.textContent = state.lastMode === 'fate' ? 'Fate Draft Again' : 'Open Draft Again';
       playAgainBtn2.onclick = () => playAgain();
     }
   }
@@ -4596,6 +5353,26 @@ function showResult() {
     gauntlet.results.push(bs.winner === 'player' ? 'win' : 'loss');
     showSummary();
     return;
+  }
+
+  // Restricted Gauntlet: win = advance, loss = end run
+  if (rgState.active) {
+    if (bs.winner === 'player') {
+      rgState.stage++;
+      showSummary();
+    } else {
+      rgState.active = false;
+      showSummary();
+    }
+    return;
+  }
+
+  // Persistent stats — record every non-gauntlet result
+  recordResult(bs.winner === 'player' ? 'win' : bs.winner === 'cpu' ? 'loss' : 'draw');
+
+  // Daily challenge: record result
+  if (state.lastMode === 'daily') {
+    recordDailyResult(bs.winner === 'player');
   }
 
   // ── Streak tracking (standard modes only) ──
@@ -4639,7 +5416,7 @@ function playAgain() {
   state.round = 0;
   state.gauntletClones = new Set();
   gauntlet.active = false;
-  if (mode === 'restricted') {
+  if (mode === 'fate') {
     startRestrictedDraft();
   } else {
     startDraft();
@@ -4663,6 +5440,10 @@ function resetGame() {
   state.battleState = null;
   state.round = 0;
   state.gauntletClones = new Set();
+  state.dailyChallenge = null;
+  state.dailyOfficial = false;
+  rgState.active = false;
+  rgState.stage = 0;
   gauntlet.active = false;
   gauntlet.stage = 0;
   gauntlet.results = [];
@@ -4721,7 +5502,7 @@ const GAUNTLET_STAGES = [
   {
     name: 'The Game of Thrones',
     lore: 'A dynasty bound by blood and ambition. Dangerous in court — test your mettle before the real threats arrive.',
-    team: ['Cersei Lannister','Daenerys Targaryen','Brienne of Tarth','Jaime Lannister','Tyrion Lannister'],
+    team: ['Cersei Lannister','Jon Snow','Brienne of Tarth','Jaime Lannister','Tyrion Lannister'],
     army: 'Lannister Army',
   },
   {
@@ -4771,6 +5552,7 @@ function armyForLeader(leader) {
 }
 
 function showGauntlet() {
+  state.dailyChallenge = null;
   gauntlet.picks = {};
   gauntlet.armyPick = null;
   gauntlet.stage = 0;
@@ -4778,6 +5560,143 @@ function showGauntlet() {
   renderGauntletPick();
   showScreen('screen-gauntlet-pick');
 }
+
+// ══════════════════════════════════════════════════
+// RESTRICTED GAUNTLET
+// ══════════════════════════════════════════════════
+const RG_BEST_KEY = 'herodraft_rg_best';
+let _rgBestMemory = null;
+
+function getRgBest() {
+  try {
+    const raw = localStorage.getItem(RG_BEST_KEY);
+    if (raw) { const p = JSON.parse(raw); if (typeof p === 'number') { _rgBestMemory = p; return p; } }
+  } catch {}
+  return _rgBestMemory || 0;
+}
+function saveRgBest(n) {
+  _rgBestMemory = n;
+  try { localStorage.setItem(RG_BEST_KEY, JSON.stringify(n)); } catch {}
+}
+
+const rgState = {
+  active: false,
+  stage: 0,      // stages beaten so far
+};
+
+function showFateGauntlet() {
+  state.dailyChallenge = null;
+  rgState.active = false;
+  rgState.stage = 0;
+  state.lastMode = 'rg';
+  startRestrictedDraft();
+}
+
+// Called after restricted draft completes — launches first RG stage
+function startFateGauntlet() {
+  rgState.active = true;
+  rgState.stage = 0;
+  launchRgStage();
+}
+
+function rgBuildCpuTeam() {
+  // Draft a legal CPU team using hard scoring from stage 3+, medium before
+  const difficulty = rgState.stage >= 4 ? 'hard' : rgState.stage >= 2 ? 'medium' : 'easy';
+  const taken = new Set([...state.playerTeam.map(h => h.id)]);
+  const cpuTeam = [];
+  const cpuTierLimits = { cosmic: 1, premiumSlots: 3 };
+
+  function tierLimitOk(hero, team) {
+    const cosmicCount = team.filter(h => h.tier === 'cosmic').length;
+    const premCount   = team.filter(h => h.tier === 'legendary' || h.tier === 'cosmic').length;
+    if (hero.tier === 'cosmic'    && cosmicCount >= cpuTierLimits.cosmic)       return false;
+    if ((hero.tier === 'legendary' || hero.tier === 'cosmic') && premCount >= cpuTierLimits.premiumSlots) return false;
+    return true;
+  }
+
+  REQUIRED_ROLES.forEach(role => {
+    const pool = ROSTER.filter(h =>
+      h.role === role &&
+      !taken.has(h.id) &&
+      tierLimitOk(h, cpuTeam)
+    );
+    if (!pool.length) return;
+
+    let pick;
+    if (difficulty === 'easy') {
+      pick = pool[Math.floor(Math.random() * pool.length)];
+    } else if (difficulty === 'medium') {
+      const scored = pool.map(h => ({ h, s: scoreMediumPick(h) })).sort((a,b) => b.s-a.s);
+      // Pick from top 3
+      pick = scored[Math.floor(Math.random() * Math.min(3, scored.length))].h;
+    } else {
+      const scored = pool.map(h => ({ h, s: scoreHardPick(h) })).sort((a,b) => b.s-a.s);
+      pick = scored[0].h;
+    }
+    cpuTeam.push(pick);
+    taken.add(pick.id);
+  });
+  return cpuTeam;
+}
+
+function launchRgStage() {
+  const cpuTeam = rgBuildCpuTeam();
+  const cpuLeader = cpuTeam.find(h => h.role === 'leader');
+  const cpuArmy = armyForLeader(cpuLeader);
+
+  // Clone check — RG has no clone penalty (CPU is freshly drafted each time)
+  state.playerTeam = gauntlet.playerTeam;
+  state.playerArmy = gauntlet.playerArmy;
+  state.cpuTeam  = cpuTeam;
+  state.cpuArmy  = cpuArmy;
+  state.gauntletClones = new Set();
+
+  initBattleState();
+
+  // Header
+  const arena = document.querySelector('.battle-arena');
+  arena.querySelector('.gauntlet-battle-header')?.remove();
+  const header = document.createElement('div');
+  header.className = 'gauntlet-battle-header';
+  header.innerHTML = `
+    <div>
+      <div class="gauntlet-stage-label" style="color:#fb923c;">🎲 Fate Gauntlet — Stage ${rgState.stage + 1}</div>
+      <div style="font-size:0.72rem;color:var(--muted);margin-top:2px;">Survive as long as you can</div>
+    </div>
+    <div style="font-size:0.85rem;font-weight:700;color:#fb923c;">Best: ${getRgBest()}</div>
+  `;
+  arena.insertBefore(header, arena.firstChild);
+
+  document.getElementById('btn-next-round').disabled = false;
+  renderBattleScreen();
+  showScreen('screen-battle');
+}
+
+function showRgEnd() {
+  const stages = rgState.stage;
+  const best = getRgBest();
+  const isNewBest = stages > best;
+  if (isNewBest) saveRgBest(stages);
+  const finalBest = isNewBest ? stages : best;
+
+  document.getElementById('rg-end-title').textContent = stages === 0
+    ? 'Eliminated First Round' : stages === 1 ? 'One Stage Cleared' : `${stages} Stages Cleared`;
+  document.getElementById('rg-end-stages').textContent =
+    stages === 0 ? 'Your team fell at the first hurdle.' :
+    `Your team survived ${stages} stage${stages !== 1 ? 's' : ''} before falling.`;
+  document.getElementById('rg-end-best').textContent = isNewBest
+    ? `🏆 New personal best!` : `Personal best: ${finalBest} stage${finalBest !== 1 ? 's' : ''}`;
+
+  // Show team
+  const team = gauntlet.playerTeam || [];
+  const ROLE_COLOUR = { leader:'var(--leader)', hero:'var(--hero)', defender:'var(--defender)', warrior:'var(--warrior)', support:'var(--support)' };
+  document.getElementById('rg-end-team-list').innerHTML = team.map(h =>
+    `<span style="color:${ROLE_COLOUR[h.role]||'var(--muted)'}">▸</span> ${h.name} <span style="color:var(--muted);font-size:0.68rem;">${h.tier}</span>`
+  ).join('<br>');
+
+  showScreen('screen-rg-end');
+}
+
 
 function renderGauntletPick() {
   // Enemy preview strip
@@ -5020,6 +5939,9 @@ function showGauntletResult() {
 
   showScreen('screen-gauntlet-result');
 }
+
+// Initial render of title screen stats (must be after all declarations)
+renderTitleStats();
 
 </script>
 </body>
