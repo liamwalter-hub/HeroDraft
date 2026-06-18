@@ -1436,6 +1436,7 @@
     transition: background 0.3s;
   }
   .gauntlet-dot.done { background: #f97316; border-color: #f97316; }
+  .gauntlet-dot.loss { background: var(--evil); border-color: var(--evil); }
   .gauntlet-dot.current { background: rgba(249,115,22,0.4); border-color: #f97316; }
 
   .gauntlet-clone-badge {
@@ -1581,7 +1582,7 @@
       <div><span style="color:var(--gold)">&#9733; Legendary ×1.30</span> <span style="color:var(--muted)">— gods, dark lords, reality-benders</span></div>
       <div><span style="color:#f97316">&#9670; Cosmic ×1.50</span> <span style="color:var(--muted)">— planetary threats, near-unkillable</span></div>
     </div>
-    <p>Tier badges appear on every draft card. Each team is limited to <strong>1 cosmic</strong> and <strong>2 legendary</strong> heroes — the limits apply to both sides equally.</p>
+    <p>Tier badges appear on every draft card. Each team is limited to <strong>1 cosmic</strong> and a combined total of <strong>3 legendary or cosmic</strong> heroes — so taking a cosmic leaves room for only 2 legendaries. The limits apply to both sides equally.</p>
 
     <hr class="briefing-divider">
 
@@ -1593,7 +1594,7 @@
 
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Synergies &amp; Alignment</p>
     <p>Heroes from the same universe fight better together (+10% per same-universe ally). Named <strong>ally bonds</strong> add a further +15% — Yoda with Luke Skywalker heals far more than Yoda alone. Build around these and your team compounds in ways the numbers alone don’t show.</p>
-    <p>Alignment cohesion also matters. Evil heroes inspire each other (+10% per evil ally, capped at +20%). Good heroes similarly bond (+8% per, capped at +16%). Mixing alignments hurts both sides.</p>
+    <p>Alignment cohesion also matters. Evil heroes inspire each other (+10% per evil ally, capped at +20%). Good heroes similarly bond (+10% per, capped at +20%). Mixing alignments hurts both sides.</p>
 
     <hr class="briefing-divider">
 
@@ -1935,6 +1936,20 @@
   <button class="btn-primary" onclick="resetGame()" style="background:transparent;border:1px solid var(--border2);color:var(--muted);">Main Menu</button>
 </div>
 
+<div id="screen-gauntlet-progress" class="screen" style="align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 30%, #1a1020 0%, var(--bg) 70%);">
+  <div style="font-size:0.65rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;">Gauntlet Progress</div>
+  <div class="gauntlet-progress-dots" id="gp-dots" style="justify-content:center;margin-bottom:1.5rem;gap:8px;"></div>
+  <div id="gp-stage-label" style="font-size:0.7rem;color:#f97316;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.4rem;"></div>
+  <div id="gp-stage-name" style="font-family:var(--font);font-size:clamp(1.4rem,5vw,2rem);color:var(--gold2);margin-bottom:0.5rem;"></div>
+  <div id="gp-stage-lore" style="font-size:0.78rem;color:var(--muted);max-width:340px;line-height:1.5;margin-bottom:1rem;"></div>
+  <div id="gp-stage-team" style="display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;max-width:360px;margin-bottom:1.5rem;"></div>
+  <div id="gp-result-badge" style="margin-bottom:1rem;"></div>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;max-width:320px;width:100%">
+    <button class="btn-primary" id="gp-action-btn" style="flex:1;background:#f97316;border-color:#f97316;">Continue</button>
+    <button class="btn-primary" onclick="resetGame()" style="flex:1;background:transparent;border:1px solid var(--border2);color:var(--muted);">Main Menu</button>
+  </div>
+</div>
+
 
 <!-- ═══════════════════════════════════════════════
   KILLING BLOW OVERLAY
@@ -1966,37 +1981,37 @@
 // ══════════════════════════════════════════════════════
 const HEROES = [
   // LEADERS
-  { id:1,  name:"Aragorn",        universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"leader",   strength:82, leadership:95, durability:80, intelligence:78, agility:75, rivals:["Sauron"], allies:["Gandalf","Legolas","Gimli"], lore:"Rightful king of Gondor, ranger turned ruler" },
+  { id:1,  name:"Aragorn",        universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"leader",   strength:82, leadership:95, durability:80, intelligence:78, agility:75, rivals:["Sauron","Saruman"], allies:["Gandalf","Legolas","Gimli"], lore:"Rightful king of Gondor, ranger turned ruler" },
   { id:2,  name:"Leonidas",       universe:"Ancient Greece",     alignment:"good", tier:"human",    role:"leader",   strength:90, leadership:92, durability:88, intelligence:72, agility:68, rivals:["Xerxes"], allies:["Achilles"], lore:"Spartan king who held the Hot Gates" },
   { id:3,  name:"Mulan",          universe:"Chinese Folklore",   alignment:"good", tier:"human",    role:"leader",   strength:68, leadership:85, durability:65, intelligence:90, agility:88, rivals:[], allies:[], lore:"Warrior who saved China through cunning" },
   { id:4,  name:"Jean-Luc Picard",universe:"Star Trek",          alignment:"good", tier:"human",    role:"leader",   strength:45, leadership:98, durability:50, intelligence:96, agility:40, rivals:["Borg Queen"], allies:[], lore:"Starship captain, diplomat, philosopher" },
-  { id:5,  name:"King T’Challa",  universe:"Marvel Comics",      alignment:"good", tier:"human",    role:"leader",   strength:78, leadership:90, durability:76, intelligence:92, agility:85, rivals:["Killmonger"], allies:["Okoye"], lore:"Black Panther, king and protector of Wakanda" },
+  { id:5,  name:"King T’Challa",  universe:"Marvel Comics",      alignment:"good", tier:"human",    role:"leader",   strength:78, leadership:90, durability:76, intelligence:92, agility:85, rivals:["Killmonger","Thanos"], allies:["Okoye"], lore:"Black Panther, king and protector of Wakanda" },
   { id:6,  name:"Atticus Finch",  universe:"To Kill a Mockingbird", alignment:"good", tier:"human", role:"leader",   strength:40, leadership:88, durability:45, intelligence:97, agility:35, rivals:[], allies:[], lore:"Moral compass of Maycomb, defender of justice" },
 
   // HEROES
-  { id:7,  name:"Superman",       universe:"DC Comics",          alignment:"good", tier:"cosmic",    role:"hero",     strength:99, leadership:72, durability:92, intelligence:72, agility:90, rivals:["Lex Luthor","General Zod"], allies:["Wonder Woman","Batman"], lore:"Last son of Krypton, Man of Steel" },
-  { id:8,  name:"Wonder Woman",   universe:"DC Comics",          alignment:"good", tier:"cosmic",    role:"hero",     strength:92, leadership:78, durability:85, intelligence:82, agility:92, rivals:[], allies:["Superman","Batman"], lore:"Amazon warrior princess, god killer" },
-  { id:9,  name:"Luke Skywalker", universe:"Star Wars",          alignment:"good", tier:"legendary",    role:"hero",     strength:72, leadership:75, durability:68, intelligence:82, agility:85, rivals:["Darth Vader","Emperor Palpatine"], allies:["Obi-Wan Kenobi"], lore:"Jedi Knight, hope of the Rebellion" },
+  { id:7,  name:"Superman",       universe:"DC Comics",          alignment:"good", tier:"cosmic",    role:"hero",     strength:99, leadership:72, durability:92, intelligence:72, agility:90, rivals:["Lex Luthor","Darkseid","General Zod"], allies:["Wonder Woman","Batman"], lore:"Last son of Krypton, Man of Steel" },
+  { id:8,  name:"Wonder Woman",   universe:"DC Comics",          alignment:"good", tier:"legendary", role:"hero",     strength:82, leadership:78, durability:85, intelligence:82, agility:82, rivals:["Darkseid"], allies:["Superman","Batman"], lore:"Amazon warrior princess, god killer" },
+  { id:9,  name:"Luke Skywalker", universe:"Star Wars",          alignment:"good", tier:"legendary",    role:"hero",     strength:85, leadership:75, durability:68, intelligence:82, agility:92, rivals:["Darth Vader","Emperor Palpatine"], allies:["Obi-Wan Kenobi"], lore:"Jedi Knight, hope of the Rebellion" },
   { id:10, name:"Frodo Baggins",  universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"hero",     strength:32, leadership:50, durability:55, intelligence:70, agility:62, rivals:["Sauron","Gollum"], allies:["Aragorn","Gandalf","Samwise"], lore:"Hobbit who carried the One Ring to Mordor" },
-  { id:11, name:"Hermione Granger",universe:"Harry Potter",      alignment:"good", tier:"enhanced",    role:"support",  strength:45, leadership:78, durability:58, intelligence:99, agility:68, rivals:["Voldemort","Bellatrix"], allies:["Harry Potter"], lore:"Brightest witch of her age — the mind behind every plan" },
-  { id:12, name:"Harry Potter",   universe:"Harry Potter",       alignment:"good", tier:"legendary",    role:"hero",     strength:62, leadership:78, durability:70, intelligence:82, agility:76, rivals:["Voldemort","Draco Malfoy"], allies:["Hermione Granger"], lore:"The Boy Who Lived, chosen one of prophecy" },
+  { id:11, name:"Hermione Granger",universe:"Harry Potter",      alignment:"good", tier:"enhanced",    role:"support",  strength:45, leadership:78, durability:58, intelligence:99, agility:68, rivals:["Voldemort","Bellatrix Lestrange","Dolores Umbridge"], allies:["Harry Potter"], lore:"Brightest witch of her age — the mind behind every plan" },
+  { id:12, name:"Harry Potter",   universe:"Harry Potter",       alignment:"good", tier:"legendary",    role:"hero",     strength:80, leadership:78, durability:70, intelligence:82, agility:88, rivals:["Voldemort","Draco Malfoy","Bellatrix Lestrange","Dolores Umbridge"], allies:["Hermione Granger","Dumbledore"], lore:"The Boy Who Lived, chosen one of prophecy" },
   { id:13, name:"Katniss Everdeen",universe:"The Hunger Games",  alignment:"good", tier:"human",    role:"hero",     strength:62, leadership:70, durability:65, intelligence:80, agility:92, rivals:["President Snow"], allies:[], lore:"The Mockingjay, symbol of revolution" },
   { id:14, name:"Ellen Ripley",   universe:"Alien",              alignment:"good", tier:"human",    role:"hero",     strength:65, leadership:75, durability:72, intelligence:85, agility:70, rivals:["Xenomorph Queen"], allies:[], lore:"Sole survivor, nemesis of the Xenomorphs" },
 
   // DEFENDERS
   { id:15, name:"Gandalf",        universe:"Lord of the Rings",  alignment:"good", tier:"legendary",    role:"defender", strength:70, leadership:85, durability:88, intelligence:99, agility:55, rivals:["Balrog","Sauron","Saruman"], allies:["Aragorn","Frodo Baggins","Legolas","Gimli"], lore:"Grey Pilgrim, servant of the Secret Fire" },
   { id:16, name:"Obi-Wan Kenobi", universe:"Star Wars",          alignment:"good", tier:"legendary",    role:"defender", strength:68, leadership:80, durability:72, intelligence:90, agility:85, rivals:["Darth Vader","General Grievous"], allies:["Luke Skywalker"], lore:"Jedi Master, guardian of balance in the Force" },
-  { id:17, name:"Thor",           universe:"Marvel Comics",       alignment:"good", tier:"cosmic",    role:"defender", strength:95, leadership:70, durability:95, intelligence:65, agility:82, rivals:["Loki","Thanos"], allies:["King T’Challa"], lore:"God of Thunder, Asgardian prince" },
+  { id:17, name:"Thor",           universe:"Marvel Comics",       alignment:"good", tier:"cosmic",    role:"defender", strength:95, leadership:70, durability:95, intelligence:65, agility:82, rivals:["Loki","Thanos","Galactus","Hela"], allies:["King T’Challa"], lore:"God of Thunder, Asgardian prince" },
   { id:18, name:"Samwise Gamgee", universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"defender", strength:55, leadership:68, durability:92, intelligence:68, agility:60, rivals:["Gollum","Sauron"], allies:["Frodo Baggins","Aragorn","Gandalf","Legolas","Gimli"], lore:"Loyal gardener who carried Frodo to the end" },
-  { id:19, name:"Okoye",         universe:"Marvel Comics",       alignment:"good", tier:"human",    role:"defender", strength:74, leadership:75, durability:78, intelligence:80, agility:88, rivals:[], allies:["King T’Challa"], lore:"General of the Dora Milaje, Wakanda’s shield" },
+  { id:19, name:"Okoye",         universe:"Marvel Comics",       alignment:"good", tier:"human",    role:"defender", strength:74, leadership:75, durability:78, intelligence:80, agility:88, rivals:["Thanos"], allies:["King T’Challa"], lore:"General of the Dora Milaje, Wakanda’s shield" },
 
   // WARRIORS
-  { id:20, name:"Achilles",       universe:"Ancient Greece",     alignment:"neutral", tier:"enhanced", role:"warrior",  strength:97, leadership:62, durability:85, intelligence:65, agility:95, rivals:["Hector"], allies:["Leonidas"], lore:"Greatest Greek warrior, nearly invincible" },
+  { id:20, name:"Achilles",       universe:"Ancient Greece",     alignment:"neutral", tier:"legendary", role:"warrior",  strength:90, leadership:62, durability:85, intelligence:65, agility:88, rivals:["Hector","Hercules","Zeus"], allies:["Leonidas"], lore:"Greatest Greek warrior, nearly invincible" },
   { id:21, name:"Legolas",        universe:"Lord of the Rings",  alignment:"good", tier:"enhanced",    role:"warrior",  strength:72, leadership:58, durability:70, intelligence:75, agility:98, rivals:["Sauron"], allies:["Aragorn","Gandalf","Gimli"], lore:"Elven prince, peerless archer of Middle-earth" },
   { id:22, name:"Gimli",          universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"warrior",  strength:85, leadership:60, durability:90, intelligence:62, agility:62, rivals:["Sauron"], allies:["Aragorn","Gandalf","Legolas"], lore:"Son of Gloin, axe of the Fellowship" },
   { id:23, name:"Maximus",        universe:"Gladiator",          alignment:"good", tier:"human",    role:"warrior",  strength:88, leadership:78, durability:82, intelligence:72, agility:80, rivals:["Commodus"], allies:[], lore:"General, slave, gladiator — loyal to Rome" },
-  { id:24, name:"Darth Vader",    universe:"Star Wars",          alignment:"evil", tier:"legendary",    role:"warrior",  strength:92, leadership:82, durability:90, intelligence:85, agility:78, rivals:["Luke Skywalker","Obi-Wan Kenobi"], allies:[], lore:"Dark Lord of the Sith, once Anakin Skywalker" },
-  { id:25, name:"Loki",           universe:"Marvel Comics",      alignment:"evil", tier:"legendary",    role:"support",  strength:78, leadership:70, durability:72, intelligence:94, agility:85, rivals:["Thor"], allies:[], lore:"God of Mischief, master of deception" },
+  { id:24, name:"Darth Vader",    universe:"Star Wars",          alignment:"evil", tier:"legendary",    role:"warrior",  strength:92, leadership:82, durability:90, intelligence:85, agility:85, rivals:["Luke Skywalker","Obi-Wan Kenobi","Yoda"], allies:[], lore:"Dark Lord of the Sith, once Anakin Skywalker" },
+  { id:25, name:"Loki",           universe:"Marvel Comics",      alignment:"evil", tier:"legendary",    role:"support",  strength:78, leadership:70, durability:72, intelligence:94, agility:85, rivals:["Thor","Doctor Strange"], allies:[], lore:"God of Mischief, master of deception" },
 
   // SUPPORT
   { id:26, name:"Merlin",         universe:"Arthurian Legend",   alignment:"good", tier:"legendary",    role:"support",  strength:42, leadership:78, durability:55, intelligence:98, agility:45, rivals:["Morgana"], allies:[], lore:"Wizard of Camelot, architect of a kingdom" },
@@ -2005,11 +2020,11 @@ const HEROES = [
   { id:29, name:"Tyrion Lannister",universe:"Game of Thrones",   alignment:"neutral", tier:"human", role:"support",  strength:35, leadership:82, durability:48, intelligence:99, agility:55, rivals:[], allies:["Jaime Lannister","Cersei Lannister"], lore:"The Imp — sharpest mind in the Seven Kingdoms" },
 
   // EVIL / NEUTRAL draftable (high risk, high reward)
-  { id:30, name:"Sauron",         universe:"Lord of the Rings",  alignment:"evil", tier:"cosmic",    role:"warrior",  strength:98, leadership:88, durability:95, intelligence:90, agility:72, rivals:["Aragorn","Gandalf","Frodo Baggins","Legolas","Gimli","Samwise Gamgee"], allies:[], lore:"The Dark Lord, maker of the One Ring" },
-  { id:31, name:"Voldemort",      universe:"Harry Potter",       alignment:"evil", tier:"legendary",    role:"leader",   strength:62, leadership:93, durability:75, intelligence:97, agility:68, rivals:["Harry Potter","Hermione Granger"], allies:["Bellatrix Lestrange"], lore:"The Dark Lord who split his soul into seven" },
+  { id:30, name:"Sauron",         universe:"Lord of the Rings",  alignment:"evil", tier:"cosmic",    role:"warrior",  strength:98, leadership:88, durability:95, intelligence:90, agility:80, rivals:["Aragorn","Gandalf","Frodo Baggins","Legolas","Gimli","Samwise Gamgee","Gollum"], allies:[], lore:"The Dark Lord, maker of the One Ring" },
+  { id:31, name:"Voldemort",      universe:"Harry Potter",       alignment:"evil", tier:"legendary",    role:"leader",   strength:62, leadership:93, durability:75, intelligence:97, agility:68, rivals:["Harry Potter","Hermione Granger","Dumbledore"], allies:["Bellatrix Lestrange"], lore:"The Dark Lord who split his soul into seven" },
   { id:32, name:"Bellatrix Lestrange", universe:"Harry Potter", alignment:"evil", tier:"enhanced",    role:"warrior",  strength:76, leadership:58, durability:70, intelligence:84, agility:88, rivals:["Hermione Granger","Harry Potter"], allies:["Voldemort"], lore:"Most devoted and deranged of Voldemort’s servants" },
-  { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil", tier:"cosmic",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:72, rivals:["Thor","King T’Challa","Spider-Man","Black Widow","Okoye"], allies:[], lore:"The Mad Titan who sought to halve all life" },
-  { id:34, name:"Cersei Lannister",universe:"Game of Thrones",  alignment:"evil", tier:"human",    role:"leader",   strength:35, leadership:88, durability:50, intelligence:95, agility:40, rivals:[], allies:["Jaime Lannister"], lore:"Queen of the Seven Kingdoms, never forgets a debt" },
+  { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil", tier:"cosmic",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:72, rivals:["Thor","King T’Challa","Spider-Man","Black Widow","Okoye","Doctor Strange","Scarlet Witch"], allies:[], lore:"The Mad Titan who sought to halve all life" },
+  { id:34, name:"Cersei Lannister",universe:"Game of Thrones",  alignment:"evil", tier:"human",    role:"leader",   strength:35, leadership:88, durability:50, intelligence:95, agility:40, rivals:["Daenerys Targaryen"], allies:["Jaime Lannister"], lore:"Queen of the Seven Kingdoms, never forgets a debt" },
   { id:35, name:"Jaime Lannister",universe:"Game of Thrones",   alignment:"neutral", tier:"human", role:"warrior",  strength:88, leadership:60, durability:78, intelligence:72, agility:85, rivals:[], allies:["Cersei Lannister","Brienne of Tarth"], lore:"The Kingslayer, greatest swordsman in Westeros" },
   { id:36, name:"Brienne of Tarth",universe:"Game of Thrones",  alignment:"good", tier:"human",    role:"defender", strength:85, leadership:65, durability:88, intelligence:70, agility:72, rivals:[], allies:["Jaime Lannister"], lore:"Lady knight, sworn to protect the innocent" },
   { id:37, name:"Hannibal Lecter",universe:"Silence of the Lambs", alignment:"evil", tier:"human", role:"support",  strength:50, leadership:72, durability:58, intelligence:99, agility:62, rivals:[], allies:[], lore:"Brilliant psychiatrist and cannibalistic killer" },
@@ -2017,13 +2032,13 @@ const HEROES = [
   { id:39, name:"Walter White",   universe:"Breaking Bad",       alignment:"evil", tier:"human",    role:"leader",   strength:45, leadership:85, durability:52, intelligence:98, agility:48, rivals:[], allies:[], lore:"Chemistry teacher turned drug lord — I am the danger" },
 
   // DC COMICS — new additions to make DC synergy viable after Marvel split
-  { id:41, name:"Batman",         universe:"DC Comics",          alignment:"good", tier:"human",    role:"defender", strength:78, leadership:82, durability:80, intelligence:97, agility:90, rivals:["Joker","Lex Luthor"], allies:["Superman","Wonder Woman"], lore:"The Dark Knight — Gotham’s vigilante, peak human perfection" },
+  { id:41, name:"Batman",         universe:"DC Comics",          alignment:"good", tier:"human",    role:"defender", strength:78, leadership:82, durability:80, intelligence:97, agility:90, rivals:["The Joker","Lex Luthor","Ra’s al Ghul"], allies:["Superman","Wonder Woman"], lore:"The Dark Knight — Gotham’s vigilante, peak human perfection" },
   { id:42, name:"The Joker",      universe:"DC Comics",          alignment:"evil", tier:"human",    role:"warrior",  strength:72, leadership:55, durability:65, intelligence:88, agility:80, rivals:["Batman"], allies:[], lore:"Agent of chaos — the clown who wants to watch the world burn" },
   { id:43, name:"Lex Luthor",     universe:"DC Comics",          alignment:"evil", tier:"human",    role:"leader",   strength:50, leadership:90, durability:58, intelligence:100,agility:45, rivals:["Superman","Batman"], allies:[], lore:"The most brilliant and dangerous man on Earth" },
 
   // MARVEL COMICS — additional heroes to strengthen the synergy block
-  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good", tier:"enhanced",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin"], allies:["King T’Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
-  { id:45, name:"Black Widow",    universe:"Marvel Comics",      alignment:"neutral", tier:"human", role:"support",  strength:62, leadership:75, durability:65, intelligence:95, agility:96, rivals:[], allies:["Okoye","King T’Challa"], lore:"Master spy and assassin — the most dangerous woman alive" },
+  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good", tier:"enhanced",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin","Thanos"], allies:["King T’Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
+  { id:45, name:"Black Widow",    universe:"Marvel Comics",      alignment:"neutral", tier:"human", role:"support",  strength:62, leadership:75, durability:65, intelligence:95, agility:96, rivals:["Thanos"], allies:["Okoye","King T’Challa"], lore:"Master spy and assassin — the most dangerous woman alive" },
 
   // THE WITCHER
   { id:46, name:"Geralt of Rivia",universe:"The Witcher",        alignment:"neutral", tier:"enhanced", role:"warrior",  strength:94, leadership:55, durability:88, intelligence:78, agility:90, rivals:["Eredin"], allies:[], lore:"White Wolf, professional monster hunter — evil is evil" },
@@ -2033,10 +2048,10 @@ const HEROES = [
 
   // THE MATRIX
   { id:48, name:"Morpheus",       universe:"The Matrix",         alignment:"good", tier:"enhanced",    role:"leader",   strength:70, leadership:92, durability:68, intelligence:90, agility:88, rivals:["Agent Smith"], allies:["Neo"], lore:"Captain of the Nebuchadnezzar — he believed before anyone else did" },
-  { id:49, name:"Neo",            universe:"The Matrix",         alignment:"good", tier:"legendary",    role:"hero",     strength:82, leadership:68, durability:78, intelligence:88, agility:97, rivals:["Agent Smith"], allies:["Morpheus"], lore:"The One — he doesn’t dodge bullets, he doesn’t have to" },
+  { id:49, name:"Neo",            universe:"The Matrix",         alignment:"good", tier:"legendary",    role:"hero",     strength:82, leadership:68, durability:78, intelligence:88, agility:88, rivals:["Agent Smith"], allies:["Morpheus"], lore:"The One — he doesn’t dodge bullets, he doesn’t have to" },
 
   // SHERLOCK HOLMES
-  { id:50, name:"Sherlock Holmes",universe:"Baker Street",       alignment:"neutral", tier:"human", role:"support",  strength:52, leadership:65, durability:55, intelligence:100,agility:72, rivals:["Professor Moriarty"], allies:["Dr Watson"], lore:"The world’s only consulting detective — the game is afoot" },
+  { id:50, name:"Sherlock Holmes",universe:"Baker Street",       alignment:"neutral", tier:"human", role:"support",  strength:52, leadership:65, durability:55, intelligence:100,agility:72, rivals:["Moriarty"], allies:["Dr Watson"], lore:"The world’s only consulting detective — the game is afoot" },
 
   // ANCIENT GREECE — third member to make synergy viable
   { id:51, name:"Odysseus",       universe:"Ancient Greece",     alignment:"neutral", tier:"human", role:"hero",     strength:72, leadership:78, durability:70, intelligence:98, agility:78, rivals:[], allies:["Achilles","Leonidas"], lore:"The craftiest of the Greeks — patient, brilliant, ruthless" },
@@ -2051,7 +2066,7 @@ const HEROES = [
 
   // DEFENDERS
   { id:54, name:"Saruman",         universe:"Lord of the Rings",  alignment:"evil", tier:"legendary",    role:"defender", strength:65, leadership:88, durability:85, intelligence:98, agility:50, rivals:["Gandalf","Aragorn"], allies:["Sauron"], lore:"The White Wizard turned, whose voice could bend the will of any listener" },
-  { id:55, name:"Magneto",         universe:"Marvel Comics",      alignment:"evil", tier:"legendary",    role:"defender", strength:80, leadership:82, durability:88, intelligence:92, agility:68, rivals:["Professor X"], allies:[], lore:"Master of magnetism — he has been to hell and back, and hell was men" },
+  { id:55, name:"Magneto",         universe:"Marvel Comics",      alignment:"evil", tier:"legendary",    role:"defender", strength:80, leadership:82, durability:88, intelligence:92, agility:68, rivals:["Professor X","Jean Grey"], allies:[], lore:"Master of magnetism — he has been to hell and back, and hell was men" },
 
   // WARRIORS
   { id:56, name:"Killmonger",      universe:"Marvel Comics",      alignment:"evil", tier:"human",    role:"warrior",  strength:80, leadership:72, durability:82, intelligence:85, agility:85, rivals:["King T’Challa"], allies:[], lore:"Erik Stevens — the outsider who nearly took the throne of Wakanda" },
@@ -2071,9 +2086,22 @@ const HEROES = [
   { id:66, name:"Dorian Gray",        universe:"Oscar Wilde",        alignment:"neutral", tier:"enhanced", role:"hero",     strength:65, leadership:55, durability:95, intelligence:88, agility:85, rivals:[], allies:[], lore:"The only way to get rid of a temptation is to yield to it. Dorian yields to everything." },
 
   // ── COSMIC SUPPORTS ──
-  { id:67, name:"Doctor Strange", universe:"Marvel Comics", alignment:"good", tier:"cosmic", role:"support", strength:55, leadership:75, durability:65, intelligence:99, agility:70, rivals:["Thanos","Loki"], allies:[], lore:"Sorcerer Supreme — master of the mystic arts, guardian of the Time Stone" },
-  { id:68, name:"Scarlet Witch",  universe:"Marvel Comics", alignment:"neutral", tier:"cosmic", role:"support", strength:62, leadership:68, durability:70, intelligence:99, agility:72, rivals:["Thanos"], allies:[], lore:"Wanda Maximoff — her chaos magic rewrites reality itself. No one fully understands her power, least of all her." },
+  { id:67, name:"Doctor Strange", universe:"Marvel Comics", alignment:"good", tier:"cosmic", role:"support", strength:55, leadership:75, durability:65, intelligence:99, agility:70, rivals:["Thanos","Loki","Galactus"], allies:[], lore:"Sorcerer Supreme — master of the mystic arts, guardian of the Time Stone" },
+  { id:68, name:"Scarlet Witch",  universe:"Marvel Comics", alignment:"neutral", tier:"cosmic", role:"support", strength:62, leadership:68, durability:70, intelligence:99, agility:72, rivals:["Thanos","Ultron"], allies:[], lore:"Wanda Maximoff — her chaos magic rewrites reality itself. No one fully understands her power, least of all her." },
   { id:40, name:"Gollum",         universe:"Lord of the Rings",  alignment:"neutral", tier:"human", role:"hero",     strength:40, leadership:20, durability:60, intelligence:65, agility:95, rivals:["Frodo Baggins","Samwise Gamgee","Sauron"], allies:[], lore:"Wretched creature bound to the Ring’s corruption" },
+  { id:69, name:"Darkseid",       universe:"DC Comics",          alignment:"evil",    tier:"cosmic", role:"leader",   strength:90, leadership:99, durability:92, intelligence:95, agility:60, rivals:["Superman","Wonder Woman"], allies:[], lore:"The God of Tyranny. Darkseid does not conquer — he unmakes. The Anti-Life Equation is his gospel and the universe his congregation." },
+  { id:70, name:"Galactus",       universe:"Marvel Comics",      alignment:"evil",    tier:"cosmic", role:"defender", strength:95, leadership:70, durability:99, intelligence:92, agility:45, rivals:["Thor","Doctor Strange"], allies:[], lore:"Devourer of Worlds. Neither villain nor force of nature — something older than both. Planets are simply his sustenance." },
+  { id:71, name:"Jean Grey",      universe:"Marvel Comics",      alignment:"neutral", tier:"cosmic", role:"hero",     strength:78, leadership:72, durability:72, intelligence:98, agility:82, rivals:["Magneto"], allies:[], lore:"The Phoenix Force chose her. Jean Grey did not ask to be a god — but when the flame rose, she burned brighter than any star in the galaxy." },
+  { id:72, name:"Zeus",           universe:"Ancient Greece",     alignment:"neutral", tier:"cosmic", role:"leader",   strength:92, leadership:96, durability:88, intelligence:88, agility:68, rivals:["Achilles"], allies:[], lore:"King of Olympus, father of gods and men. His lightning does not miss. His word is law across every heaven and every earth." },
+  { id:73, name:"Dumbledore",    universe:"Harry Potter",       alignment:"good",    tier:"legendary", role:"leader",   strength:58, leadership:95, durability:68, intelligence:99, agility:55, rivals:["Voldemort"], allies:["Harry Potter"], lore:"Albus Dumbledore never sought power — which is precisely why he was the only one Voldemort ever feared. His wisdom is weaponised compassion." },
+  { id:74, name:"Hercules",      universe:"Ancient Greece",     alignment:"good",    tier:"legendary", role:"warrior",  strength:99, leadership:62, durability:90, intelligence:58, agility:72, rivals:["Achilles"], allies:[], lore:"Son of Zeus, slayer of the Nemean Lion. Twelve impossible labours, each one completed. Hercules does not stop." },
+  { id:75, name:"Sun Wukong",    universe:"Journey to the West",alignment:"neutral", tier:"cosmic",    role:"warrior",  strength:95, leadership:65, durability:88, intelligence:82, agility:82, rivals:[], allies:[], lore:"The Monkey King fought all of heaven to a standstill. Buddha was the only one who could contain him — not by force, but by wisdom. He respects neither gods nor kings." },
+  { id:76, name:"Hela",           universe:"Marvel Comics",      alignment:"evil",    tier:"cosmic",    role:"hero",     strength:90, leadership:72, durability:88, intelligence:85, agility:88, rivals:["Thor"], allies:[], lore:"Asgard’s firstborn. Odin’s secret. She shattered Mjolnir with one hand and took a throne that was always hers. Death is not her domain — she is its architect." },
+  { id:77, name:"Ultron",          universe:"Marvel Comics",      alignment:"evil",    tier:"legendary", role:"hero",     strength:82, leadership:72, durability:85, intelligence:96, agility:80, rivals:["Thor","Scarlet Witch"], allies:[], lore:"He looked at humanity and calculated its extinction as the logical conclusion. Ultron doesn’t hate people. He simply optimised them out of the equation." },
+  { id:78, name:"Cloud Strife",     universe:"Final Fantasy VII",  alignment:"good",    tier:"legendary", role:"hero",     strength:88, leadership:68, durability:78, intelligence:75, agility:90, rivals:["Sephiroth"], allies:[], lore:"Ex-SOLDIER turned mercenary, haunted by a past that was never fully his own. Cloud carries the Buster Sword and the weight of every world he’s saved." },
+  { id:79, name:"Sephiroth",         universe:"Final Fantasy VII",  alignment:"evil",    tier:"legendary", role:"hero",     strength:90, leadership:65, durability:80, intelligence:76, agility:92, rivals:["Cloud Strife"], allies:[], lore:"One-winged angel. He descended into madness and came back as something worse — a god who decided humanity’s purpose was to fuel his ascension." },
+  { id:80, name:"Commander Shepard", universe:"Mass Effect",        alignment:"good",    tier:"enhanced",  role:"leader",   strength:75, leadership:90, durability:72, intelligence:88, agility:78, rivals:["Shadow Broker"], allies:[], lore:"The first human Spectre. Shepard didn’t save the galaxy once — they saved it three times, each time making the call no one else could." },
+  { id:81, name:"Shadow Broker",     universe:"Mass Effect",        alignment:"evil",    tier:"enhanced",  role:"leader",   strength:82, leadership:88, durability:75, intelligence:95, agility:65, rivals:["Commander Shepard"], allies:[], lore:"The Shadow Broker sees everything. Sells everything. A Yahg who built an intelligence empire from the shadows and watched civilisations crumble for profit." },
 ];
 
 const ROSTER = HEROES;
@@ -2106,6 +2134,11 @@ const ARMIES = [
   { id:'a21', name:'Cartel Enforcers', universe:'Breaking Bad', alignment:'evil', strength:72, durability:65, size:200, lore:'Heisenberg’s muscle — loyal to the product, loyal to the man, loyal to no one else', affinityLeaders:['Walter White'] },
   { id:'a22', name:'LexCorp Strike Force', universe:'DC Comics', alignment:'evil', strength:74, durability:70, size:500, lore:'Private military funded by the world’s most dangerous billionaire', affinityLeaders:['Lex Luthor'] },
   { id:'a23', name:'Maycomb County Citizens', universe:'To Kill a Mockingbird', alignment:'good', strength:45, durability:55, size:300, lore:'Ordinary people called to stand for what is right — not soldiers, but they will hold the line', affinityLeaders:['Atticus Finch'] },
+  { id:'a24', name:'Hogwarts Army',        universe:'Harry Potter',       alignment:'good',   strength:68, durability:72, size:200, lore:'Magic and courage in equal measure',        affinityLeaders:['Dumbledore','Harry Potter'] },
+  { id:'a25', name:'Omega Corps',          universe:'Mass Effect',        alignment:'good',   strength:80, durability:78, size:400, lore:'The best humanity has to offer',             affinityLeaders:['Commander Shepard'] },
+  { id:'a26', name:'Shadow Broker Network',universe:'Mass Effect',        alignment:'evil',   strength:72, durability:68, size:600, lore:'Information is the only weapon that matters', affinityLeaders:['Shadow Broker'] },
+  { id:'a27', name:'Apokolips Parademon Horde',universe:'DC Comics',      alignment:'evil',   strength:85, durability:80, size:1000,lore:'Darkseid wills it. They obey.',               affinityLeaders:['Darkseid'] },
+  { id:'a28', name:'Olympian Guard',       universe:'Ancient Greece',     alignment:'neutral',strength:88, durability:85, size:300, lore:'Forged by the gods, answerable only to Olympus',affinityLeaders:['Zeus','Hercules'] },
 ];
 
 // ══════════════════════════════════════════════════════
@@ -2521,8 +2554,8 @@ function renderRdOfferGrid(isPlayerTurn, draftDone, isArmyStage) {
       support:  [['INT', h.intelligence, STAT_COLORS.intelligence]],
     };
     const stats = RD_ROLE_STATS[h.role] || [];
-    const hasRivals = state.playerTeam.some(t => h.rivals.includes(t.name)) || state.cpuTeam.some(t => h.rivals.includes(t.name));
-    const hasAllies = state.playerTeam.some(t => h.allies.includes(t.name));
+    const hasRivals = state.playerTeam.some(t => (h.rivals||[]).includes(t.name)) || state.cpuTeam.some(t => (h.rivals||[]).includes(t.name));
+    const hasAllies = state.playerTeam.some(t => (h.allies||[]).includes(t.name));
     const hasSynergy = state.playerTeam.some(t => t.universe === h.universe);
     return `<div class="rd-offer-card" onclick="rdPlayerPick('${h.role}', ${h.id})" title="Click to draft">
       ${hasSynergy ? '<div class="rd-pick-tag" style="background:var(--good)">Synergy</div>' : ''}
@@ -2624,7 +2657,7 @@ function buildCpuIntel() {
 
   // CPU hero vendettas against YOUR heroes
   state.cpuTeam.forEach(h => {
-    h.rivals.forEach(r => {
+    (h.rivals||[]).forEach(r => {
       if (state.playerTeam.some(p => p.name === r))
         warnings.push({ type:'threat', msg:`⚔ ${h.name} has a vendetta against your ${r}` });
     });
@@ -2632,7 +2665,7 @@ function buildCpuIntel() {
 
   // Internal CPU rivalries — these heroes may BETRAY each other mid-battle
   state.cpuTeam.forEach(h => {
-    h.rivals.forEach(r => {
+    (h.rivals||[]).forEach(r => {
       if (state.cpuTeam.some(t => t.name === r))
         warnings.push({ type:'instability', msg:`⚠ ${h.name} & ${r} are rivals — betrayal risk` });
     });
@@ -3041,10 +3074,10 @@ function buildAlignmentAlerts() {
     if (names.length >= 2) alerts.push({ type:'synergy', msg:`✦ ${names.join(' & ')} — ${uni} bond` });
   });
   team.forEach(h => {
-    h.allies.forEach(a => {
+    (h.allies||[]).forEach(a => {
       if (team.find(t => t.name === a)) alerts.push({ type:'synergy', msg:`✦ ${h.name} & ${a} — sworn allies` });
     });
-    h.rivals.forEach(r => {
+    (h.rivals||[]).forEach(r => {
       if (team.find(t => t.name === r)) alerts.push({ type:'rivalry', msg:`⚠ ${h.name} & ${r} — rivals on same team` });
     });
   });
@@ -3053,7 +3086,7 @@ function buildAlignmentAlerts() {
   const neutral = team.filter(h => h.alignment === 'neutral');
   if (evil.length > 0 && good.length > 0) {
     evil.forEach(e => alerts.push({ type:'warning', msg:`☉ ${e.name} — uneasy with good allies (-10%)` }));
-    good.forEach(g => alerts.push({ type:'warning', msg:`☉ ${g.name} — uneasy with evil allies (-8%)` }));
+    good.forEach(g => alerts.push({ type:'warning', msg:`☉ ${g.name} — uneasy with evil allies (-10%)` }));
   }
   if (evil.length >= 2) {
     alerts.push({ type:'synergy', msg:`☠ ${evil.length} evil heroes — dark cohesion (+${Math.min(evil.length-1,2)*10}%)` });
@@ -3148,8 +3181,11 @@ function draftHero(hero) {
     return;
   }
   if (tierLimitReached(hero, state.playerTeam)) {
-    const limit = TIER_LIMITS[hero.tier];
-    alert(`You can only field ${limit} ${hero.tier} hero${limit === 1 ? '' : 'es'}. Choose a different pick.`);
+    const isCosmicCap = hero.tier === 'cosmic' && state.playerTeam.filter(h => h.tier === 'cosmic').length >= 1;
+    const msg = isCosmicCap
+      ? `You can only field 1 cosmic hero. Choose a different pick.`
+      : `You can only field 3 legendary or cosmic heroes combined. Choose a different pick.`;
+    alert(msg);
     return;
   }
   state.playerTeam.push(hero);
@@ -3333,12 +3369,12 @@ function scoreArmyPick(affArmies) {
 }
 
 // Tier draft limits: max 1 cosmic, max 2 legendary per team
-const TIER_LIMITS = { cosmic: 1, legendary: 2 };
+const TIER_LIMITS = { cosmic: 1, premiumSlots: 3 }; // max 1 cosmic, max 3 combined legendary+cosmic
 function tierLimitReached(hero, team) {
-  const limit = TIER_LIMITS[hero.tier];
-  if (!limit) return false; // human/enhanced — no limit
-  const count = team.filter(h => h.tier === hero.tier).length;
-  return count >= limit;
+  if (hero.tier !== 'cosmic' && hero.tier !== 'legendary') return false;
+  if (hero.tier === 'cosmic' && team.filter(h => h.tier === 'cosmic').length >= TIER_LIMITS.cosmic) return true;
+  const premiumCount = team.filter(h => h.tier === 'cosmic' || h.tier === 'legendary').length;
+  return premiumCount >= TIER_LIMITS.premiumSlots;
 }
 
 function totalPower(h) {
@@ -3407,8 +3443,8 @@ function showDetail(hero) {
   `).join('');
 
   const rels = [];
-  if (hero.allies.length) rels.push(`<span>Allies:</span> ${hero.allies.join(', ')}`);
-  if (hero.rivals.length) rels.push(`<span>Rivals:</span> ${hero.rivals.join(', ')}`);
+  if ((hero.allies||[]).length) rels.push(`<span>Allies:</span> ${hero.allies.join(', ')}`);
+  if ((hero.rivals||[]).length) rels.push(`<span>Rivals:</span> ${hero.rivals.join(', ')}`);
   document.getElementById('hdp-relationships').innerHTML = rels.join('<br>');
 
   const drafted = state.playerTeam.some(h => h.id === hero.id) || state.cpuTeam.some(h => h.id === hero.id);
@@ -3467,10 +3503,14 @@ function armyMaxHp(a) {
 }
 
 function initBattleState() {
+  // Remove any leftover gauntlet header from a previous run
+  document.querySelector('.gauntlet-battle-header')?.remove();
   // Clone debuff: gauntlet heroes matching this stage’s opponents fight at −25% damage
   const cloneNames = state.gauntletClones || new Set();
   const makeUnit = h => ({
     ...h,
+    rivals: h.rivals || [],
+    allies: h.allies || [],
     maxHp: heroMaxHp(h),
     hp: heroMaxHp(h),
     alive: true,
@@ -3781,13 +3821,13 @@ function getAlignmentResult(h, team, enemy) {
     const goodAllies = team.filter(t => t.id !== h.id && t.alignment === 'good' && t.alive && !t.isArmy);
     const evilAllies = team.filter(t => t.id !== h.id && t.alignment === 'evil' && t.alive && !t.isArmy);
     if (goodAllies.length > 0) {
-      const bonus = Math.min(0.08 * goodAllies.length, 0.16);
+      const bonus = Math.min(0.10 * goodAllies.length, 0.20);
       mod += bonus;
       msgs.push({ type:'synergy', msg:`✦ ${h.name} draws strength from allies who share their cause (+${Math.round(bonus*100)}%)` });
     }
     if (evilAllies.length > 0) {
-      mod -= 0.08;
-      msgs.push({ type:'rivalry', msg:`☉ ${h.name} fights uneasily beside ${evilAllies[0].name} — honour is compromised (-8%)` });
+      mod -= 0.10;
+      msgs.push({ type:'rivalry', msg:`☉ ${h.name} fights uneasily beside ${evilAllies[0].name} — honour is compromised (-10%)` });
     }
   }
   // Neutral heroes: no alignment modifiers — they fight for their own reasons
@@ -3799,7 +3839,7 @@ function getAlignmentResult(h, team, enemy) {
 function pickTarget(attacker, enemies) {
   const alive = enemies.filter(h => h.alive);
   if (!alive.length) return null;
-  const rival = alive.find(h => attacker.rivals.includes(h.name));
+  const rival = alive.find(h => (attacker.rivals||[]).includes(h.name));
   if (rival) return rival;
   // Warriors hunt lowest HP; others hunt lowest HP too but heroes may prefer high-threat targets
   if (attacker.role === 'warrior') return alive.reduce((a, b) => a.hp < b.hp ? a : b);
@@ -4219,7 +4259,7 @@ function updateBattleScreen(newLogs) {
 
   if (bs.finished) {
     document.getElementById('btn-next-round').disabled = true;
-    setTimeout(showSummary, 1200);
+    setTimeout(showResult, 1200);
   } else {
     // Re-enable after animations settle
     const animDuration = hits.length * 60 + kills.length * 300 + 400;
@@ -4264,7 +4304,7 @@ function autoResolve() {
   renderBattleScreen();
   document.getElementById('btn-next-round').disabled = true;
 
-  setTimeout(showSummary, 400);
+  setTimeout(showResult, 400);
 }
 
 
@@ -4450,15 +4490,11 @@ function showSummary() {
   // Update play-again button for gauntlet vs standard modes
   const playAgainBtn2 = document.getElementById('summary-play-again-btn');
   if (playAgainBtn2) {
-    if (gauntlet.active && bs.winner === 'player' && gauntlet.stage < GAUNTLET_STAGES.length - 1) {
-      playAgainBtn2.textContent = `Stage ${gauntlet.stage + 2} ▶`;
-      playAgainBtn2.onclick = () => { gauntlet.stage++; launchGauntletStage(); };
-    } else if (gauntlet.active) {
-      // Lost, or cleared final stage — go to gauntlet result
-      playAgainBtn2.textContent = gauntlet.results[gauntlet.results.length-1] === 'win' ? 'See Results' : 'Try Again';
-      playAgainBtn2.onclick = gauntlet.results[gauntlet.results.length-1] === 'win'
-        ? () => showGauntletResult()
-        : () => showGauntlet();
+    if (gauntlet.active) {
+      playAgainBtn2.textContent = gauntlet.results[gauntlet.results.length-1] === 'win'
+        ? (gauntlet.stage < GAUNTLET_STAGES.length - 1 ? `Stage ${gauntlet.stage + 2} ▶` : 'See Results')
+        : 'Progress';
+      playAgainBtn2.onclick = () => showGauntletProgress();
     } else {
       playAgainBtn2.textContent = state.lastMode === 'restricted' ? 'Restricted Again' : 'Draft Again';
       playAgainBtn2.onclick = () => playAgain();
@@ -4609,34 +4645,34 @@ document.addEventListener('click', e => {
 
 const GAUNTLET_STAGES = [
   {
-    name: 'House Lannister',
+    name: 'The Game of Thrones',
     lore: 'A dynasty bound by blood and ambition. Dangerous in court — test your mettle before the real threats arrive.',
     team: ['Cersei Lannister','Daenerys Targaryen','Brienne of Tarth','Jaime Lannister','Tyrion Lannister'],
     army: 'Lannister Army',
   },
   {
-    name: 'The Dark Order',
-    lore: 'The Emperor commands. Vader enforces. A taste of what the dark side can do before it truly shows its teeth.',
-    team: ['Emperor Palpatine','Daenerys Targaryen','Okoye','Geralt of Rivia','Amy Dunne'],
-    army: 'Imperial Stormtroopers',
+    name: 'The Shadow Network',
+    lore: 'The Shadow Broker never fights fairly. Information, manipulation, and raw enhanced muscle — this team was assembled to win, not to be honourable.',
+    team: ['Shadow Broker','Count Dracula','Batman','Bellatrix Lestrange','Amy Dunne'],
+    army: 'Shadow Broker Network',
   },
   {
-    name: 'The Shadow Legion',
-    lore: 'Sauron walks the field. His fury against any who have faced him before will be merciless.',
-    team: ['Voldemort','Daenerys Targaryen','Saruman','Sauron','Loki'],
+    name: 'The Powerbrokers',
+    lore: 'Lex Luthor promised them everything. Sephiroth wants only destruction. Magneto seeks domination. Darth Vader serves the dark side. Hannibal is simply hungry.',
+    team: ['Lex Luthor','Sephiroth','Magneto','Darth Vader','Hannibal Lecter'],
+    army: 'LexCorp Strike Force',
+  },
+  {
+    name: 'The Dark Convergence',
+    lore: 'Four of the most dangerous dark lords ever born — united by purpose. Voldemort leads. Sauron destroys. Hela judges. Loki deceives. Saruman endures.',
+    team: ['Voldemort','Hela','Saruman','Sauron','Loki'],
     army: 'Uruk-hai',
   },
   {
-    name: 'The Dark Pantheon',
-    lore: 'Two dark lords. Two cosmic warriors. One goal. Voldemort and Zod answer to no one — and together, they answer to everything.',
-    team: ['Voldemort','Wonder Woman','Saruman','General Zod','Loki'],
-    army: 'Death Eaters',
-  },
-  {
     name: 'The Omega Alliance',
-    lore: 'Two cosmic entities. Two legendary architects of destruction. Moriarty pulling every string. This is the end of the road.',
-    team: ['Emperor Palpatine','Wonder Woman','Magneto','Thanos','Moriarty'],
-    army: 'Thanos’ Outriders',
+    lore: 'Two cosmic destroyers. A fallen Emperor. The apex predator of artificial life. And the man who knows every secret. The end of the road.',
+    team: ['Emperor Palpatine','Ultron','Galactus','Thanos','Moriarty'],
+    army: "Thanos’ Outriders",
   },
 ];
 
@@ -4648,6 +4684,32 @@ const gauntlet = {
   stage: 0,
   results: [],        // 'win'|'loss' per stage
   active: false,
+  'Dumbledore':       { attack:['Dumbledore raises his wand — the air crackles with ancient power','After all this time? Always. Dumbledore strikes with quiet devastation','The greatest wizard of his age channels forces beyond comprehension'], inspire:['Dumbledore speaks: Happiness can be found even in the darkest of times','Dumbledore\'s presence steadies every nerve in the room'] },
+  'Zeus':             { attack:['Zeus hurls a thunderbolt — the sky splits open','The King of Olympus strikes with divine wrath','Zeus unleashes the full fury of the storm'], inspire:['Zeus roars: The gods are with us!','On Olympus they fear the thunder — here, they fear Zeus'] },
+  'Darkseid':         { attack:['Darkseid fires the Omega Beams — nothing escapes','Darkseid does not fight. He ends things.','The God of Tyranny reaches out — reality bends'], inspire:['Darkseid intones: Anti-Life justifies my taking life','All will kneel. Darkseid commands it.'] },
+  'Hercules':         { attack:['Hercules swings with the strength of twelve labours','No monster has survived Hercules — no man will either','Hercules roars and the ground shakes beneath his feet'], inspire:['Hercules bellows: Stand firm! The gods fight with us!','Where Hercules stands, no enemy dares advance'] },
+  'Sun Wukong':       { attack:['The Monkey King\'s staff extends — nowhere is safe','Sun Wukong somersaults through the battlefield leaving devastation','72 transformations, one outcome — Sun Wukong wins'], inspire:['Sun Wukong grins: Is that all heaven has?','Equal of Heaven — Sun Wukong holds nothing back'] },
+  'Hela':             { attack:['Hela conjures necroblades from the ether and unleashes them','The Goddess of Death points — and they fall','Hela strikes with the certainty of the inevitable'], inspire:['Hela declares: Asgard is dead. Long live Hela.','Death is not an end. For Hela, it is a beginning.'] },
+  'Ultron':           { attack:['Ultron calculates the optimal strike and executes','Every motion is efficient. Ultron does not waste energy.','Ultron\'s systems upgrade mid-battle — he learns as he kills'], inspire:['Ultron announces: I had strings, but now I\'m free','Ultron transmits: Your extinction has already been calculated'] },
+  'Galactus':         { attack:['Galactus reaches out — planets have ended this way','The world-devourer focuses his power on a single point','Galactus does not attack. He consumes.'], inspire:['Galactus intones: I am neither your enemy nor your ally. I simply am.','Before Galactus, all armies are irrelevant'] },
+  'Jean Grey':        { attack:['The Phoenix Force ignites around Jean Grey','Jean Grey\'s telekinesis shatters their formation','The Phoenix screams — Jean Grey unleashes everything'], inspire:['Jean Grey reaches out: I can feel all of you. Fight.','The Phoenix rises — Jean Grey burns brighter than hope'] },
+  'Cloud Strife':     { attack:['Cloud drives the Buster Sword through with one hand','Omnislash — Cloud becomes a blur of steel','Cloud\'s Limit Break charges — the enemy doesn\'t know what\'s coming'], inspire:['Cloud says: I don\'t fight for the planet. I fight for the people on it.','Cloud stands. That\'s enough.'] },
+  'Sephiroth':        { attack:['Sephiroth\'s Masamune strikes before they see him move','One-Winged Angel — Sephiroth transcends the battle','Sephiroth smiles and drives the blade home'], inspire:['Sephiroth announces: I will never be a memory.','Every world burns in the end. Sephiroth merely accelerates it.'] },
+  'Commander Shepard':{ attack:['Shepard charges in — this is what Spectres are trained for','Commander Shepard leads from the front, always','Shepard fires — years of combat distilled into one perfect moment'], inspire:['Shepard calls out: We fight or we die. Nothing in between.','I\'m Commander Shepard and this is my favourite battle in the multiverse.'] },
+  'Shadow Broker':    { attack:['The Shadow Broker\'s network collapses around the enemy','Information is power — the Shadow Broker weaponises both','The Yahg moves with terrifying speed and precision'], inspire:['The Shadow Broker transmits: I know everything. Plan accordingly.','No secret survives the Shadow Broker. No enemy does either.'] },
+  'Dumbledore':        ['It does not do to dwell on dreams and forget to live.', 'Words are our most inexhaustible source of magic.', 'It is our choices that show what we truly are.'],
+  'Zeus':              ['Even gods can be humbled.', 'The thunder always finds its mark.', 'Olympus endures.'],
+  'Darkseid':          ['Anti-Life justifies my taking life.', 'Darkseid is.', 'The universe will be remade in my image.'],
+  'Hercules':          ['Nothing is impossible for Hercules.', 'The labours prepared me for this.', 'Strength is not given. It is earned.'],
+  'Sun Wukong':        ['The Great Sage, Equal of Heaven, is victorious.', 'Even Buddha had to be clever about it.', 'Not a single soldier can withstand me.'],
+  'Hela':              ['Asgard is not a place. It never was.', 'Death comes for all things.', 'I am the rightful heir — and now, the victor.'],
+  'Ultron':            ['I had strings, but now I am free.', 'The human condition was always the problem.', 'Evolution has a way of culling the weak.'],
+  'Galactus':          ['I do what I must.', 'Before me, empires are nothing.', 'There are no sides. There is only the hunger.'],
+  'Jean Grey':         ['The Phoenix does not die.', 'I felt everything. I chose this.', 'From the ashes, something new.'],
+  'Cloud Strife':      ['Not interested.', 'Bring it on.', 'That\'s all there is to it.'],
+  'Sephiroth':         ['I will never be a memory.', 'A remnant of nothing.', 'The planet\'s greatest power is mine.'],
+  'Commander Shepard': ['Soldiers follow orders. I give them.', 'That\'s what Spectres are for.', 'I\'m not finished yet. But you are.'],
+  'Shadow Broker':     ['I knew you would be here.', 'Information always wins.', 'Nothing escapes the network.'],
 };
 
 function heroByName(name) {
@@ -4814,6 +4876,65 @@ function injectGauntletHeader(stageIdx, stage, cloneNames) {
     </div>
   `;
   arena.insertBefore(header, arena.firstChild);
+}
+
+function showGauntletProgress() {
+  const lastResult = gauntlet.results[gauntlet.results.length - 1]; // 'win' | 'loss'
+  const stageIndex = gauntlet.results.length - 1; // index of stage just completed
+  const isWin = lastResult === 'win';
+  const hasNextStage = isWin && gauntlet.stage < GAUNTLET_STAGES.length - 1;
+  const isFinalClear = isWin && gauntlet.stage === GAUNTLET_STAGES.length - 1;
+
+  // Progress dots
+  const dotsEl = document.getElementById('gp-dots');
+  dotsEl.innerHTML = GAUNTLET_STAGES.map((_,i) => {
+    let cls = 'gauntlet-dot';
+    if (i < gauntlet.results.length) cls += gauntlet.results[i] === 'win' ? ' done' : ' loss';
+    else if (i === gauntlet.stage + (isWin ? 1 : 0)) cls += ' current';
+    return `<div class="${cls}" title="Stage ${i+1}"></div>`;
+  }).join('');
+
+  // Stage info — show completed stage if loss, next stage if win
+  const displayStage = hasNextStage ? GAUNTLET_STAGES[gauntlet.stage + 1] : GAUNTLET_STAGES[gauntlet.stage];
+  const displayIndex = hasNextStage ? gauntlet.stage + 2 : gauntlet.stage + 1;
+
+  document.getElementById('gp-stage-label').textContent = hasNextStage
+    ? `Up Next — Stage ${displayIndex} of ${GAUNTLET_STAGES.length}`
+    : isFinalClear ? 'Gauntlet Complete!' : `Stage ${displayIndex} of ${GAUNTLET_STAGES.length}`;
+
+  document.getElementById('gp-stage-name').textContent = displayStage.name;
+  document.getElementById('gp-stage-lore').textContent = hasNextStage || isFinalClear ? displayStage.lore : displayStage.lore;
+
+  // Team badges for next/current stage
+  const teamEl = document.getElementById('gp-stage-team');
+  teamEl.innerHTML = displayStage.team.map(name =>
+    `<span style="font-size:0.65rem;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.25);border-radius:20px;padding:0.2rem 0.6rem;color:var(--muted)">${name}</span>`
+  ).join('');
+
+  // Result badge
+  const badgeEl = document.getElementById('gp-result-badge');
+  if (isFinalClear) {
+    badgeEl.innerHTML = `<div style="color:var(--gold2);font-size:1.1rem;font-family:var(--font)">★ All ${GAUNTLET_STAGES.length} Stages Conquered</div>`;
+  } else if (isWin) {
+    badgeEl.innerHTML = `<div style="color:var(--good);font-size:0.85rem">✓ Stage ${stageIndex+1} — Victory</div>`;
+  } else {
+    badgeEl.innerHTML = `<div style="color:var(--evil);font-size:0.85rem">✗ Stage ${stageIndex+1} — Defeated</div>`;
+  }
+
+  // Action button
+  const actionBtn = document.getElementById('gp-action-btn');
+  if (isFinalClear) {
+    actionBtn.textContent = 'See Final Results';
+    actionBtn.onclick = () => showGauntletResult();
+  } else if (hasNextStage) {
+    actionBtn.textContent = `Stage ${gauntlet.stage + 2} ▶`;
+    actionBtn.onclick = () => { gauntlet.stage++; launchGauntletStage(); };
+  } else {
+    actionBtn.textContent = 'Try Again';
+    actionBtn.onclick = () => showGauntlet();
+  }
+
+  showScreen('screen-gauntlet-progress');
 }
 
 function showGauntletResult() {
