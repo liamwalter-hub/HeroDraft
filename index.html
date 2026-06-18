@@ -1630,17 +1630,26 @@
   <div class="briefing-card">
     <h2>How to Play</h2>
 
-    <p>HeroDraft has three modes. <strong>Open Draft</strong>: you and the CPU take turns picking freely from the full roster. <strong>Fate Draft</strong>: each pick you’re shown one random hero per role — take it or pass for a new offer. <strong>Gauntlet Mode</strong>: build your team freely and fight five fixed opponents back to back. <strong>Fate Gauntlet</strong>: draft once in Fate Draft, then fight an endless series of CPU teams until your fixed roster falls. <strong>Daily Challenge</strong>: one Fate or Open Draft per day with a rotating constraint.</p>
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">The Five Modes</p>
+    <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.75rem;font-size:0.8rem;">
+      <div><strong style="color:var(--gold2);">Open Draft</strong> <span style="color:var(--muted);">— you and the CPU take turns picking freely from the full roster in a snake draft.</span></div>
+      <div><strong style="color:#a78bfa;">Fate Draft</strong> <span style="color:var(--muted);">— each pick you’re shown one random hero per role. Take it or pass for a new offer. You work with what fate deals.</span></div>
+      <div><strong style="color:#f97316;">Gauntlet Mode</strong> <span style="color:var(--muted);">— build your team freely, then fight five fixed legendary teams in sequence. HP resets between stages.</span></div>
+      <div><strong style="color:#fb923c;">Fate Gauntlet</strong> <span style="color:var(--muted);">— draft once in Fate Draft, then fight an endless series of CPU-drafted teams until your fixed roster falls. How long can you last?</span></div>
+      <div><strong style="color:#22d3ee;">Daily Challenge</strong> <span style="color:var(--muted);">— one Fate or Open Draft per day with a rotating constraint. One official attempt. Win streaks tracked across days.</span></div>
+    </div>
+
+    <hr class="briefing-divider">
 
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Roles</p>
     <div class="briefing-roles">
       <div class="briefing-role">
         <strong style="color:var(--leader);">Leader</strong>
-        Buffs all allies each round — the bonus scales with Leadership and the leader’s tier. A legendary leader buffs significantly harder than a human one.
+        Buffs all allies each round — scales with Leadership and tier. A legendary leader buffs significantly harder than a human one.
       </div>
       <div class="briefing-role">
         <strong style="color:var(--hero);">Hero</strong>
-        Your all-rounder — damage drawn from Strength, Intelligence, and Agility. Cosmic heroes like Superman operate at a completely different level.
+        Your all-rounder — damage from Strength, Intelligence, and Agility. Cosmic heroes like Superman operate at a completely different level.
       </div>
       <div class="briefing-role">
         <strong style="color:var(--defender);">Defender</strong>
@@ -1648,48 +1657,58 @@
       </div>
       <div class="briefing-role">
         <strong style="color:var(--warrior);">Warrior</strong>
-        Your main damage dealer — Strength and Agility only. Bonus damage vs heroes. Cosmic warriors like Thanos can end battles alone when their rivals are present.
+        Your main damage dealer — Strength and Agility only. Bonus damage vs heroes. Cosmic warriors like Thanos can end battles alone.
       </div>
       <div class="briefing-role">
         <strong style="color:var(--support);">Support</strong>
-        Heals your most wounded hero each round and debuffs the biggest enemy threat. Healing scales entirely on Intelligence — Yoda heals far more than Tyrion.
+        Heals your most wounded hero each round and debuffs the biggest enemy threat. Healing scales on Intelligence — Yoda heals far more than Tyrion.
       </div>
     </div>
 
     <hr class="briefing-divider">
 
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Power Tiers</p>
-    <p>Every hero has a power tier that multiplies everything they contribute — damage, healing, buffs, and HP.</p>
+    <p>Every hero has a power tier that multiplies their damage, healing, buffs, and HP.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem 1rem;margin:0.5rem 0 0.75rem;font-size:0.82rem">
-      <div><span style="color:var(--text)">&#9632; Human ×1.00</span> <span style="color:var(--muted)">— peak human, no supernatural edge</span></div>
-      <div><span style="color:#a78bfa">&#9672; Enhanced ×1.15</span> <span style="color:var(--muted)">— superhuman, magical, Force-user</span></div>
-      <div><span style="color:var(--gold)">&#9733; Legendary ×1.30</span> <span style="color:var(--muted)">— gods, dark lords, reality-benders</span></div>
-      <div><span style="color:#f97316">&#9670; Cosmic ×1.50</span> <span style="color:var(--muted)">— planetary threats, near-unkillable</span></div>
+      <div><span style="color:var(--text)">&#9632; Human ×1.00</span> <span style="color:var(--muted)">— peak human</span></div>
+      <div><span style="color:#a78bfa">&#9672; Enhanced ×1.15</span> <span style="color:var(--muted)">— superhuman, magical</span></div>
+      <div><span style="color:var(--gold)">&#9733; Legendary ×1.30</span> <span style="color:var(--muted)">— gods, dark lords</span></div>
+      <div><span style="color:#f97316">&#9670; Cosmic ×1.50</span> <span style="color:var(--muted)">— planetary threats</span></div>
     </div>
-    <p>Tier badges appear on every draft card. Each team is limited to <strong>1 cosmic</strong> and a combined total of <strong>3 legendary or cosmic</strong> heroes — so taking a cosmic leaves room for only 2 legendaries. The limits apply to both sides equally.</p>
+    <p>Each team is limited to <strong>1 cosmic</strong> and a combined total of <strong>3 legendary or cosmic</strong> heroes. Both limits apply equally to both sides.</p>
 
     <hr class="briefing-divider">
 
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Fury &amp; Rivals</p>
-    <p>When a hero faces their rival in battle they enter a fury state — a damage bonus that scales with how powerful that rival is. Human rival +10%, enhanced +15%, legendary +22%, cosmic +30%, stacking up to +60%. Thanos facing Thor alone hits +30%. With T’Challa and Spider-Man also present, +55%. The alignment panel before battle previews all active fury bonuses.</p>
-    <p>Rivals on your own side are dangerous: an <strong>18% chance of betrayal</strong> mid-battle, attacking a teammate instead of the enemy. Check the alignment panel carefully before you march.</p>
+    <p>When a hero faces their rival in battle they enter a fury state — a damage bonus scaling with that rival’s tier. Human +10%, enhanced +15%, legendary +22%, cosmic +30%, stacking up to +60%. Thanos facing Thor alone hits +30%. With T’Challa and Spider-Man also present, +55%.</p>
+    <p>Rivals on your <em>own</em> side carry an <strong>18% betrayal risk</strong> each round — no fury bonus, only danger. The alignment panel before battle shows all active bonuses and warnings.</p>
 
     <hr class="briefing-divider">
 
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Synergies &amp; Alignment</p>
-    <p>Heroes from the same universe fight better together (+10% per same-universe ally, uncapped). Named <strong>ally bonds</strong> add a further +15% — Yoda with Luke Skywalker heals far more than Yoda alone. Build around these and your team compounds in ways the numbers alone don’t show.</p>
-    <p>Alignment cohesion also matters. Evil heroes inspire each other (+10% per evil ally, capped at +20%). Good heroes similarly bond (+10% per, capped at +20%). Mixing alignments hurts both sides.</p>
+    <p>Heroes from the same universe fight better together (+10% per same-universe ally, uncapped). Named <strong>ally bonds</strong> add a further +15% — Yoda with Luke heals far more than Yoda alone.</p>
+    <p>Evil heroes inspire each other (+10% per evil ally, capped at +20%). Good heroes bond similarly. Mixing alignments hurts both sides.</p>
 
     <hr class="briefing-divider">
 
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Armies</p>
-    <p>Each team fields an <strong>army unit</strong> that deals splash damage to the entire enemy team every round. Every leader has at least one designated army — Leonidas commands the Spartan 300, Voldemort the Death Eaters, Palpatine the Imperial Stormtroopers. Field a leader alongside their own army and they receive a <strong>+20% damage bonus</strong> while that army is alive. Take the strongest available army if you can’t match the affinity — but the bonus is worth chasing.</p>
+    <p>Every team fields an <strong>army unit</strong> dealing splash damage to the enemy each round. Field a leader with their own army for a <strong>+20% damage bonus</strong> to that leader while the army lives. The affinity is worth chasing — but if you can’t match it, take the strongest available army instead.</p>
 
     <hr class="briefing-divider">
 
-    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Gauntlet Mode</p>
-    <p>Pick your roster and army once, then fight five legendary teams in sequence. HP resets fully between stages. Difficulty escalates sharply — Stage 4 fields Voldemort, Hela, Sauron and Loki, and Stage 5 brings Galactus and Thanos. Each stage fields its own named army.</p>
-    <p>If any of your heroes appear on that stage’s enemy roster, they’re treated as <strong>clones</strong> and deal <strong>25% less damage</strong> that fight. Finding a team that clears all five without cloning is the real challenge.</p>
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Draft Grade</p>
+    <p>After completing your draft, your team receives a grade from <strong>D to S</strong> based on tier power, universe synergies, named ally bonds, alignment cohesion, army affinity, and rival risk. In Fate Draft, it also shows the best grade achievable from the offers you were shown — so you can tell if fate dealt you a weak hand or if you left value on the table.</p>
+
+    <hr class="briefing-divider">
+
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Gauntlet &amp; Clones</p>
+    <p>In Gauntlet Mode, if any of your heroes appear on an enemy stage roster, they fight as <strong>clones</strong> at <strong>−25% damage</strong> that stage. Finding a five-hero team that clears all five stages without cloning is the real challenge.</p>
+    <p>In Fate Gauntlet, the CPU drafts a fresh legal team each stage. Difficulty escalates — easy in the early stages, hard by stage five. Your personal best is tracked on the homepage.</p>
+
+    <hr class="briefing-divider">
+
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Daily Challenge</p>
+    <p>Each day has two constraints — a draft mode (Open or Fate) and a special rule such as <em>No Gods</em> (no cosmic heroes), <em>Enhanced Only</em> (every hero must be enhanced tier), <em>Sworn Enemies</em> (your team must contain a rivalry pair), or <em>Iron Draft</em> (human and enhanced only). Your first attempt counts toward your win streak. Retries are unranked.</p>
 
     <div class="briefing-footer" style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
       <button class="btn-primary" onclick="startDraft()" style="flex:1;min-width:140px;max-width:200px;">Open Draft</button>
