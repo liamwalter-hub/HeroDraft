@@ -2364,8 +2364,10 @@ const rdState = {
 };
 
 function startRestrictedDraft() {
-  // Clear daily challenge state unless launched from daily mode
-  if (state.lastMode !== 'daily') state.dailyChallenge = null;
+  // Clear daily challenge state unless launched from daily or rg mode
+  if (state.lastMode !== 'daily' && state.lastMode !== 'rg') state.dailyChallenge = null;
+  // Clear Fate Gauntlet state unless actively in a run
+  if (state.lastMode !== 'rg') { rgState.active = false; rgState.stage = 0; }
   // Initialise shared draft state (same as normal draft)
   state.playerTeam  = [];
   state.playerArmy  = null;
@@ -3264,8 +3266,9 @@ function recordDailyResult(won) {
 }
 
 function startDraft() {
-  // Clear daily challenge state unless launched from daily mode
+  // Clear daily and RG state unless launched from those modes
   if (state.lastMode !== 'daily') state.dailyChallenge = null;
+  if (state.lastMode !== 'rg') { rgState.active = false; rgState.stage = 0; }
   state.playerTeam = [];
   state.playerArmy = null;
   state.cpuTeam    = [];
