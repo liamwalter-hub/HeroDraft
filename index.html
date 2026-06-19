@@ -2115,16 +2115,16 @@
 const HEROES = [
   // LEADERS
   { id:1,  name:"Aragorn",        universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"leader",   strength:82, leadership:95, durability:80, intelligence:78, agility:75, rivals:["Sauron","Saruman"], allies:["Gandalf","Legolas","Gimli","Frodo Baggins","Samwise Gamgee","Elrond"], lore:"Rightful king of Gondor, ranger turned ruler" },
-  { id:2,  name:"Leonidas",       universe:"Ancient Greece",     alignment:"good", tier:"human",    role:"leader",   strength:90, leadership:92, durability:88, intelligence:72, agility:68, rivals:["Xerxes"], allies:["Achilles","Odysseus"], lore:"Spartan king who held the Hot Gates" },
+  { id:2,  name:"Leonidas",       universe:"Ancient Greece",     alignment:"good", tier:"human",    role:"leader",   strength:90, leadership:92, durability:88, intelligence:72, agility:68, rivals:["Xerxes"], allies:[], lore:"Spartan king who held the Hot Gates" },
   { id:3,  name:"Mulan",          universe:"Chinese Folklore",   alignment:"good", tier:"human",    role:"leader",   strength:68, leadership:85, durability:65, intelligence:90, agility:88, rivals:[], allies:[], lore:"Warrior who saved China through cunning" },
-  { id:4,  name:"Jean-Luc Picard",universe:"Star Trek",          alignment:"good", tier:"human",    role:"leader",   strength:45, leadership:98, durability:50, intelligence:96, agility:40, rivals:["Borg Queen"], allies:["Q","Spock"], lore:"Starship captain, diplomat, philosopher" },
+  { id:4,  name:"Jean-Luc Picard",universe:"Star Trek",          alignment:"good", tier:"human",    role:"leader",   strength:45, leadership:98, durability:50, intelligence:96, agility:40, rivals:["Borg Queen"], allies:["Spock"], lore:"Starship captain, diplomat, philosopher" },
   { id:5,  name:"King T’Challa",  universe:"Marvel Comics",      alignment:"good", tier:"enhanced",    role:"leader",   strength:78, leadership:90, durability:76, intelligence:92, agility:85, rivals:["Killmonger","Thanos"], allies:["Okoye","Thor","Spider-Man","Black Widow"], lore:"Black Panther, king and protector of Wakanda" },
   { id:6,  name:"Atticus Finch",  universe:"To Kill a Mockingbird", alignment:"good", tier:"human", role:"leader",   strength:40, leadership:88, durability:45, intelligence:97, agility:35, rivals:[], allies:[], lore:"Moral compass of Maycomb, defender of justice" },
 
   // HEROES
   { id:7,  name:"Superman",       universe:"DC Comics",          alignment:"good", tier:"cosmic",    role:"hero",     strength:99, leadership:72, durability:92, intelligence:72, agility:90, rivals:["Lex Luthor","Darkseid","General Zod"], allies:["Wonder Woman","Batman"], lore:"Last son of Krypton, Man of Steel" },
   { id:8,  name:"Wonder Woman",   universe:"DC Comics",          alignment:"good", tier:"legendary", role:"hero",     strength:82, leadership:78, durability:85, intelligence:82, agility:82, rivals:["Darkseid"], allies:["Superman","Batman"], lore:"Amazon warrior princess, god killer" },
-  { id:9,  name:"Luke Skywalker", universe:"Star Wars",          alignment:"good", tier:"legendary",    role:"hero",     strength:85, leadership:75, durability:68, intelligence:82, agility:92, rivals:["Darth Vader","Emperor Palpatine"], allies:["Obi-Wan Kenobi","Yoda"], lore:"Jedi Knight, hope of the Rebellion" },
+  { id:9,  name:"Luke Skywalker", universe:"Star Wars",          alignment:"good", tier:"legendary",    role:"hero",     strength:85, leadership:75, durability:68, intelligence:82, agility:92, rivals:["Darth Vader","Emperor Palpatine"], allies:["Obi-Wan Kenobi","Yoda","Han Solo","Leia Organa"], lore:"Jedi Knight, hope of the Rebellion" },
   { id:10, name:"Frodo Baggins",  universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"hero",     strength:32, leadership:50, durability:55, intelligence:70, agility:62, rivals:["Sauron","Gollum"], allies:["Aragorn","Gandalf","Samwise Gamgee"], lore:"Hobbit who carried the One Ring to Mordor" },
   { id:11, name:"Hermione Granger",universe:"Harry Potter",      alignment:"good", tier:"enhanced",    role:"support",  strength:45, leadership:78, durability:58, intelligence:99, agility:68, rivals:["Voldemort","Bellatrix Lestrange","Dolores Umbridge"], allies:["Harry Potter"], lore:"Brightest witch of her age — the mind behind every plan" },
   { id:12, name:"Harry Potter",   universe:"Harry Potter",       alignment:"good", tier:"legendary",    role:"hero",     strength:80, leadership:78, durability:70, intelligence:82, agility:88, rivals:["Voldemort","Draco Malfoy","Bellatrix Lestrange","Dolores Umbridge"], allies:["Hermione Granger","Dumbledore"], lore:"The Boy Who Lived, chosen one of prophecy" },
@@ -2134,29 +2134,29 @@ const HEROES = [
   // DEFENDERS
   { id:15, name:"Gandalf",        universe:"Lord of the Rings",  alignment:"good", tier:"legendary",    role:"defender", strength:70, leadership:85, durability:88, intelligence:99, agility:55, rivals:["Balrog","Sauron","Saruman"], allies:["Aragorn","Frodo Baggins","Legolas","Gimli","Samwise Gamgee","Elrond"], lore:"Grey Pilgrim, servant of the Secret Fire" },
   { id:16, name:"Obi-Wan Kenobi", universe:"Star Wars",          alignment:"good", tier:"legendary",    role:"defender", strength:68, leadership:80, durability:72, intelligence:90, agility:85, rivals:["Darth Vader","General Grievous"], allies:["Luke Skywalker","Yoda"], lore:"Jedi Master, guardian of balance in the Force" },
-  { id:17, name:"Thor",           universe:"Marvel Comics",       alignment:"good", tier:"cosmic",    role:"defender", strength:95, leadership:70, durability:95, intelligence:65, agility:82, rivals:["Loki","Thanos","Galactus","Hela","Ultron"], allies:["King T’Challa"], lore:"God of Thunder, Asgardian prince" },
+  { id:17, name:"Thor",           universe:"Marvel Comics",       alignment:"good", tier:"cosmic",    role:"defender", strength:95, leadership:70, durability:95, intelligence:65, agility:82, rivals:["Loki","Thanos","Galactus","Hela"], allies:["King T’Challa"], lore:"God of Thunder, Asgardian prince" },
   { id:18, name:"Samwise Gamgee", universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"defender", strength:55, leadership:68, durability:92, intelligence:68, agility:60, rivals:["Gollum","Sauron"], allies:["Frodo Baggins","Aragorn","Gandalf","Legolas","Gimli"], lore:"Loyal gardener who carried Frodo to the end" },
   { id:19, name:"Okoye",         universe:"Marvel Comics",       alignment:"good", tier:"human",    role:"defender", strength:74, leadership:75, durability:78, intelligence:80, agility:88, rivals:["Thanos"], allies:["King T’Challa","Black Widow"], lore:"General of the Dora Milaje, Wakanda’s shield" },
 
   // WARRIORS
-  { id:20, name:"Achilles",       universe:"Ancient Greece",     alignment:"neutral", tier:"legendary", role:"warrior",  strength:90, leadership:62, durability:85, intelligence:65, agility:88, rivals:["Hector","Hercules","Zeus"], allies:["Leonidas","Odysseus"], lore:"Greatest Greek warrior, nearly invincible" },
+  { id:20, name:"Achilles",       universe:"Ancient Greece",     alignment:"neutral", tier:"legendary", role:"warrior",  strength:90, leadership:62, durability:85, intelligence:65, agility:88, rivals:["Hector","Hercules","Zeus"], allies:["Odysseus"], lore:"Greatest Greek warrior, nearly invincible" },
   { id:21, name:"Legolas",        universe:"Lord of the Rings",  alignment:"good", tier:"enhanced",    role:"warrior",  strength:72, leadership:58, durability:70, intelligence:75, agility:98, rivals:["Sauron"], allies:["Aragorn","Gandalf","Gimli","Samwise Gamgee"], lore:"Elven prince, peerless archer of Middle-earth" },
   { id:22, name:"Gimli",          universe:"Lord of the Rings",  alignment:"good", tier:"human",    role:"warrior",  strength:85, leadership:60, durability:90, intelligence:62, agility:62, rivals:["Sauron"], allies:["Aragorn","Gandalf","Legolas","Samwise Gamgee"], lore:"Son of Gloin, axe of the Fellowship" },
   { id:23, name:"Maximus",        universe:"Gladiator",          alignment:"good", tier:"human",    role:"warrior",  strength:88, leadership:78, durability:82, intelligence:72, agility:80, rivals:["Commodus"], allies:[], lore:"General, slave, gladiator — loyal to Rome" },
-  { id:24, name:"Darth Vader",    universe:"Star Wars",          alignment:"evil", tier:"legendary",    role:"warrior",  strength:92, leadership:82, durability:90, intelligence:85, agility:85, rivals:["Luke Skywalker","Obi-Wan Kenobi","Yoda"], allies:["Emperor Palpatine"], lore:"Dark Lord of the Sith, once Anakin Skywalker" },
+  { id:24, name:"Darth Vader",    universe:"Star Wars",          alignment:"evil", tier:"legendary",    role:"warrior",  strength:92, leadership:82, durability:90, intelligence:85, agility:85, rivals:["Luke Skywalker","Obi-Wan Kenobi","Yoda","Han Solo","Leia Organa"], allies:["Emperor Palpatine"], lore:"Dark Lord of the Sith, once Anakin Skywalker" },
   { id:25, name:"Loki",           universe:"Marvel Comics",      alignment:"evil", tier:"legendary",    role:"support",  strength:78, leadership:70, durability:72, intelligence:94, agility:85, rivals:["Thor","Doctor Strange"], allies:[], lore:"God of Mischief, master of deception" },
 
   // SUPPORT
   { id:26, name:"Merlin",         universe:"Arthurian Legend",   alignment:"good", tier:"legendary",    role:"support",  strength:42, leadership:78, durability:55, intelligence:98, agility:45, rivals:["Morgana"], allies:["King Arthur"], lore:"Wizard of Camelot, architect of a kingdom" },
   { id:27, name:"Yoda",           universe:"Star Wars",          alignment:"good", tier:"legendary",    role:"support",  strength:55, leadership:88, durability:62, intelligence:99, agility:80, rivals:["Emperor Palpatine","Darth Vader"], allies:["Obi-Wan Kenobi","Luke Skywalker"], lore:"Jedi Grand Master, 800 years of wisdom" },
-  { id:28, name:"Q",              universe:"Star Trek",          alignment:"neutral", tier:"human", role:"support",  strength:50, leadership:60, durability:50, intelligence:100,agility:70, rivals:["Borg Queen"], allies:["Jean-Luc Picard","Spock"], lore:"Omnipotent trickster of the Q Continuum" },
+  { id:28, name:"Q",              universe:"Star Trek",          alignment:"neutral", tier:"human", role:"support",  strength:50, leadership:60, durability:50, intelligence:100,agility:70, rivals:["Borg Queen"], allies:[], lore:"Omnipotent trickster of the Q Continuum" },
   { id:29, name:"Tyrion Lannister",universe:"Game of Thrones",   alignment:"neutral", tier:"human", role:"support",  strength:35, leadership:82, durability:48, intelligence:99, agility:55, rivals:[], allies:["Jaime Lannister","Cersei Lannister"], lore:"The Imp — sharpest mind in the Seven Kingdoms" },
 
   // EVIL / NEUTRAL draftable (high risk, high reward)
   { id:30, name:"Sauron",         universe:"Lord of the Rings",  alignment:"evil", tier:"cosmic",    role:"warrior",  strength:98, leadership:88, durability:95, intelligence:90, agility:80, rivals:["Aragorn","Gandalf","Frodo Baggins","Legolas","Gimli","Samwise Gamgee","Gollum"], allies:["Saruman"], lore:"The Dark Lord, maker of the One Ring" },
   { id:31, name:"Voldemort",      universe:"Harry Potter",       alignment:"evil", tier:"legendary",    role:"leader",   strength:62, leadership:93, durability:75, intelligence:97, agility:68, rivals:["Harry Potter","Hermione Granger","Dumbledore"], allies:["Bellatrix Lestrange"], lore:"The Dark Lord who split his soul into seven" },
   { id:32, name:"Bellatrix Lestrange", universe:"Harry Potter", alignment:"evil", tier:"enhanced",    role:"warrior",  strength:76, leadership:58, durability:70, intelligence:84, agility:88, rivals:["Hermione Granger","Harry Potter"], allies:["Voldemort"], lore:"Most devoted and deranged of Voldemort’s servants" },
-  { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil", tier:"cosmic",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:72, rivals:["Thor","King T’Challa","Spider-Man","Black Widow","Okoye","Doctor Strange","Scarlet Witch","Captain America"], allies:[], lore:"The Mad Titan who sought to halve all life" },
+  { id:33, name:"Thanos",         universe:"Marvel Comics",      alignment:"evil", tier:"cosmic",    role:"warrior",  strength:99, leadership:78, durability:99, intelligence:88, agility:72, rivals:["Thor","Doctor Strange","Scarlet Witch","Captain America","Black Widow","Spider-Man","Okoye","King T’Challa","Nebula"], allies:["Nebula"], lore:"The Mad Titan who sought to halve all life" },
   { id:34, name:"Cersei Lannister",universe:"Game of Thrones",  alignment:"evil", tier:"human",    role:"leader",   strength:35, leadership:88, durability:50, intelligence:95, agility:40, rivals:["Daenerys Targaryen"], allies:["Jaime Lannister","Tyrion Lannister"], lore:"Queen of the Seven Kingdoms, never forgets a debt" },
   { id:35, name:"Jaime Lannister",universe:"Game of Thrones",   alignment:"neutral", tier:"human", role:"warrior",  strength:88, leadership:60, durability:78, intelligence:72, agility:85, rivals:[], allies:["Cersei Lannister","Brienne of Tarth","Tyrion Lannister"], lore:"The Kingslayer, greatest swordsman in Westeros" },
   { id:36, name:"Brienne of Tarth",universe:"Game of Thrones",  alignment:"good", tier:"human",    role:"defender", strength:85, leadership:65, durability:88, intelligence:70, agility:72, rivals:["The Hound"], allies:["Jaime Lannister","Jon Snow"], lore:"Lady knight, sworn to protect the innocent" },
@@ -2170,7 +2170,7 @@ const HEROES = [
   { id:43, name:"Lex Luthor",     universe:"DC Comics",          alignment:"evil", tier:"human",    role:"leader",   strength:50, leadership:90, durability:58, intelligence:100,agility:45, rivals:["Superman","Batman"], allies:[], lore:"The most brilliant and dangerous man on Earth" },
 
   // MARVEL COMICS — additional heroes to strengthen the synergy block
-  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good", tier:"enhanced",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin","Thanos","Venom"], allies:["King T’Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
+  { id:44, name:"Spider-Man",     universe:"Marvel Comics",      alignment:"good", tier:"enhanced",    role:"hero",     strength:78, leadership:65, durability:72, intelligence:90, agility:99, rivals:["Green Goblin","Venom","Thanos"], allies:["King T’Challa"], lore:"Friendly neighbourhood Spider-Man — with great power comes great responsibility" },
   { id:45, name:"Black Widow",    universe:"Marvel Comics",      alignment:"neutral", tier:"human", role:"support",  strength:62, leadership:75, durability:65, intelligence:95, agility:96, rivals:["Thanos"], allies:["Okoye","King T’Challa"], lore:"Master spy and assassin — the most dangerous woman alive" },
 
   // THE WITCHER
@@ -2187,10 +2187,10 @@ const HEROES = [
   { id:50, name:"Sherlock Holmes",universe:"Baker Street",       alignment:"neutral", tier:"human", role:"support",  strength:52, leadership:65, durability:55, intelligence:100,agility:72, rivals:["Moriarty"], allies:["Dr Watson"], lore:"The world’s only consulting detective — the game is afoot" },
 
   // ANCIENT GREECE — third member to make synergy viable
-  { id:51, name:"Odysseus",       universe:"Ancient Greece",     alignment:"neutral", tier:"human", role:"hero",     strength:72, leadership:78, durability:70, intelligence:98, agility:78, rivals:[], allies:["Achilles","Leonidas"], lore:"The craftiest of the Greeks — patient, brilliant, ruthless" },
+  { id:51, name:"Odysseus",       universe:"Ancient Greece",     alignment:"neutral", tier:"human", role:"hero",     strength:72, leadership:78, durability:70, intelligence:98, agility:78, rivals:[], allies:["Achilles"], lore:"The craftiest of the Greeks — patient, brilliant, ruthless" },
 
   // STAR TREK — one more for synergy
-  { id:52, name:"Spock",          universe:"Star Trek",          alignment:"good", tier:"human",    role:"support",  strength:68, leadership:72, durability:70, intelligence:99, agility:65, rivals:[], allies:["Jean-Luc Picard","Q"], lore:"Half-human, half-Vulcan — logic is the beginning of wisdom" },
+  { id:52, name:"Spock",          universe:"Star Trek",          alignment:"good", tier:"human",    role:"support",  strength:68, leadership:72, durability:70, intelligence:99, agility:65, rivals:[], allies:["Jean-Luc Picard"], lore:"Half-human, half-Vulcan — logic is the beginning of wisdom" },
 
   // ARTHURIAN LEGEND — give Merlin a companion for synergy
   { id:53, name:"King Arthur",    universe:"Arthurian Legend",   alignment:"good", tier:"human",    role:"leader",   strength:82, leadership:92, durability:78, intelligence:80, agility:72, rivals:["Mordred"], allies:["Merlin"], lore:"Once and future king — he who pulls the sword from the stone" },
@@ -2199,7 +2199,7 @@ const HEROES = [
 
   // DEFENDERS
   { id:54, name:"Saruman",         universe:"Lord of the Rings",  alignment:"evil", tier:"legendary",    role:"defender", strength:65, leadership:88, durability:85, intelligence:98, agility:50, rivals:["Gandalf","Aragorn"], allies:["Sauron"], lore:"The White Wizard turned, whose voice could bend the will of any listener" },
-  { id:55, name:"Magneto",         universe:"Marvel Comics",      alignment:"evil", tier:"legendary",    role:"defender", strength:80, leadership:82, durability:88, intelligence:92, agility:68, rivals:["Professor X","Jean Grey"], allies:[], lore:"Master of magnetism — he has been to hell and back, and hell was men" },
+  { id:55, name:"Magneto",         universe:"Marvel Comics",      alignment:"evil", tier:"legendary",    role:"defender", strength:80, leadership:82, durability:88, intelligence:92, agility:68, rivals:["Professor X"], allies:[], lore:"Master of magnetism — he has been to hell and back, and hell was men" },
 
   // WARRIORS
   { id:56, name:"Killmonger",      universe:"Marvel Comics",      alignment:"evil", tier:"enhanced",    role:"warrior",  strength:80, leadership:72, durability:82, intelligence:85, agility:85, rivals:["King T’Challa"], allies:[], lore:"Erik Stevens — the outsider who nearly took the throne of Wakanda" },
@@ -2224,28 +2224,30 @@ const HEROES = [
   { id:40, name:"Gollum",         universe:"Lord of the Rings",  alignment:"neutral", tier:"human", role:"hero",     strength:40, leadership:20, durability:60, intelligence:65, agility:95, rivals:["Frodo Baggins","Samwise Gamgee","Sauron"], allies:[], lore:"Wretched creature bound to the Ring’s corruption" },
   { id:69, name:"Darkseid",       universe:"DC Comics",          alignment:"evil",    tier:"cosmic", role:"leader",   strength:90, leadership:99, durability:92, intelligence:95, agility:60, rivals:["Superman","Wonder Woman"], allies:[], lore:"The God of Tyranny. Darkseid does not conquer — he unmakes. The Anti-Life Equation is his gospel and the universe his congregation." },
   { id:70, name:"Galactus",       universe:"Marvel Comics",      alignment:"evil",    tier:"cosmic", role:"defender", strength:95, leadership:70, durability:99, intelligence:92, agility:45, rivals:["Thor","Doctor Strange"], allies:[], lore:"Devourer of Worlds. Neither villain nor force of nature — something older than both. Planets are simply his sustenance." },
-  { id:71, name:"Jean Grey",      universe:"Marvel Comics",      alignment:"neutral", tier:"cosmic", role:"hero",     strength:78, leadership:72, durability:72, intelligence:98, agility:82, rivals:["Magneto"], allies:[], lore:"The Phoenix Force chose her. Jean Grey did not ask to be a god — but when the flame rose, she burned brighter than any star in the galaxy." },
+  { id:71, name:"Jean Grey",      universe:"Marvel Comics",      alignment:"neutral", tier:"cosmic", role:"hero",     strength:78, leadership:72, durability:72, intelligence:98, agility:82, rivals:[], allies:[], lore:"The Phoenix Force chose her. Jean Grey did not ask to be a god — but when the flame rose, she burned brighter than any star in the galaxy." },
   { id:72, name:"Zeus",           universe:"Ancient Greece",     alignment:"neutral", tier:"cosmic", role:"leader",   strength:92, leadership:96, durability:88, intelligence:88, agility:68, rivals:["Achilles"], allies:[], lore:"King of Olympus, father of gods and men. His lightning does not miss. His word is law across every heaven and every earth." },
   { id:73, name:"Dumbledore",    universe:"Harry Potter",       alignment:"good",    tier:"legendary", role:"leader",   strength:58, leadership:95, durability:68, intelligence:99, agility:55, rivals:["Voldemort"], allies:["Harry Potter"], lore:"Albus Dumbledore never sought power — which is precisely why he was the only one Voldemort ever feared. His wisdom is weaponised compassion." },
   { id:74, name:"Hercules",      universe:"Ancient Greece",     alignment:"good",    tier:"legendary", role:"warrior",  strength:99, leadership:62, durability:90, intelligence:58, agility:72, rivals:["Achilles"], allies:[], lore:"Son of Zeus, slayer of the Nemean Lion. Twelve impossible labours, each one completed. Hercules does not stop." },
   { id:75, name:"Sun Wukong",    universe:"Journey to the West",alignment:"neutral", tier:"cosmic",    role:"warrior",  strength:95, leadership:65, durability:88, intelligence:82, agility:82, rivals:[], allies:[], lore:"The Monkey King fought all of heaven to a standstill. Buddha was the only one who could contain him — not by force, but by wisdom. He respects neither gods nor kings." },
   { id:76, name:"Hela",           universe:"Marvel Comics",      alignment:"evil",    tier:"cosmic",    role:"hero",     strength:90, leadership:72, durability:88, intelligence:85, agility:88, rivals:["Thor"], allies:[], lore:"Asgard’s firstborn. Odin’s secret. She shattered Mjolnir with one hand and took a throne that was always hers. Death is not her domain — she is its architect." },
-  { id:77, name:"Ultron",          universe:"Marvel Comics",      alignment:"evil",    tier:"legendary", role:"hero",     strength:82, leadership:72, durability:85, intelligence:96, agility:80, rivals:["Thor","Scarlet Witch","Captain America"], allies:[], lore:"He looked at humanity and calculated its extinction as the logical conclusion. Ultron doesn’t hate people. He simply optimised them out of the equation." },
+  { id:77, name:"Ultron",          universe:"Marvel Comics",      alignment:"evil",    tier:"legendary", role:"hero",     strength:82, leadership:72, durability:85, intelligence:96, agility:80, rivals:["Scarlet Witch","Captain America"], allies:[], lore:"He looked at humanity and calculated its extinction as the logical conclusion. Ultron doesn’t hate people. He simply optimised them out of the equation." },
   { id:78, name:"Cloud Strife",     universe:"Final Fantasy VII",  alignment:"good",    tier:"legendary", role:"hero",     strength:88, leadership:68, durability:78, intelligence:75, agility:90, rivals:["Sephiroth"], allies:[], lore:"Ex-SOLDIER turned mercenary, haunted by a past that was never fully his own. Cloud carries the Buster Sword and the weight of every world he’s saved." },
   { id:79, name:"Sephiroth",         universe:"Final Fantasy VII",  alignment:"evil",    tier:"legendary", role:"hero",     strength:90, leadership:65, durability:80, intelligence:76, agility:92, rivals:["Cloud Strife"], allies:[], lore:"One-winged angel. He descended into madness and came back as something worse — a god who decided humanity’s purpose was to fuel his ascension." },
   { id:80, name:"Commander Shepard", universe:"Mass Effect",        alignment:"good",    tier:"enhanced",  role:"leader",   strength:75, leadership:90, durability:72, intelligence:88, agility:78, rivals:["Shadow Broker"], allies:[], lore:"The first human Spectre. Shepard didn’t save the galaxy once — they saved it three times, each time making the call no one else could." },
   { id:81, name:"Shadow Broker",     universe:"Mass Effect",        alignment:"evil",    tier:"enhanced",  role:"leader",   strength:82, leadership:88, durability:75, intelligence:95, agility:65, rivals:["Commander Shepard"], allies:[], lore:"The Shadow Broker sees everything. Sells everything. A Yahg who built an intelligence empire from the shadows and watched civilisations crumble for profit." },
   { id:82, name:"Captain America", universe:"Marvel Comics",  alignment:"good",  tier:"enhanced", role:"defender", strength:85, leadership:82, durability:85, intelligence:82, agility:80, rivals:["Ultron","Thanos"], allies:[], lore:"Seventy years on ice and he woke up with the same answer he always had. Steve Rogers doesn’t fight because he’s strong. He fights because someone has to stand between the innocent and what’s coming." },
   { id:83, name:"Bane",             universe:"DC Comics",      alignment:"evil",  tier:"enhanced", role:"defender", strength:92, leadership:72, durability:84, intelligence:80, agility:72, rivals:["Batman"], allies:[], lore:"He broke the Bat. Not by being stronger — by being patient. Bane studied Bruce Wayne for years before he ever laid a hand on him. He is the only villain Batman could not simply outlast." },
-  { id:84, name:"Nebula",           universe:"Marvel Comics",   alignment:"evil",    tier:"enhanced", role:"defender", strength:80, leadership:45, durability:82, intelligence:75, agility:85, rivals:["Thor","Gamora"], allies:[], lore:"Half-machine, half-Titan's weapon. Nebula's cybernetic enhancements make her a near-unstoppable shield." },
+  { id:84, name:"Nebula",           universe:"Marvel Comics",   alignment:"evil",    tier:"enhanced", role:"defender", strength:80, leadership:45, durability:82, intelligence:75, agility:85, rivals:["Gamora","Thanos"], allies:["Thanos"], lore:"Half-machine, half-Titan's weapon. Nebula's cybernetic enhancements make her a near-unstoppable shield." },
   { id:85, name:"General Grievous", universe:"Star Wars",       alignment:"evil",    tier:"enhanced", role:"defender", strength:85, leadership:50, durability:78, intelligence:70, agility:88, rivals:["Obi-Wan Kenobi"], allies:[], lore:"Four arms, four lightsabers, and zero mercy. The Supreme Commander of the Droid Army takes the line." },
   { id:86, name:"The Hound",        universe:"Game of Thrones", alignment:"neutral", tier:"human",    role:"defender", strength:88, leadership:45, durability:82, intelligence:65, agility:72, rivals:["Brienne of Tarth"], allies:[], lore:"Sandor Clegane fights because it's the only thing he's ever been good at. That's enough." },
   { id:87, name:"Venom",            universe:"Marvel Comics",   alignment:"evil",    tier:"enhanced", role:"hero",     strength:88, leadership:45, durability:80, intelligence:65, agility:82, rivals:["Spider-Man"], allies:[], lore:"We are Venom. The symbiote and its host move as one — alien hunger and human cunning fused into something terrifying." },
   { id:88, name:"Green Goblin",     universe:"Marvel Comics",   alignment:"evil",    tier:"enhanced", role:"hero",     strength:82, leadership:50, durability:72, intelligence:88, agility:85, rivals:["Spider-Man"], allies:[], lore:"Norman Osborn's formula gave him genius and madness in equal measure. The Goblin is what's left when the man loses." },
-  { id:89, name:"Jon Snow", universe:"Game of Thrones", alignment:"good", tier:"human", role:"hero", strength:85, leadership:75, durability:78, intelligence:72, agility:80, rivals:["Cersei Lannister","The Night King"], allies:["Brienne of Tarth"], lore:"He knew nothing, and yet stood against the dead. The King in the North bends no knee — except to duty." },
+  { id:89, name:"Jon Snow", universe:"Game of Thrones", alignment:"good", tier:"human", role:"hero", strength:85, leadership:75, durability:78, intelligence:72, agility:80, rivals:["The Night King"], allies:["Brienne of Tarth"], lore:"He knew nothing, and yet stood against the dead. The King in the North bends no knee — except to duty." },
   { id:90, name:"Patrick Bateman", universe:"American Psycho", alignment:"evil", tier:"human", role:"hero", strength:78, leadership:50, durability:65, intelligence:90, agility:80, rivals:[], allies:[], lore:"Business card. Raincoat. Axe. Patrick Bateman has a routine for everything, including murder." },
   { id:91, name:"Elrond",        universe:"Lord of the Rings", alignment:"good",    tier:"enhanced", role:"support", strength:55, leadership:75, durability:68, intelligence:92, agility:65, rivals:[], allies:["Gandalf","Aragorn"], lore:"Master of Rivendell, healer of Middle-earth. Elrond has tended wounds that would kill lesser beings and counselled kings for three thousand years." },
   { id:92, name:"Melisandre",    universe:"Game of Thrones",   alignment:"neutral", tier:"enhanced", role:"support", strength:50, leadership:65, durability:62, intelligence:88, agility:58, rivals:[], allies:[], lore:"The Red Woman serves the Lord of Light alone. She has seen kings rise and fall in the flames — and she has burned them all." },
+  { id:93, name:"Han Solo",      universe:"Star Wars", alignment:"good",    tier:"human",    role:"warrior", strength:78, leadership:55, durability:65, intelligence:72, agility:82, rivals:["Darth Vader"], allies:["Leia Organa","Luke Skywalker"], lore:"Never tell him the odds. Han Solo shoots first, flies fast, and somehow always ends up on the right side of history." },
+  { id:94, name:"Leia Organa",   universe:"Star Wars", alignment:"good",    tier:"enhanced", role:"leader",  strength:68, leadership:85, durability:70, intelligence:82, agility:72, rivals:["Darth Vader"], allies:["Han Solo","Luke Skywalker"], lore:"She was a princess, a senator, and a general. Leia Organa never needed rescuing — she needed an army, and she built one." },
 ];
 
 const ROSTER = HEROES;
@@ -3373,16 +3375,19 @@ function renderPool() {
   const playerFilledRoles = new Set(state.playerTeam.map(h => h.role));
   const playerNeeds = REQUIRED_ROLES.filter(r => !playerFilledRoles.has(r));
 
+  const TIER_ORDER = { cosmic: 0, legendary: 1, enhanced: 2, human: 3 };
+
   const filtered = ROSTER.filter(h => {
     if (takenIds.has(h.id)) return false;
-    // Role filter
     if (state.filterRole !== 'all') {
       const role = state.filterRole.replace('role-', '');
       if (h.role !== role) return false;
     }
-    // Alignment filter
     if (state.filterAlign !== 'all' && h.alignment !== state.filterAlign) return false;
     return true;
+  }).sort((a, b) => {
+    const td = (TIER_ORDER[a.tier] ?? 3) - (TIER_ORDER[b.tier] ?? 3);
+    return td !== 0 ? td : a.name.localeCompare(b.name);
   });
 
   filtered.forEach(hero => {
@@ -3435,7 +3440,7 @@ function renderPool() {
   });
 
   // ── Army cards in the pool ──
-  if (state.filterAlign === 'all' && (state.filterRole === 'all' || state.filterRole === 'role-army')) {
+  if (state.filterRole === 'all' || state.filterRole === 'role-army') {
     const leader = state.playerTeam.find(h => h.role === 'leader');
     ARMIES.forEach(a => {
       const cpuHas = state.cpuArmy && state.cpuArmy.id === a.id;
@@ -4309,13 +4314,15 @@ const HERO_QUIPS = {
 
   'Nebula':          { attack:["Nebula’s cybernetic arm locks on — there is no escape","Every upgrade Thanos gave her was a weapon. She uses them all.","Nebula fights without hesitation. Pain is something she learned to ignore."], inspire:["Nebula says: I will not be the one who fails.","She was built to win. She intends to."] },
   'General Grievous': { attack:["Grievous spins four lightsabers and advances","Your Jedi are dead. Grievous adds another to his collection.","The Supreme Commander of the Droid Army does not tire."], inspire:["Grievous rasps: Your screams are music to my ears.","Grievous coughs and charges. The cough doesn’t slow him."] },
-  'The Hound':        { attack:["Sandor Clegane swings and doesn’t stop","The Hound doesn’t fight with honour. He fights to win.","You’re in the way. The Hound removes obstacles."], inspire:["The Hound growls: Fire. Hate it. But not you.","Sandor Clegane says: Killing’s the sweetest thing there is."] },
+  'The Hound':        { attack:["Sandor Clegane swings and doesn’t stop","The Hound doesn’t fight with honour. He fights to win.","You’re in the way. The Hound removes obstacles."], inspire:["The Hound growls: Any man dies with a sword in his hand, he’s not afraid of steel.","Sandor Clegane says: Killing’s the sweetest thing there is."] },
   'Venom':            { attack:["We are Venom. The symbiote surges.","Venom’s tendrils reach further than you expected.","The alien hunger drives them both forward."], inspire:["Venom roars: We will eat your brains.","We are Venom. Nothing stops us."] },
   'Green Goblin':     { attack:["The Goblin swoops and throws a pumpkin bomb","Norman Osborn’s formula makes him faster and stronger than he should be.","Green Goblin laughs and strikes from an angle no one saw coming."], inspire:["Goblin cackles: We’re the same, you and I!","Norman Osborn announces: I’ve made a few refinements."] },
   'Jon Snow':        { attack:["Jon Snow charges with Longclaw raised","The King in the North fights like a man with nothing left to lose","Jon has died before. It didn’t slow him down."], inspire:["Jon says: The Long Night is coming. And the dead come with it.","Jon Snow holds the line. He always holds the line."] },
   'Patrick Bateman': { attack:["Bateman strikes with the precision of a man who has rehearsed this", "He’s wearing a Valentino suit and he doesn’t intend to get blood on it", "Patrick Bateman has very strong opinions about the correct way to do this"], inspire:["Bateman announces: I have to return some videotapes.", "Patrick Bateman checks his reflection and attacks."] },
   'Elrond':          { attack:["Elrond’s ancient power is rarely called upon — when it is, kingdoms fall","The master of Rivendell has faced darker things than this","Three thousand years of wisdom and the patience to use it"], inspire:["Elrond says: The world is changed. I feel it in the water.","Elrond speaks: I was there, Gandalf. I was there when the strength of men failed."] },
-  'Melisandre':      { attack:["Melisandre’s flames find what they seek","The night is dark and full of terrors — Melisandre brings the fire","She has seen this moment in the flames. She knows how it ends."], inspire:["Melisandre intones: The night is dark and full of terrors. But fire conquers darkness.","Melisandre whispers: Death by fire is the purest death."] },};;
+  'Melisandre':      { attack:["Melisandre’s flames find what they seek","The night is dark and full of terrors — Melisandre brings the fire","She has seen this moment in the flames. She knows how it ends."], inspire:["Melisandre intones: The night is dark and full of terrors. But fire conquers darkness.","Melisandre whispers: Death by fire is the purest death."] },
+  'Han Solo':        { attack:["Han shoots first. Always.", "Han Solo doesn’t wait for the plan to come together — he acts", "Hokey religions and ancient weapons are no match for a good blaster"], inspire:["Han says: Never tell me the odds.", "Han grins: I know."] },
+  'Leia Organa':     { attack:["Leia Organa doesn’t flinch. She never has.", "The general gives the order. Her forces execute without hesitation.", "She’s survived Alderaan, the Empire, and worse. This is nothing."], inspire:["Leia says: Help me, Obi-Wan Kenobi. You’re my only hope.", "General Organa addresses her troops: We are the spark that will light the fire."] },};;
 
 // Killing blow quotes — short, iconic, in-character
 const KILL_QUOTES = {
@@ -4323,7 +4330,7 @@ const KILL_QUOTES = {
   'Gandalf':           ['That is not dead which can eternal lie.', 'I am a servant of the Secret Fire.', 'You shall not pass.'],
   'Legolas':           ['That still only counts as one.', 'They are taking the hobbits to Isengard.'],
   'Gimli':             ['Certainty of death. Small chance of success. What are we waiting for?', 'Nobody tosses a dwarf.'],
-  'Sauron':            ['There is no life in the void. Only death.', 'You cannot hide. I see you.'],
+  'Sauron':            ['There is no life in the void. Only death.', 'There is no life in the void. Only death.'],
   'Frodo Baggins':     ['I wish the Ring had never come to me.', 'I will take the Ring, though I do not know the way.'],
   'Samwise Gamgee':    ['I may not be able to carry it for you — but I can carry you.', 'There’s some good in this world, and it’s worth fighting for.'],
   'Superman':          ['I believe in truth. But I also believe in justice.', 'Up, up, and away.'],
@@ -4353,7 +4360,7 @@ const KILL_QUOTES = {
   'Jean-Luc Picard':   ['Engage.', 'Make it so.', 'Things are only impossible until they’re not.'],
   'Katniss Everdeen':  ['If we burn, you burn with us.', 'Fire is catching.'],
   'Ellen Ripley':      ['Get away from her, you bitch.', 'Final report of the commercial starship Nostromo. Sole survivor.'],
-  'King T’Challa':    ['Wakanda forever.', 'I am not the king of Wakanda. I am the Black Panther.'],
+  'King T’Challa':    ['Wakanda forever.', 'In my culture, death is not the end.'],
   'Okoye':             ['For Wakanda. Without question.', 'Now we fight like Wakandans.'],
   'Mulan':             ['My name is Mulan. I did it to save my father.', 'A single grain of rice can tip the scale.'],
   'Gollum':            ['My precious.', 'We wants it. We needs it.'],
@@ -4363,17 +4370,17 @@ const KILL_QUOTES = {
   'Saruman':           ['I am Saruman the Wise, Saruman Ring-maker, Saruman of Many Colours!', 'I am Saruman the Wise, Saruman Ring-maker, Saruman of Many Colours!'],
   'Magneto':           ['Never again.', 'I have been to the promised land. It is called Genosha. And men like you burned it down.', 'We are the future, Charles.'],
   'Killmonger':        ['Is this your king?', 'Bury me in the ocean with my ancestors who jumped from ships — because they knew death was better than bondage.', 'The sun will never set on the Wakandan empire.'],
-  "Ra’s al Ghul":      ['You are not Ra’s al Ghul. But you fought like him.', 'You have to become the Batman. Become more than just a man.', 'If you make yourself more than just a man, you become a legend.'],
+  "Ra’s al Ghul":      ['The world is in balance only when the corrupt are destroyed.', 'Ra’s al Ghul endures. The League endures. Neither of us is done.', 'If you make yourself more than just a man, you become a legend.'],
   'General Zod':       ['Kneel before Zod.', 'I will find him. I will find Kal-El, and I will make him watch this world die.', 'Every Kryptonian instinct I have screams at me to destroy you.'],
   'Emperor Palpatine': ['I am the Senate.', 'Good. Let the hate flow through you.', 'Do it. Strike me down with all your hatred.'],
   'Moriarty':          ['Every fairytale needs a good old-fashioned villain.', 'I am so changeable. It is a weakness with me.', 'You’ve been so clever. But I am a specialist, you see.'],
   'Littlefinger':      ['Chaos isn’t a pit. Chaos is a ladder.', 'I did warn you not to trust me.', 'Always keep your foes confused.'],
   'President Snow':    ['Hope. It is the only thing stronger than fear.', 'Make an example of them.', 'Become my ally, or become a lesson.'],
-  'Dolores Umbridge':  ['Hem hem.', 'I will have order!', 'You applied logic to a situation that does not warrant it.'],
+  'Dolores Umbridge':  ['Hem hem.', 'I will have order!', 'Progress for progress’s sake must be discouraged.'],
   'Doctor Strange':    ['Dormammu, I’ve come to bargain.', 'I went forward in time to view alternate futures. I saw fourteen million, six hundred and five.', 'The bill comes due. Always.'],
   'Scarlet Witch':     ['You took everything from me.', 'I’m not a monster. I’m a mother.', 'Know that they’ll never be safe.'],
   'Loki':              ['I am burdened with glorious purpose.', 'I am Loki of Asgard, and I am burdened with glorious purpose.', 'I assure you, brother, the sun will shine on us again.'],
-  'Daenerys Targaryen':['Dracarys.', 'I am not your queen. I am your conqueror.', 'I am the blood of the dragon. You cannot kill me.'],
+  'Daenerys Targaryen':['Dracarys.', 'Dracarys.', 'I am the blood of the dragon. You cannot kill me.'],
   'Count Dracula':     ['I am the Monster that breathing men would kill. I am Dracula.', 'To die — to truly die — that must be glorious.', 'I have survived centuries. You will not survive tonight.'],
   'Dorian Gray':       ['To define is to limit.', 'The books that the world calls immoral are books that show the world its own shame.', 'Behind every exquisite thing that existed, there was something tragic.'],
   'Batman':           ['I’m Batman.', 'Justice.', 'The night is darkest just before the dawn.'],
@@ -4413,8 +4420,10 @@ const KILL_QUOTES = {
   'Green Goblin':     ['We’re the same, you and I.', 'Goblin wins again.', 'Wrong place, wrong time.'],
   'Jon Snow':        ['I know nothing. But I know how to end this.', 'The North remembers.', 'Winter came. I’m still here.'],
   'Patrick Bateman': ['I’m simply not there.', 'My business card is better than yours.', 'I have to return some videotapes.'],
-  'Elrond':          ['I was there. I remember.', 'The grace of the Elves is not so easily spent.', 'You have my blessing. Now fall.'],
-  'Melisandre':      ['The Lord of Light wills it.', 'I have seen the end of this — in the flames.', 'Night gathers. It will not last.'],};
+  'Elrond':          ['I was there. I remember.', 'The grace of the Elves is not so easily spent.', 'The grace of the Elves does not fade so easily.'],
+  'Melisandre':      ['The Lord of Light wills it.', 'I have seen the end of this — in the flames.', 'Night gathers. It will not last.'],
+  'Han Solo':        ['I know.', 'Great shot, kid. That was one in a million.', 'Never tell me the odds.'],
+  'Leia Organa':     ['Help me, Obi-Wan Kenobi. You’re my only hope.', 'We have hope. Rebellions are built on hope.', 'The Force is with us.'],};
 
 function getKillQuote(killerName) {
   const quotes = KILL_QUOTES[killerName];
@@ -5738,7 +5747,12 @@ function renderGauntletPick() {
     const col = document.createElement('div');
     col.className = 'gauntlet-role-col';
     col.innerHTML = `<div class="gauntlet-role-label" style="color:${ROLE_COLORS_MAP[role]}">${role}</div>`;
-    const roleHeroes = ROSTER.filter(h => h.role === role);
+    const TIER_ORDER_G = { cosmic: 0, legendary: 1, enhanced: 2, human: 3 };
+    const roleHeroes = ROSTER.filter(h => h.role === role)
+      .sort((a, b) => {
+        const td = (TIER_ORDER_G[a.tier] ?? 3) - (TIER_ORDER_G[b.tier] ?? 3);
+        return td !== 0 ? td : a.name.localeCompare(b.name);
+      });
     roleHeroes.forEach(hero => {
       const btn = document.createElement('button');
       btn.className = 'gauntlet-hero-btn' + (gauntlet.picks[role]?.id === hero.id ? ' selected' : '');
