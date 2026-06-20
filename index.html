@@ -3052,32 +3052,32 @@ function saveLb(lb) {
 }
 
 function lbRecordGauntlet(stagesWon, cpuHpRemaining, team, army) {
-  // stagesWon: 0-5 (5 = full clear)
+  if (!team || !team.length) return; // nothing to record
   const lb = getLb();
   const entry = {
     date: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }),
     stagesWon,
-    cpuHpRemaining,  // lower = closer to winning the final stage
-    team: team.map(h => ({ name: h.name, role: h.role, tier: h.tier })),
+    cpuHpRemaining: cpuHpRemaining || 0,
+    team: team.filter(Boolean).map(h => ({ name: h.name, role: h.role, tier: h.tier })),
     army: army ? army.name : '',
-    grade: calcDraftGrade(team, army)?.grade || '?',
+    grade: (team.filter(Boolean).length === 5 ? calcDraftGrade(team.filter(Boolean), army)?.grade : null) || '?',
   };
   lb.gauntlet.push(entry);
-  // Sort: most stages first, then lowest cpuHP (closer to win), then date descending
   lb.gauntlet.sort((a,b) => b.stagesWon - a.stagesWon || a.cpuHpRemaining - b.cpuHpRemaining);
-  lb.gauntlet = lb.gauntlet.slice(0, 5); // top 5
+  lb.gauntlet = lb.gauntlet.slice(0, 5);
   saveLb(lb);
 }
 
 function lbRecordRg(stagesBeaten, cpuHpRemaining, team, army) {
+  if (!team || !team.length) return;
   const lb = getLb();
   const entry = {
     date: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }),
     stagesBeaten,
-    cpuHpRemaining,
-    team: team.map(h => ({ name: h.name, role: h.role, tier: h.tier })),
+    cpuHpRemaining: cpuHpRemaining || 0,
+    team: team.filter(Boolean).map(h => ({ name: h.name, role: h.role, tier: h.tier })),
     army: army ? army.name : '',
-    grade: calcDraftGrade(team, army)?.grade || '?',
+    grade: (team.filter(Boolean).length === 5 ? calcDraftGrade(team.filter(Boolean), army)?.grade : null) || '?',
   };
   lb.rg.push(entry);
   lb.rg.sort((a,b) => b.stagesBeaten - a.stagesBeaten || a.cpuHpRemaining - b.cpuHpRemaining);
@@ -5160,8 +5160,16 @@ function updateBattleScreen(newLogs) {
     const color = hpColor(pct);
     const wasDead = el.classList.contains('defeated');
     el.className = `battle-hero${!h.alive ? ' defeated' : ''}`;
+    // Update SVG circle (fallback when no portrait)
     const circleFill = el.querySelector('.bh-circle-fill');
     if (circleFill) { circleFill.style.stroke = color; circleFill.style.strokeDashoffset = offset; }
+    // Update portrait border colour to reflect HP
+    const portrait = el.querySelector('.hero-portrait-circle');
+    if (portrait) {
+      portrait.style.borderColor = color;
+      portrait.style.opacity = h.alive ? '1' : '0.35';
+      portrait.style.filter = h.alive ? 'none' : 'grayscale(1)';
+    }
     const roleTag = el.querySelector('.bh-role-tag');
     if (roleTag) roleTag.textContent = `${!h.alive ? 0 : h.hp}HP`;
     // Death animation — only trigger once
