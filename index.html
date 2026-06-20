@@ -4381,10 +4381,13 @@ function beginBattle() {
     state.cpuArmy = (affArmy.length ? affArmy : ARMIES)[Math.floor(Math.random() * (affArmy.length || ARMIES.length))];
   }
 
-  // Fate Gauntlet — store drafted team then launch first stage
+  // Fate Gauntlet — store drafted teams then launch first stage
   if (state.lastMode === 'rg') {
     gauntlet.playerTeam = [...state.playerTeam];
     gauntlet.playerArmy = state.playerArmy;
+    // Save the CPU's drafted team so launchRgStage uses it for stage 1
+    gauntlet.rgCpuTeam  = state.cpuTeam ? [...state.cpuTeam] : null;
+    gauntlet.rgCpuArmy  = state.cpuArmy || null;
     startFateGauntlet();
     return;
   }
@@ -4474,8 +4477,8 @@ function initBattleState() {
   const playerUnits = state.playerTeam.map(makeUnit);
   const cpuUnits    = state.cpuTeam.map(makeCpuUnit);
 
-  if (state.playerArmy) playerUnits.push(makeArmy(state.playerArmy));
-  if (state.cpuArmy)    cpuUnits.push(makeCpuArmy(state.cpuArmy));
+  if (state.playerArmy) playerUnits.push({ ...makeArmy(state.playerArmy), id: `${state.playerArmy.id}-p` });
+  if (state.cpuArmy)    cpuUnits.push({ ...makeCpuArmy(state.cpuArmy),    id: `${state.cpuArmy.id}-c` });
 
   state.battleState = {
     player: playerUnits,
@@ -5931,6 +5934,7 @@ function showGauntlet() {
   if (!gauntlet._continuing) {
     gauntlet.stage = 0;
     gauntlet.results = [];
+    gauntlet._continuing = false; // ensure clean state
   }
   renderGauntletPick();
   showScreen('screen-gauntlet-pick');
@@ -6025,7 +6029,19 @@ function rgBuildCpuTeam() {
 }
 
 function launchRgStage() {
-  const { team: cpuTeam, army: cpuArmy } = rgBuildCpuTeam();
+  // Stage 1: use the CPU team drafted during the Fate Draft screen
+  // Subsequent stages: CPU drafts a new team via rgBuildCpuTeam
+  let cpuTeam, cpuArmy;
+  if (rgState.stage === 0 && gauntlet.rgCpuTeam && gauntlet.rgCpuTeam.length) {
+    cpuTeam = gauntlet.rgCpuTeam;
+    cpuArmy = gauntlet.rgCpuArmy;
+    gauntlet.rgCpuTeam = null; // clear so stage 2+ use rgBuildCpuTeam
+    gauntlet.rgCpuArmy = null;
+  } else {
+    const built = rgBuildCpuTeam();
+    cpuTeam = built.team;
+    cpuArmy = built.army;
+  }
 
   // Safety: restore player team from gauntlet state
   const playerTeam = gauntlet.playerTeam || state.playerTeam;
@@ -6194,8 +6210,13 @@ function updateGauntletCloneWarning() {
 }
 
 function startGauntlet() {
-  gauntlet.playerTeam = REQUIRED_ROLES.map(r => gauntlet.picks[r]);
+  gauntlet.playerTeam = REQUIRED_ROLES.map(r => gauntlet.picks[r]).filter(Boolean);
   gauntlet.playerArmy = gauntlet.armyPick || armyForLeader(gauntlet.picks.leader);
+
+  if (gauntlet.playerTeam.length < REQUIRED_ROLES.length) {
+    alert('Please pick a hero for every role before starting.');
+    return;
+  }
 
   if (gauntlet._continuing) {
     // Continue from the stage we lost on — don't reset stage or results
