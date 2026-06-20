@@ -739,7 +739,10 @@
     object-fit: cover;
     object-position: top center;
     flex-shrink: 0;
-    border: 1.5px solid var(--border2);
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--good);
+    transition: border-color 0.5s, filter 0.3s, opacity 0.3s;
   }
   .hero-portrait-sm {
     width: 40px; height: 40px;
@@ -2072,7 +2075,6 @@
   <button class="btn-primary" onclick="showGauntlet()" style="background:#f97316;border-color:#f97316;margin-bottom:0.75rem;">Try Again</button>
   <button class="btn-primary" onclick="showLeaderboard('gauntlet')" style="background:transparent;border:1px solid #f97316;color:#f97316;margin-bottom:0.75rem;">🏆 Leaderboard</button>
   <button class="btn-primary" onclick="resetGame()" style="background:transparent;border:1px solid var(--border2);color:var(--muted);">Main Menu</button>
-</div>
 
 <!-- ═══════════════════════════════════════════════
   RESTRICTED GAUNTLET RUN END
@@ -6176,8 +6178,8 @@ function showGauntletProgress() {
     actionBtn.textContent = `Stage ${gauntlet.stage + 2} ▶`;
     actionBtn.onclick = () => { gauntlet.stage++; launchGauntletStage(); };
   } else {
-    actionBtn.textContent = 'Try Again';
-    actionBtn.onclick = () => showGauntlet();
+    actionBtn.textContent = 'See Results';
+    actionBtn.onclick = () => showGauntletResult();
   }
 
   showScreen('screen-gauntlet-progress');
