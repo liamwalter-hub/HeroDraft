@@ -2115,7 +2115,7 @@
     </div>
 
     <!-- Tab switcher -->
-    <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+    <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;">
       <button id="lb-tab-gauntlet" onclick="switchLeaderboardTab('gauntlet')"
         style="flex:1;padding:0.45rem;border-radius:6px;border:1px solid #f97316;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.15s;">
         ⚔ Gauntlet
@@ -2123,6 +2123,17 @@
       <button id="lb-tab-rg" onclick="switchLeaderboardTab('rg')"
         style="flex:1;padding:0.45rem;border-radius:6px;border:1px solid #fb923c;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.15s;">
         🎲 Fate Gauntlet
+      </button>
+    </div>
+    <!-- Gauntlet sub-tabs (single/multi team) -->
+    <div id="lb-gauntlet-subtabs" style="display:none;gap:0.4rem;margin-bottom:1rem;">
+      <button id="lb-tab-single" onclick="switchGauntletSubTab('single')"
+        style="flex:1;padding:0.35rem;border-radius:5px;border:1px solid var(--border2);font-size:0.68rem;cursor:pointer;transition:all 0.15s;">
+        Single Team
+      </button>
+      <button id="lb-tab-multi" onclick="switchGauntletSubTab('multi')"
+        style="flex:1;padding:0.35rem;border-radius:5px;border:1px solid var(--border2);font-size:0.68rem;cursor:pointer;transition:all 0.15s;">
+        Multi Team
       </button>
     </div>
 
@@ -3054,9 +3065,11 @@ function saveLb(lb) {
   try { localStorage.setItem(LB_KEY, JSON.stringify(lb)); } catch {}
 }
 
-function lbRecordGauntlet(stagesWon, cpuHpRemaining, team, army) {
-  if (!team || !team.length) return; // nothing to record
+function lbRecordGauntlet(stagesWon, cpuHpRemaining, team, army, category = 'single') {
+  if (!team || !team.length) return;
   const lb = getLb();
+  if (!lb.gauntletSingle) lb.gauntletSingle = [];
+  if (!lb.gauntletMulti)  lb.gauntletMulti  = [];
   const entry = {
     date: new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' }),
     stagesWon,
@@ -3064,9 +3077,16 @@ function lbRecordGauntlet(stagesWon, cpuHpRemaining, team, army) {
     team: team.filter(Boolean).map(h => ({ name: h.name, role: h.role, tier: h.tier })),
     army: army ? army.name : '',
     grade: (team.filter(Boolean).length === 5 ? calcDraftGrade(team.filter(Boolean), army)?.grade : null) || '?',
+    category,
   };
+  const key = category === 'multi' ? 'gauntletMulti' : 'gauntletSingle';
+  // Also keep legacy 'gauntlet' key for backwards compat
+  if (!lb.gauntlet) lb.gauntlet = [];
+  lb[key].push(entry);
   lb.gauntlet.push(entry);
+  lb[key].sort((a,b) => b.stagesWon - a.stagesWon || a.cpuHpRemaining - b.cpuHpRemaining);
   lb.gauntlet.sort((a,b) => b.stagesWon - a.stagesWon || a.cpuHpRemaining - b.cpuHpRemaining);
+  lb[key] = lb[key].slice(0, 5);
   lb.gauntlet = lb.gauntlet.slice(0, 5);
   saveLb(lb);
 }
@@ -3094,8 +3114,9 @@ const TIER_COL = { cosmic:'#f97316', legendary:'#d4a843', enhanced:'#a78bfa', hu
 
 function lbRenderEntry(entry, rank, mode) {
   const isGauntlet = mode === 'gauntlet';
+  const total = GAUNTLET_STAGES.length;
   const scoreLabel = isGauntlet
-    ? (entry.stagesWon === 5 ? 'Full Clear ✓' : `Stage ${entry.stagesWon} / 5`)
+    ? (entry.stagesWon === total ? 'Full Clear ✓' : `Stage ${entry.stagesWon} / ${total}`)
     : `${entry.stagesBeaten} stage${entry.stagesBeaten !== 1 ? 's' : ''}`;
   const cpuHp = entry.cpuHpRemaining;
   const rankColor = rank === 1 ? '#f97316' : rank === 2 ? '#d4a843' : rank === 3 ? '#a78bfa' : 'var(--muted)';
@@ -3118,11 +3139,11 @@ function lbRenderEntry(entry, rank, mode) {
 }
 
 let _lbTab = 'gauntlet';
+let _lbGauntletSub = 'single';
 
 function switchLeaderboardTab(tab) {
   _lbTab = tab;
   renderLeaderboardContent();
-  // Update tab styles
   const gBtn = document.getElementById('lb-tab-gauntlet');
   const rBtn = document.getElementById('lb-tab-rg');
   if (gBtn) {
@@ -3133,18 +3154,55 @@ function switchLeaderboardTab(tab) {
     rBtn.style.background = tab === 'rg' ? '#fb923c' : 'transparent';
     rBtn.style.color = tab === 'rg' ? '#0d0e14' : '#fb923c';
   }
+  // Show/hide sub-tabs
+  const subTabs = document.getElementById('lb-gauntlet-subtabs');
+  if (subTabs) {
+    subTabs.style.display = tab === 'gauntlet' ? 'flex' : 'none';
+  }
+  if (tab === 'gauntlet') switchGauntletSubTab(_lbGauntletSub);
+}
+
+function switchGauntletSubTab(sub) {
+  _lbGauntletSub = sub;
+  renderLeaderboardContent();
+  const sBtn = document.getElementById('lb-tab-single');
+  const mBtn = document.getElementById('lb-tab-multi');
+  if (sBtn) {
+    sBtn.style.background = sub === 'single' ? 'var(--surface2)' : 'transparent';
+    sBtn.style.color = sub === 'single' ? 'var(--text)' : 'var(--muted)';
+    sBtn.style.borderColor = sub === 'single' ? '#f97316' : 'var(--border2)';
+  }
+  if (mBtn) {
+    mBtn.style.background = sub === 'multi' ? 'var(--surface2)' : 'transparent';
+    mBtn.style.color = sub === 'multi' ? 'var(--text)' : 'var(--muted)';
+    mBtn.style.borderColor = sub === 'multi' ? '#f97316' : 'var(--border2)';
+  }
 }
 
 function renderLeaderboardContent() {
   const el = document.getElementById('lb-content');
   if (!el) return;
   const lb = getLb();
-  const entries = _lbTab === 'gauntlet' ? lb.gauntlet : lb.rg;
+
+  let entries, label;
+  if (_lbTab === 'gauntlet') {
+    if (_lbGauntletSub === 'multi') {
+      entries = lb.gauntletMulti || [];
+      label = 'Multi Team Best';
+    } else {
+      entries = lb.gauntletSingle || lb.gauntlet || [];
+      label = 'Single Team Best';
+    }
+  } else {
+    entries = lb.rg || [];
+    label = 'Fate Gauntlet';
+  }
+
   const accentCol = _lbTab === 'gauntlet' ? '#f97316' : '#fb923c';
 
   if (!entries || entries.length === 0) {
     el.innerHTML = `<div style="text-align:center;color:var(--muted);font-size:0.8rem;padding:2rem 0;">
-      No runs recorded yet.<br>Complete a ${_lbTab === 'gauntlet' ? 'Gauntlet' : 'Fate Gauntlet'} run to appear here.
+      No ${label} runs recorded yet.
     </div>`;
     return;
   }
@@ -4388,8 +4446,21 @@ function initBattleState() {
   // Difficulty combat boosts: medium/hard CPU gets extra HP and damage
   // Calibrated via 5000-game simulation to hit target win rates per difficulty
   // In gauntlet mode the stages are pre-calibrated — no additional CPU stat boost
-  const cpuHpMult = (state.difficulty === 'medium' || state.difficulty === 'hard') && !gauntlet.active ? 1.03 : 1.0;
-  const cpuDmgMult = (state.difficulty === 'medium' || state.difficulty === 'hard') && !gauntlet.active ? 1.04 : 1.0;
+  // Gauntlet: always hard difficulty + scaling per stage (ignores difficulty selector)
+  // Non-gauntlet: respects difficulty selector as normal
+  let cpuHpMult, cpuDmgMult;
+  if (gauntlet.active) {
+    // S1-S2: no boost (warmup stages, human/enhanced only)
+    // S3 onwards: hard base + per-stage scaling
+    const stageBoosts = [0, 0, 0.02, 0.05, 0.08, 0.11, 0.13, 0.15, 0.17, 0.19];
+    const boost = stageBoosts[gauntlet.stage] || 0.19;
+    const stageMult = 1.0 + boost;
+    cpuHpMult  = gauntlet.stage < 2 ? 1.0 : 1.03 * stageMult;
+    cpuDmgMult = gauntlet.stage < 2 ? 1.0 : 1.04 * stageMult;
+  } else {
+    cpuHpMult  = (state.difficulty === 'medium' || state.difficulty === 'hard') ? 1.03 : 1.0;
+    cpuDmgMult = (state.difficulty === 'medium' || state.difficulty === 'hard') ? 1.04 : 1.0;
+  }
 
   const makeCpuUnit = h => {
     const hp = Math.round(heroMaxHp(h) * cpuHpMult);
@@ -5690,6 +5761,10 @@ function resetGame() {
   gauntlet.active = false;
   gauntlet.stage = 0;
   gauntlet.results = [];
+  gauntlet.continueCount = 0;
+  gauntlet.firstDefeatedStage = null;
+  gauntlet.team2StartIndex = null;
+  gauntlet._continuing = false;
   // Streak persists when drafting again — only resets on loss
   // Going to main menu resets it (intentional fresh start)
   streak.current = 0;
@@ -5744,44 +5819,77 @@ document.addEventListener('click', e => {
 const GAUNTLET_STAGES = [
   {
     name: 'The Game of Thrones',
-    lore: 'A dynasty bound by blood and ambition. Dangerous in court — test your mettle before the real threats arrive.',
+    lore: 'A dynasty bound by blood and ambition. Every hero here is human — but power, betrayal and steel are enough to bury you.',
     team: ['Cersei Lannister','Jon Snow','Brienne of Tarth','Jaime Lannister','Tyrion Lannister'],
     army: 'Lannister Army',
   },
   {
     name: 'The Shadow Network',
-    lore: 'The Shadow Broker never fights fairly. Information, manipulation, and raw enhanced muscle — this team was assembled to win, not to be honourable.',
-    team: ['The Illusive Man','Count Dracula','Batman','Bellatrix Lestrange','Amy Dunne'],
+    lore: 'Brilliant minds and cold hearts. No enhanced abilities — just intellect, manipulation and a willingness to cross any line.',
+    team: ['Walter White','Patrick Bateman','Batman','The Joker','Moriarty'],
     army: 'Shadow Broker Network',
   },
   {
-    name: 'The Powerbrokers',
-    lore: 'Lex Luthor promised them everything. Sephiroth wants only destruction. Magneto seeks domination. Darth Vader serves the dark side. Hannibal is simply hungry.',
-    team: ['Lex Luthor','Sephiroth','Magneto','Darth Vader','Hannibal Lecter'],
-    army: 'LexCorp Strike Force',
+    name: 'The Ancient and the Deadly',
+    lore: 'Leonidas commands with iron discipline. Odysseus outthinks every foe. The Hound kills without hesitation. Geralt has faced worse. Hannibal Lecter is simply enjoying himself.',
+    team: ['Leonidas','Odysseus','The Hound','Geralt of Rivia','Hannibal Lecter'],
+    army: 'Spartan 300',
   },
   {
-    name: 'The Dark Convergence',
-    lore: 'Four of the most dangerous dark lords ever born — united by purpose. Voldemort leads. Sauron destroys. Hela judges. Loki deceives. Saruman endures.',
-    team: ['Voldemort','Hela','Saruman','Sauron','Loki'],
+    name: 'The Fellowship',
+    lore: 'Middle-earth sends its finest. Aragorn leads. Saruman brings ancient power. The ring-bearer holds something darker still.',
+    team: ['Aragorn','Frodo Baggins','Saruman','Gimli','Elrond'],
+    army: 'Rohirrim',
+  },
+  {
+    name: 'The Wizarding War',
+    lore: 'Magic on both sides — from Dumbledore’s wisdom to Voldemort’s malice. Nebula is the wild card nobody saw coming.',
+    team: ['Dumbledore','Harry Potter','Nebula','Bellatrix Lestrange','Hermione Granger'],
+    army: 'Hogwarts Army',
+  },
+  {
+    name: 'A Galaxy Far Away',
+    lore: 'The Empire at its peak. Three legendary figures face each other across the same battlefield — and you stand between them.',
+    team: ['Emperor Palpatine','Luke Skywalker','General Grievous','Han Solo','Yoda'],
+    army: 'Imperial Stormtrooper Legion',
+  },
+  {
+    name: 'The Dark Trinity',
+    lore: 'Zeus commands with divine authority. Neo bends reality. Merlin wields ancient magic. Together they are something older and stranger than any single universe.',
+    team: ['Zeus','Neo','Okoye','Maximus','Merlin'],
+    army: 'Olympian Guard',
+  },
+  {
+    name: 'Lords of Darkness',
+    lore: 'Voldemort leads the darkest assembly this side of any universe. Hela judges. Loki deceives. Bane endures.',
+    team: ['Voldemort','Hela','Bane','Ra’s al Ghul','Loki'],
     army: 'Uruk-hai',
   },
   {
-    name: 'The Omega Alliance',
-    lore: 'Two cosmic destroyers. A fallen Emperor. The apex predator of artificial life. And the man who knows every secret. The end of the road.',
-    team: ['Emperor Palpatine','Ultron','Galactus','Thanos','Moriarty'],
-    army: "Thanos’ Outriders",
+    name: 'The Powerbrokers',
+    lore: 'The Illusive Man planned for every contingency. Sephiroth wants only the end of everything. Magneto reshapes reality. Sun Wukong broke heaven itself. Melisandre has already seen how this ends.',
+    team: ['The Illusive Man','Sephiroth','Magneto','Sun Wukong','Melisandre'],
+    army: 'Apokolips Parademon Horde',
+  },
+  {
+    name: 'The End of All Things',
+    lore: 'Thanos has erased half of all life. Scarlet Witch has destroyed worlds. Wonder Woman has never lost a war she truly fought. Commander Shepard has saved the galaxy before. Captain America will not stop. This is the final stage — and none of them plan to fall.',
+    team: ['Commander Shepard','Wonder Woman','Captain America','Thanos','Scarlet Witch'],
+    army: 'Chitauri Army',
   },
 ];
 
 const gauntlet = {
-  playerTeam: [],     // hero objects, one per role
+  playerTeam: [],
   playerArmy: null,
-  picks: {},          // role -> hero
-  armyPick: null,     // chosen army object
+  picks: {},
+  armyPick: null,
   stage: 0,
-  results: [],        // 'win'|'loss' per stage
+  results: [],
   active: false,
+  continueCount: 0,
+  firstDefeatedStage: null,
+  team2StartIndex: null,   // results index where team 2 began
 };;
 
 function heroByName(name) {
@@ -5819,8 +5927,11 @@ function showGauntlet() {
   state.dailyChallenge = null;
   gauntlet.picks = {};
   gauntlet.armyPick = null;
-  gauntlet.stage = 0;
-  gauntlet.results = [];
+  // Don't reset stage/results if continuing with a new team
+  if (!gauntlet._continuing) {
+    gauntlet.stage = 0;
+    gauntlet.results = [];
+  }
   renderGauntletPick();
   showScreen('screen-gauntlet-pick');
 }
@@ -6085,10 +6196,22 @@ function updateGauntletCloneWarning() {
 function startGauntlet() {
   gauntlet.playerTeam = REQUIRED_ROLES.map(r => gauntlet.picks[r]);
   gauntlet.playerArmy = gauntlet.armyPick || armyForLeader(gauntlet.picks.leader);
-  gauntlet.stage = 0;
-  gauntlet.results = [];
-  gauntlet.active = true;
-  launchGauntletStage();
+
+  if (gauntlet._continuing) {
+    // Continue from the stage we lost on — don't reset stage or results
+    gauntlet._continuing = false;
+    gauntlet.active = true;
+    launchGauntletStage();
+  } else {
+    // Fresh run
+    gauntlet.stage = 0;
+    gauntlet.results = [];
+    gauntlet.active = true;
+    gauntlet.continueCount = 0;
+    gauntlet.firstDefeatedStage = null;
+    gauntlet.team2StartIndex = null;
+    launchGauntletStage();
+  }
 }
 
 function launchGauntletStage() {
@@ -6134,7 +6257,7 @@ function injectGauntletHeader(stageIdx, stage, cloneNames) {
   header.className = 'gauntlet-battle-header';
   header.innerHTML = `
     <div>
-      <div class="gauntlet-stage-label">Stage ${stageIdx+1} of ${GAUNTLET_STAGES.length}</div>
+      <div class="gauntlet-stage-label">Stage ${stageIdx+1} of ${GAUNTLET_STAGES.length}${gauntlet.continueCount > 0 ? ' — Team 2' : ''}</div>
       <div style="font-size:0.85rem;font-weight:600;color:var(--text);margin-top:2px">${stage.name}</div>
       <div style="font-size:0.68rem;color:var(--muted);font-style:italic">${stage.lore}</div>
     </div>
@@ -6186,11 +6309,16 @@ function showGauntletProgress() {
   } else if (isWin) {
     badgeEl.innerHTML = `<div style="color:var(--good);font-size:0.85rem">✓ Stage ${stageIndex+1} — Victory</div>`;
   } else {
-    badgeEl.innerHTML = `<div style="color:var(--evil);font-size:0.85rem">✗ Stage ${stageIndex+1} — Defeated</div>`;
+    const canContinue = gauntlet.continueCount === 0;
+    badgeEl.innerHTML = `<div style="color:var(--evil);font-size:0.85rem">✗ Stage ${stageIndex+1} — Defeated</div>`
+      + (canContinue ? `<div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem">Draft a new team and continue from this stage, or end your run.</div>` : '');
   }
 
-  // Action button
+  // Action button(s)
   const actionBtn = document.getElementById('gp-action-btn');
+  // Remove any existing continue button from a prior render
+  document.getElementById('gp-continue-btn')?.remove();
+
   if (isFinalClear) {
     actionBtn.textContent = 'See Final Results';
     actionBtn.onclick = () => showGauntletResult();
@@ -6198,32 +6326,80 @@ function showGauntletProgress() {
     actionBtn.textContent = `Stage ${gauntlet.stage + 2} ▶`;
     actionBtn.onclick = () => { gauntlet.stage++; launchGauntletStage(); };
   } else {
-    actionBtn.textContent = 'See Results';
+    // Loss — show End Run, and optionally Continue
+    actionBtn.textContent = 'End Run';
+    actionBtn.style.background = 'transparent';
+    actionBtn.style.borderColor = 'var(--border2)';
+    actionBtn.style.color = 'var(--muted)';
     actionBtn.onclick = () => showGauntletResult();
+
+    if (gauntlet.continueCount === 0) {
+      // First defeat — offer continue
+      const continueBtn = document.createElement('button');
+      continueBtn.id = 'gp-continue-btn';
+      continueBtn.className = 'btn-primary';
+      continueBtn.textContent = 'Continue with New Team ▶';
+      continueBtn.style.cssText = 'background:#f97316;border-color:#f97316;margin-bottom:0.6rem;';
+      continueBtn.onclick = () => {
+        gauntlet.continueCount = 1;
+        gauntlet.firstDefeatedStage = gauntlet.stage;
+        gauntlet.team2StartIndex = gauntlet.results.length;
+        // Go to Gauntlet pick screen for new team draft
+        showGauntletContinueDraft();
+      };
+      actionBtn.parentNode.insertBefore(continueBtn, actionBtn);
+    }
   }
 
   showScreen('screen-gauntlet-progress');
+}
+
+function showGauntletContinueDraft() {
+  // Reuse gauntlet pick screen — reset picks only, keep stage/results
+  gauntlet.picks = {};
+  gauntlet.armyPick = null;
+  // Mark as continuing so startGauntlet knows not to reset stage/results
+  gauntlet._continuing = true;
+  showGauntlet();
 }
 
 function showGauntletResult() {
   gauntlet.active = false;
   const wins = gauntlet.results.filter(r => r === 'win').length;
   const cleared = wins === GAUNTLET_STAGES.length;
+  const isMultiTeam = gauntlet.continueCount > 0;
 
-  // Record to leaderboard — get CPU remaining HP from the last stage's battle state
+  // Single team best: stages won by team 1 only (before first defeat)
+  const team1Wins = isMultiTeam && gauntlet.team2StartIndex !== null
+    ? gauntlet.results.slice(0, gauntlet.team2StartIndex).filter(r => r === 'win').length
+    : wins;
+
+  // Multi team best: total stages won across both teams combined
+  const multiWins = wins;
+
   const bs = state.battleState;
   const cpuHpLeft = bs ? bs.cpu.reduce((s,h) => s + (h.alive ? h.hp : 0), 0) : 0;
   const playerTeam = gauntlet.playerTeam || state.playerTeam;
   const playerArmy = gauntlet.playerArmy || state.playerArmy;
-  lbRecordGauntlet(wins, cpuHpLeft, playerTeam, playerArmy);
+
+  // Record to appropriate leaderboard category
+  if (isMultiTeam) {
+    lbRecordGauntlet(multiWins, cpuHpLeft, playerTeam, playerArmy, 'multi');
+  } else {
+    lbRecordGauntlet(team1Wins, cpuHpLeft, playerTeam, playerArmy, 'single');
+  }
+
+  const displayWins = isMultiTeam ? multiWins : team1Wins;
   const titleEl = document.getElementById('gauntlet-result-title');
-  titleEl.className = 'gauntlet-result-title ' + (cleared ? 'cleared' : wins > 0 ? '' : 'fallen');
-  titleEl.textContent = cleared ? 'Gauntlet Cleared!' : wins > 0 ? `Fell at Stage ${wins+1}` : 'Defeated at the Gates';
+  titleEl.className = 'gauntlet-result-title ' + (cleared ? 'cleared' : displayWins > 0 ? '' : 'fallen');
+  titleEl.textContent = cleared ? 'Gauntlet Cleared!' : displayWins > 0 ? `Fell at Stage ${displayWins+1}` : 'Defeated at the Gates';
 
   document.getElementById('gauntlet-result-subtitle').textContent =
     cleared
       ? `Undefeated across all ${GAUNTLET_STAGES.length} stages. Legendary.`
-      : `${wins} of ${GAUNTLET_STAGES.length} stages conquered.`;
+      : isMultiTeam
+        ? `${team1Wins} stages with team 1, ${multiWins - team1Wins} with team 2. ${multiWins} total.`
+        : `${team1Wins} of ${GAUNTLET_STAGES.length} stages conquered.`;
 
   const scorecard = document.getElementById('gauntlet-scorecard');
   scorecard.innerHTML = gauntlet.results.map((r,i) => `
