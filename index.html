@@ -3100,7 +3100,7 @@ function lbRenderEntry(entry, rank, mode) {
   const cpuHp = entry.cpuHpRemaining;
   const rankColor = rank === 1 ? '#f97316' : rank === 2 ? '#d4a843' : rank === 3 ? '#a78bfa' : 'var(--muted)';
   const teamHtml = entry.team.map(h =>
-    `<span style="font-size:0.65rem;color:${TIER_COL[h.tier]||'var(--muted)'};" title="${h.name} (${h.role})">${TIER_SYM[h.tier]}${h.name.split(' ')[0]}</span>`
+    `<span style="font-size:0.65rem;color:${TIER_COL[h.tier]||'var(--muted)'};" title="${h.name} (${h.role})">${TIER_SYM[h.tier]}${h.name}</span>`
   ).join('<span style="color:var(--border2)"> · </span>');
 
   return `<div style="background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:0.65rem 0.75rem;margin-bottom:0.5rem;">
